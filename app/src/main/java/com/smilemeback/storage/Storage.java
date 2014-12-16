@@ -1,6 +1,9 @@
 package com.smilemeback.storage;
 
 import android.content.Context;
+import android.content.res.AssetManager;
+
+import com.smilememack.R;
 
 import org.apache.commons.io.FileUtils;
 
@@ -10,7 +13,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-import com.smilememack.R;
 
 /**
  * Storage class deals with Android filesystem and
@@ -58,7 +60,7 @@ public class Storage {
      * @param thumbnailStream The input stream containing the
      * @throws StorageException In case creating a new empty directory fails.
      */
-    public Category addEmptyCategory(CategoryName name, InputStream thumbnailStream) throws StorageException {
+    public Category addEmptyCategory(Name name, InputStream thumbnailStream) throws StorageException {
         logger.info("Adding empty category with name <" + name + ">");
         File category = new File(getCategoriesFolder(context), name.toString());
         if (category.exists() && !category.isDirectory()) {
@@ -92,7 +94,7 @@ public class Storage {
      * @param name
      * @throws StorageException
      */
-    public void addEmptyCategory(CategoryName name) throws StorageException {
+    public void addEmptyCategory(Name name) throws StorageException {
         addEmptyCategory(name, context.getResources().openRawResource(R.drawable.iconview_testing));
     }
 
@@ -129,9 +131,21 @@ public class Storage {
     }
 
     public void initializeTestingCategories() throws StorageException {
-        truncateAllCategories();
-        for (int i=0 ; i<8 ; ++i) {
-            addEmptyCategory(new CategoryName("Testing category " + i));
+        try {
+            truncateAllCategories();
+            File categoriesFolder = getCategoriesFolder(context);
+            AssetManager asm = context.getAssets();
+            for (String dnm : asm.list("categories")) {
+                File categoryFolder = new File(categoriesFolder, dnm);
+                categoriesFolder.mkdirs();
+                for (String fnm : asm.list("categories/" + dnm)) {
+                    File dest = new File(categoryFolder, fnm);
+                    FileUtils.copyInputStreamToFile(asm.open("categories/" + dnm + "/" + fnm), dest);
+                    logger.info("Copying demo asset <" + dnm + "/" + fnm + "> to <" + dest.getAbsolutePath() + ">");
+                }
+            }
+        } catch (IOException | StorageException e) {
+            throw new StorageException(e);
         }
     }
 }

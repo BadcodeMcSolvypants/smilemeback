@@ -8,20 +8,20 @@ import java.io.File;
  */
 public class Category {
 
-    private CategoryName name;
+    private Name name;
     private File folder;
     private File thumbnail;
 
     public Category(File categoryFile) throws StorageException {
         this.folder = categoryFile;
-        this.name = new CategoryName(categoryFile.getName());
+        this.name = new Name(categoryFile.getName());
         this.thumbnail = new File(this.folder, Storage.CATEGORY_THUMBNAIL);
         if (!thumbnail.exists()) {
             throw new StorageException("Category" + name + " thumbnail <" + thumbnail.getAbsolutePath() + "> does not exist!");
         }
     }
 
-    public CategoryName getName() { return this.name; }
+    public Name getName() { return this.name; }
 
     public File getFolder() { return this.folder; }
 

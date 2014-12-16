@@ -5,7 +5,7 @@ android {
     buildToolsVersion "21.1.1"
 
     defaultConfig {
-        applicationId "smilemeback.com.smilememack"
+        applicationId "com.smilememack"
         minSdkVersion 15
         targetSdkVersion 21
         versionCode 1

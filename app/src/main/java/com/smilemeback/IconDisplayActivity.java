@@ -10,18 +10,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 
+import com.smilemeback.adapter.CategoryAdapter;
+import com.smilemeback.adapter.InputAdapter;
 import com.smilemeback.storage.Storage;
 import com.smilemeback.storage.StorageException;
-import com.smilemeback.views.CategoryAdapter;
 import com.smilememack.R;
 
 
 public class IconDisplayActivity extends Activity {
 
+    /// should we enable adding new categories / images in the view
     protected boolean enableInput = false;
 
+    /// are we displaying all categories or contents of a single category
+    protected boolean displayCategories = true;
+
     protected GridView gridView;
-    protected CategoryAdapter adapter;
+    protected InputAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +42,7 @@ public class IconDisplayActivity extends Activity {
             Storage storage = new Storage(this);
             storage.initializeTestingCategories();
             adapter = new CategoryAdapter(this);
+            adapter.setInputEnabled(enableInput);
         } catch (StorageException e) {
             throw new RuntimeException(e);
         }
@@ -54,6 +60,7 @@ public class IconDisplayActivity extends Activity {
         } else {
             menu.findItem(R.id.disable_input).setVisible(false);
         }
+        menu.findItem(R.id.back_to_categories).setVisible(!displayCategories);
         return true;
     }
 
@@ -101,6 +108,8 @@ public class IconDisplayActivity extends Activity {
 
     public void setEnableInput(boolean enableInput) {
         this.enableInput = enableInput;
+        adapter.setInputEnabled(enableInput);
+        gridView.setAdapter(adapter);
         invalidateOptionsMenu();
     }
 }

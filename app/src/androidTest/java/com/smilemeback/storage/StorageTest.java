@@ -25,7 +25,7 @@ public class StorageTest extends AndroidTestCase {
         assertEquals(0, storage.getCategories().size());
     }
 
-    private CategoryName getTestCategoryName() {
-        return new CategoryName("Test category 157");
+    private Name getTestCategoryName() {
+        return new Name("Test category 157");
     }
 }

@@ -63,6 +63,18 @@ public class IconView extends RelativeLayout {
                 .into(image);
     }
 
+    /**
+     * Load the views bitmap from a file.
+     * @param resourceId The resource to load into IconView.
+     */
+    public void setImageBitmap(int resourceId) {
+        Picasso.with(getContext())
+                .load(resourceId)
+                .fit()
+                .centerCrop()
+                .into(image);
+    }
+
     public void setLabel(String text) {
         label.setText(text);
     }
