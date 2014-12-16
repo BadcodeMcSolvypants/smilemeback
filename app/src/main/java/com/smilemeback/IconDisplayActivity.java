@@ -1,4 +1,4 @@
-package smilemeback.com.smilememack.activity;
+package com.smilemeback;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -8,22 +8,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 
-import smilemeback.com.smilememack.R;
+import com.smilemeback.storage.Storage;
+import com.smilemeback.storage.StorageException;
+import com.smilemeback.views.CategoryAdapter;
+import com.smilememack.R;
 
 
 public class IconDisplayActivity extends Activity {
 
-    public boolean isEnableInput() {
-        return enableInput;
-    }
-
-    public void setEnableInput(boolean enableInput) {
-        this.enableInput = enableInput;
-        invalidateOptionsMenu();
-    }
-
     protected boolean enableInput = false;
+
+    protected GridView gridView;
+    protected CategoryAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +32,16 @@ public class IconDisplayActivity extends Activity {
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
+
+        try {
+            Storage storage = new Storage(this);
+            storage.initializeTestingCategories();
+            adapter = new CategoryAdapter(this);
+        } catch (StorageException e) {
+            throw new RuntimeException(e);
+        }
+        gridView = (GridView)findViewById(R.id.iconGridView);
+        gridView.setAdapter(adapter);
     }
 
 
@@ -85,5 +93,14 @@ public class IconDisplayActivity extends Activity {
             View rootView = inflater.inflate(R.layout.fragment_icon, container, false);
             return rootView;
         }
+    }
+
+    public boolean isEnableInput() {
+        return enableInput;
+    }
+
+    public void setEnableInput(boolean enableInput) {
+        this.enableInput = enableInput;
+        invalidateOptionsMenu();
     }
 }

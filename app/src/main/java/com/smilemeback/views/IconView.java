@@ -1,4 +1,4 @@
-package smilemeback.com.smilememack.activity;
+package com.smilemeback.views;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -8,12 +8,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.smilememack.R;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-
-import smilemeback.com.smilememack.R;
-
 
 /**
  * IconView represents a clickable image with optional label.
@@ -24,15 +22,20 @@ public class IconView extends RelativeLayout {
     protected ImageView image;
     protected TextView label;
 
+    /**
+     * Initialize a new IconView.
+     * @param context
+     * @param attrs
+     */
     public IconView(Context context, AttributeSet attrs) {
         super(context, attrs);
         LayoutInflater.from(context).inflate(R.layout.iconview_layout, this, true);
 
-        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.iconview);
-        boolean showLabel = array.getBoolean(R.styleable.iconview_showLabel, true);
-
         image = (ImageView) findViewById(R.id.iconview_image);
         label = (TextView) findViewById(R.id.iconview_label);
+
+        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.iconview);
+        boolean showLabel = array.getBoolean(R.styleable.iconview_showLabel, true);
         setLabelVisible(showLabel);
     }
 
@@ -48,10 +51,14 @@ public class IconView extends RelativeLayout {
         }
     }
 
-
+    /**
+     * Load the views bitmap from a file.
+     * @param file
+     */
     public void setImageBitmap(File file) {
         Picasso.with(getContext())
                 .load(file)
+                .fit()
                 .centerCrop()
                 .into(image);
     }

@@ -1,4 +1,4 @@
-package smilemeback.com.smilememack.activity;
+package com.smilemeback.views;
 
 import android.content.Context;
 import android.util.AttributeSet;

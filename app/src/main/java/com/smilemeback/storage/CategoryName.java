@@ -1,10 +1,12 @@
-package smilemeback.com.smilememack.storage;
+package com.smilemeback.storage;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
 
 /**
  * Category name class.
  */
 public class CategoryName {
-    protected String name;
+    protected final String name;
 
     public CategoryName(String name) {
         this.name = name;
@@ -17,5 +19,10 @@ public class CategoryName {
     @Override
     public String toString() {
         return name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return EqualsBuilder.reflectionEquals(this, o);
     }
 }
