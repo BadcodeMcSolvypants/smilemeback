@@ -17,7 +17,7 @@ public class StorageTest extends AndroidTestCase {
     public void testAddAndTruncateCategory() throws Exception {
         Storage storage = new Storage(getContext());
         storage.truncateAllCategories();
-        storage.addEmptyCategory(getTestCategoryName());
+        storage.appendEmptyCategory(getTestCategoryName());
         List<Category> cats = storage.getCategories();
         assertEquals(cats.size(), 1);
         assertEquals(cats.get(0).getName(), getTestCategoryName());

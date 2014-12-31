@@ -8,25 +8,31 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.GridView;
 
-import com.smilemeback.adapter.CategoryAdapter;
-import com.smilemeback.adapter.InputAdapter;
+import com.smilemeback.storage.Category;
 import com.smilemeback.storage.Storage;
 import com.smilemeback.storage.StorageException;
-import com.smilememack.R;
+import com.smilemeback.views.IconView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class IconDisplayActivity extends Activity {
 
     /// should we enable adding new categories / images in the view
-    protected boolean enableInput = false;
+    protected boolean locked = true;
 
     /// are we displaying all categories or contents of a single category
     protected boolean displayCategories = true;
 
+    /// grid of IconView instances
     protected GridView gridView;
-    protected InputAdapter adapter;
+
+    /// List of categories
+    protected List<Category> categories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,27 +46,87 @@ public class IconDisplayActivity extends Activity {
 
         try {
             Storage storage = new Storage(this);
-            storage.initializeTestingCategories();
-            adapter = new CategoryAdapter(this);
-            adapter.setInputEnabled(enableInput);
+            //storage.initializeTestingCategories();
+            categories = storage.getCategories();
         } catch (StorageException e) {
             throw new RuntimeException(e);
         }
         gridView = (GridView)findViewById(R.id.iconGridView);
-        gridView.setAdapter(adapter);
+        gridView.setAdapter(getAdapter());
     }
 
+    public BaseAdapter getAdapter() {
+        return new BaseAdapter() {
+            @Override
+            public int getCount() {
+                return categories.size();
+            }
+
+            @Override
+            public Object getItem(int position) {
+                return categories.get(position);
+            }
+
+            @Override
+            public long getItemId(int position) {
+                return position;
+            }
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                if (convertView == null) {
+                    Category category = categories.get(position);
+                    final IconView view = new IconView(IconDisplayActivity.this, IconDisplayActivity.this.getResources().getXml(R.layout.iconview_layout), false);
+                    view.setImageBitmap(category.getThumbnail());
+                    view.setLabel(category.getName().toString());
+
+                    view.setCheckboxVisible(!isLocked());
+
+                    view.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (!isLocked()) {
+                                view.setChecked(!view.isChecked());
+                                invalidateOptionsMenu();
+                            } else {
+                                // else do whatever, when we are unlocked
+                            }
+                        }
+                    });
+                    return view;
+                } else {
+                    return convertView;
+                }
+            }
+        };
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_icondisplay, menu);
-        if (isEnableInput()) {
-            menu.findItem(R.id.enable_input).setVisible(false);
-        } else {
-            menu.findItem(R.id.disable_input).setVisible(false);
-        }
-        menu.findItem(R.id.back_to_categories).setVisible(!displayCategories);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        boolean d = isDisplayCategories();
+        boolean i = isLocked();
+        int c = getSelectedCount();
+
+        menu.findItem(R.id.add_category).setVisible(d);
+        menu.findItem(R.id.add_image).setVisible(!d);
+        menu.findItem(R.id.rename_category).setVisible(d && c == 1);
+        menu.findItem(R.id.rename_image).setVisible(!d && c == 1);
+        menu.findItem(R.id.delete_category).setVisible(d && c == 1);
+        menu.findItem(R.id.delete_image).setVisible(!d && c == 1);
+        menu.findItem(R.id.delete_categories).setVisible(d && c > 1);
+        menu.findItem(R.id.delete_images).setVisible(!d && c > 1);
+        menu.findItem(R.id.categories).setVisible(!d);
+
+        menu.findItem(R.id.lock).setVisible(!i);
+        menu.findItem(R.id.unlock).setVisible(i);
+
         return true;
     }
 
@@ -72,18 +138,62 @@ public class IconDisplayActivity extends Activity {
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.enable_input:
-                setEnableInput(true);
+            case R.id.add_category:
                 break;
-            case R.id.disable_input:
-                setEnableInput(false);
+            case R.id.add_image:
                 break;
-            case R.id.back_to_categories:
+            case R.id.rename_category:
+                break;
+            case R.id.rename_image:
+                break;
+            case R.id.delete_category:
+                break;
+            case R.id.delete_categories:
+                break;
+            case R.id.delete_image:
+                break;
+            case R.id.delete_images:
+                break;
+            case R.id.categories:
                 finish();
+                break;
+            case R.id.unlock:
+                setLocked(false);
+                break;
+            case R.id.lock:
+                setLocked(true);
                 break;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /// Get the list of IconViews that are selected
+    public List<IconView> getSelected() {
+        List<IconView> views = new ArrayList<>();
+        if (!isLocked()) {
+            for (int i = 0; i < gridView.getChildCount(); ++i) {
+                IconView view = (IconView) gridView.getChildAt(i);
+                if (view.isChecked()) {
+                    views.add(view);
+                }
+            }
+        }
+        return views;
+    }
+
+    /// Get the number of selected IconViews
+    public int getSelectedCount() {
+        int count = 0;
+        if (!isLocked()) {
+            for (int i = 0; i < gridView.getChildCount(); ++i) {
+                IconView view = (IconView) gridView.getChildAt(i);
+                if (view.isChecked()) {
+                    count += 1;
+                }
+            }
+        }
+        return count;
     }
 
     /**
@@ -102,14 +212,22 @@ public class IconDisplayActivity extends Activity {
         }
     }
 
-    public boolean isEnableInput() {
-        return enableInput;
+    public boolean isLocked() {
+        return locked;
     }
 
-    public void setEnableInput(boolean enableInput) {
-        this.enableInput = enableInput;
-        adapter.setInputEnabled(enableInput);
-        gridView.setAdapter(adapter);
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+        // update gridview checkbox visibility
+        for (int i=0 ; i<gridView.getChildCount() ; i++) {
+            IconView view = (IconView)gridView.getChildAt(i);
+            view.setCheckboxVisible(!locked);
+            view.setChecked(false);
+        }
         invalidateOptionsMenu();
+    }
+
+    public boolean isDisplayCategories() {
+        return displayCategories;
     }
 }
