@@ -2,6 +2,8 @@ package com.smilemeback;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,15 +14,22 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 
 import com.smilemeback.storage.Category;
+import com.smilemeback.storage.Image;
 import com.smilemeback.storage.Storage;
 import com.smilemeback.storage.StorageException;
 import com.smilemeback.views.IconView;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 
 public class IconDisplayActivity extends Activity {
+    private static Logger logger = Logger.getLogger(IconDisplayActivity.class.getCanonicalName());
+    private static final String CATEGORY_IDX_STRING = "CATEGORY_IDX";
 
     /// should we enable adding new categories / images in the view
     protected boolean locked = true;
@@ -34,6 +43,12 @@ public class IconDisplayActivity extends Activity {
     /// List of categories
     protected List<Category> categories;
 
+    /// List of images
+    protected List<Image> images;
+
+    // media player
+    private MediaPlayer player = new MediaPlayer();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,18 +59,32 @@ public class IconDisplayActivity extends Activity {
                     .commit();
         }
 
+        // initialize view with suitable adapter
+        gridView = (GridView)findViewById(R.id.iconGridView);
+
+        // receive intent data
+        Intent intent = getIntent();
+        int category_idx = intent.getIntExtra(CATEGORY_IDX_STRING, -1);
+
+        // load the categories/images
         try {
             Storage storage = new Storage(this);
             //storage.initializeTestingCategories();
             categories = storage.getCategories();
+            if (category_idx == -1) {
+                displayCategories = true;
+                gridView.setAdapter(getCategoryAdapter());
+            } else {
+                displayCategories = false;
+                images = storage.getCategoryImages(categories.get(category_idx));
+                gridView.setAdapter(getImageAdapter());
+            }
         } catch (StorageException e) {
             throw new RuntimeException(e);
         }
-        gridView = (GridView)findViewById(R.id.iconGridView);
-        gridView.setAdapter(getAdapter());
     }
 
-    public BaseAdapter getAdapter() {
+    public BaseAdapter getCategoryAdapter() {
         return new BaseAdapter() {
             @Override
             public int getCount() {
@@ -75,7 +104,7 @@ public class IconDisplayActivity extends Activity {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 if (convertView == null) {
-                    Category category = categories.get(position);
+                    final Category category = categories.get(position);
                     final IconView view = new IconView(IconDisplayActivity.this, IconDisplayActivity.this.getResources().getXml(R.layout.iconview_layout), false);
                     view.setImageBitmap(category.getThumbnail());
                     view.setLabel(category.getName().toString());
@@ -89,7 +118,64 @@ public class IconDisplayActivity extends Activity {
                                 view.setChecked(!view.isChecked());
                                 invalidateOptionsMenu();
                             } else {
-                                // else do whatever, when we are unlocked
+                                Intent intent = new Intent(IconDisplayActivity.this, IconDisplayActivity.class);
+                                intent.putExtra(CATEGORY_IDX_STRING, category.getIndex());
+                                startActivity(intent);
+                            }
+                        }
+                    });
+                    return view;
+                } else {
+                    return convertView;
+                }
+            }
+        };
+    }
+
+    public BaseAdapter getImageAdapter() {
+        return new BaseAdapter() {
+            @Override
+            public int getCount() {
+                return images.size();
+            }
+
+            @Override
+            public Object getItem(int position) {
+                return images.get(position);
+            }
+
+            @Override
+            public long getItemId(int position) {
+                return position;
+            }
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                if (convertView == null) {
+                    final Image image = images.get(position);
+                    final IconView view = new IconView(IconDisplayActivity.this, IconDisplayActivity.this.getResources().getXml(R.layout.iconview_layout), false);
+                    view.setImageBitmap(image.getImage());
+                    view.setLabel(image.getName().toString());
+
+                    view.setCheckboxVisible(!isLocked());
+
+                    view.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (!isLocked()) {
+                                view.setChecked(!view.isChecked());
+                                invalidateOptionsMenu();
+                            } else {
+                                try {
+                                    if (!player.isPlaying()) {
+                                        player.reset();
+                                        player.setDataSource(new FileInputStream(image.getAudio()).getFD());
+                                        player.prepare();
+                                        player.start();
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
                     });

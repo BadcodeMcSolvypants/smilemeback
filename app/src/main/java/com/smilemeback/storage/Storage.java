@@ -12,7 +12,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -23,9 +25,9 @@ public class Storage {
     private static Logger logger = Logger.getLogger(Storage.class.getCanonicalName());
 
     /// Where to store application data in internal memory.
-    public static String STORAGE_FOLDER = "SmileMeBack";
-    public static String CATEGORIES_FOLDER = "categories";
-    public static String CATEGORY_THUMBNAIL = "_thumbnail.jpg";
+    public static final String STORAGE_FOLDER = "SmileMeBack";
+    public static final String CATEGORIES_FOLDER = "categories";
+    public static final String CATEGORY_THUMBNAIL = "_thumbnail.jpg";
 
     /**
      * Application context.
@@ -76,7 +78,7 @@ public class Storage {
      * @param thumbnailStream The input stream containing the
      * @throws StorageException In case creating a new empty directory fails.
      */
-    public Category appendEmptyCategory(Name name, InputStream thumbnailStream) throws StorageException {
+    public Category appendEmptyCategory(final Name name, final InputStream thumbnailStream) throws StorageException {
         logger.info("Adding empty category with name <" + name + ">");
         File category = new File(getCategoriesFolder(context), getNumberOfCategories() + "_" + name);
         if (category.exists() && !category.isDirectory()) {
@@ -110,7 +112,7 @@ public class Storage {
      * @param name
      * @throws StorageException
      */
-    public void appendEmptyCategory(Name name) throws StorageException {
+    public void appendEmptyCategory(final Name name) throws StorageException {
         appendEmptyCategory(name, context.getResources().openRawResource(R.drawable.iconview_testing));
     }
 
@@ -161,6 +163,7 @@ public class Storage {
      * @throws StorageException
      */
     public void truncateAllCategories() throws StorageException {
+        logger.info("Truncating all categories");
         try {
             FileUtils.deleteDirectory(getCategoriesFolder(context));
         } catch (IOException e) {
@@ -191,6 +194,44 @@ public class Storage {
         } catch (IOException | StorageException e) {
             throw new StorageException(e);
         }
+    }
+
+    /**
+     * Return the list of images in the category.
+     * Images also contain an audio clip saying what is seen in the image.
+     *
+     * @param category
+     * @return
+     * @throws StorageException
+     */
+    public List<Image> getCategoryImages(final Category category) throws StorageException {
+        // map icon indices to image and audio files
+        Map<Integer, File> imageFiles = scanCategoryImages(category);
+        Map<Integer, File> audioFiles = scanCategoryAudio(category);
+
+        // zip them together and initialize icons
+        List<Image> images = new ArrayList<>();
+        for (int idx : imageFiles.keySet()) {
+            File imageFile = imageFiles.get(idx);
+            File audioFile = audioFiles.get(idx);
+            Name imageName = getName(imageFile);
+            Name audioName = getName(audioFile);
+            if (!imageName.equals(audioName)) {
+                String err = "Names for image and audio differ for index <" + idx + ">: <" + imageName + "> <" + audioName + ">";
+                throw new StorageException(err);
+            }
+            images.add(new Image(new Name(imageName), imageFile, audioFile));
+        }
+
+        // log the images
+        // log the category names
+        StringBuilder sb = new StringBuilder("Returning images for category <" + category.getName() + ">: ");
+        for (Image image : images) {
+            sb.append(image.getName() + " ");
+        }
+        logger.info(sb.toString());
+
+        return images;
     }
 
     /**
@@ -233,5 +274,44 @@ public class Storage {
             name = fnm.substring(underscore_idx, suffix_idx);
         }
         return new Name(name);
+    }
+
+    /**
+     * Filter files with given suffix and return them as indexed map.
+     * Assumes that the files are from a category folder, therefore
+     * ignores "_thumbnail.jpg" image.
+     *
+     * It assumes that the filenames are encoded as following:
+     * {icon_index}_{name}{suffix}
+     *
+     * @param category
+     * @param suffix The suffix the desired filenames have to end with.
+     * @return The mapping from icon index to files with given suffix.
+     *
+     * @throws com.smilemeback.storage.StorageException
+     */
+    public static Map<Integer, File> scanCategoryFiles(final Category category, final String suffix) throws StorageException {
+        Map<Integer, File> files = new HashMap<>();
+        for (File f : category.getFolder().listFiles()) {
+            String fnm = f.getName();
+            if (!fnm.equals(CATEGORY_THUMBNAIL)) {
+                if (fnm.endsWith(suffix)) {
+                    logger.info("Scanning file <" + f.getAbsolutePath() + ">");
+                    int idx = getIndex(f);
+                    if (idx != -1) {
+                        files.put(idx, f);
+                    }
+                }
+            }
+        }
+        return files;
+    }
+
+    public static Map<Integer, File> scanCategoryImages(final Category category) throws StorageException {
+        return scanCategoryFiles(category, ".jpg");
+    }
+
+    public static Map<Integer, File> scanCategoryAudio(final Category category) throws StorageException {
+        return scanCategoryFiles(category, ".3gpp");
     }
 }

@@ -7,11 +7,23 @@ public class Image {
 
     protected Name name;
     protected File image;
-    protected File sound;
+    protected File audio;
 
-    public Image(Name imageName, File image, File sound) {
+    public Image(Name imageName, File image, File audio) {
         this.name = imageName;
         this.image = image;
-        this.sound = sound;
+        this.audio = audio;
+    }
+
+    public Name getName() {
+        return name;
+    }
+
+    public File getImage() {
+        return image;
+    }
+
+    public File getAudio() {
+        return audio;
     }
 }

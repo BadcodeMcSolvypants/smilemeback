@@ -1,0 +1,5 @@
+<resources>
+    <declare-styleable name="iconview">
+        <attr name="showLabel" format="boolean" />
+    </declare-styleable>
+</resources>

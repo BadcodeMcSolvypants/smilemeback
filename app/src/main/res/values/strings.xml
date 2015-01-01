@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SmileMeBack</string>
+    <string name="unlock">Unlock</string>
+    <string name="lock">Lock</string>
+    <string name="categories">Categories</string>
+
+    <string name="add_category">Add category</string>
+    <string name="add_image">Add image</string>
+    <string name="rename_category">Rename category</string>
+    <string name="rename_image">Rename image</string>
+    <string name="delete_category">Delete category</string>
+    <string name="delete_image">Delete image</string>
+    <string name="delete_categories">Delete categories</string>
+    <string name="delete_images">Delete images</string>
+
+</resources>
