@@ -68,7 +68,7 @@ public class IconDisplayActivity extends Activity {
         // load the categories/images
         try {
             Storage storage = new Storage(this);
-            //storage.initializeTestingCategories();
+            storage.initializeTestingCategories();
             categories = storage.getCategories();
             if (category_idx == -1) {
                 displayCategories = true;
