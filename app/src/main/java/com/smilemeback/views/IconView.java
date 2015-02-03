@@ -26,7 +26,7 @@ public class IconView extends RelativeLayout {
     protected TextView label;
 
     // checkbox with blank layer hovering over the image
-    protected FrameLayout blank;
+    //protected FrameLayout blank;
     protected ImageView checkbox;
 
     protected boolean isChecked = false;
@@ -45,7 +45,7 @@ public class IconView extends RelativeLayout {
             image.setImageBitmap(null);
         }
         label = (TextView) findViewById(R.id.iconview_label);
-        blank = (FrameLayout) findViewById(R.id.iconview_blank);
+        //blank = (FrameLayout) findViewById(R.id.iconview_blank);
         checkbox = (ImageView) findViewById(R.id.iconview_chkbox_image);
 
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.iconview);
@@ -83,9 +83,9 @@ public class IconView extends RelativeLayout {
 
     private void updateBlankVisibility() {
         if (isCheckboxVisible() && isChecked()) {
-            blank.setVisibility(VISIBLE);
+            //blank.setVisibility(VISIBLE);
         } else {
-            blank.setVisibility(GONE);
+            //blank.setVisibility(GONE);
         }
     }
 

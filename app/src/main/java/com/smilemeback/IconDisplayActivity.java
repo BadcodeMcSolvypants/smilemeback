@@ -55,6 +55,7 @@ public class IconDisplayActivity extends Activity {
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
                     .add(R.id.container, new PlaceholderFragment())
+                    .add(R.id.container, new CategoryFragment())
                     .commit();
         }
 
@@ -293,6 +294,18 @@ public class IconDisplayActivity extends Activity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_icon, container, false);
+            return rootView;
+        }
+    }
+
+    /**
+     * Fragment for displaying categories.
+     */
+    public static class CategoryFragment extends Fragment {
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_categories, container, false);
             return rootView;
         }
     }
