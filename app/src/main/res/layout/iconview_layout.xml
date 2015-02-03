@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="250dp"
-    android:layout_height="200dp">
+    android:layout_width="300dp"
+    android:layout_height="250dp"
+    android:background="@drawable/imageview_border"
+    >
 
     <ImageView
         android:id="@+id/iconview_image"
         android:src="@drawable/iconview_default"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:paddingTop="8dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="50dp"
+        android:cropToPadding="true"
         android:scaleType="centerCrop"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
@@ -18,32 +25,22 @@
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:text="ORANGE"
-        android:textSize="10pt"
-        android:alpha="0.5"
-        android:background="#ffb7e5ff"
+        android:layout_marginBottom="10dp"
+        android:textSize="28sp"
         android:gravity="center_horizontal"
         android:layout_height="wrap_content" />
 
-    <FrameLayout
-        android:id="@+id/iconview_blank"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:background="#6f000000">
 
-    </FrameLayout>
 
     <ImageView
         android:id="@+id/iconview_chkbox_image"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/chkbox"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:alpha="0.8" />
+        android:layout_alignParentRight="true" />
 
 
 </RelativeLayout>
