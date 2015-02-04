@@ -8,20 +8,24 @@
 
 
     <LinearLayout
+        style="@style/PaddingRight"
         android:orientation="vertical"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:background="#333">
 
         <Button
+            style="@style/ActionButtonAttrs"
             android:layout_width="match_parent"
             android:background="@drawable/action_button"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="New wtih camera"
+            android:text="New with camera"
             />
 
         <Button
+            style="@style/ActionButtonAttrs"
             android:layout_width="match_parent"
             android:background="@drawable/action_button"
             android:layout_height="0dp"
@@ -47,8 +51,6 @@
        android:layout_width="match_parent"
        android:layout_height="0dp"
        android:layout_weight="1"
-
-
        android:background="#fff">
 
        <ImageView
@@ -59,32 +61,32 @@
            android:src="@drawable/placeholder" />
    </RelativeLayout>
 
-    <LinearLayout
+        <LinearLayout
 
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true"
-        android:layout_width="fill_parent"
-        >
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_width="fill_parent"
+            >
 
-        <Button
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:background="@drawable/navigateback_button"
-            android:text="back"
-           />
+            <Button
+                style="@style/NavButtonAttrs"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:background="@drawable/navigateback_button"
+                android:text="back"
+                />
 
 
-        <Button
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:background="@drawable/navigatenext_button"
-            android:text="next"
-            />
+            <Button
+                style="@style/NavButtonAttrs"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:background="@drawable/navigatenext_button"
+                android:text="next"
+                />
 
+        </LinearLayout>
 
     </LinearLayout>
-</LinearLayout>
 </LinearLayout>
