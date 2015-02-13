@@ -6,22 +6,14 @@
     tools:ignore="MergeRootFrame" >
 
     <GridView
-        android:horizontalSpacing="50dp"
-        android:verticalSpacing="90dp"
+        android:horizontalSpacing="@dimen/icondisplay_gridview_horizontal_spacing"
+        android:verticalSpacing="@dimen/icondisplay_gridview_vertical_spacing"
 
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/iconGridView"
+        android:id="@+id/gallery_contents_grid_view"
         android:numColumns="3"
         android:stretchMode="columnWidth"
-        android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_gravity="left|center_vertical"
         tools:listitem="@layout/iconview_layout" />
-
-    <fragment
-        android:id="@+id/category_fragment"
-        android:layout_width="230dp"
-        android:layout_height="fill_parent"
-        android:layout_gravity="left"
-        android:name="com.smilemeback.IconDisplayActivity.CategoryFragment"
-        tools:layout="@layout/fragment_categories" />
 </FrameLayout>

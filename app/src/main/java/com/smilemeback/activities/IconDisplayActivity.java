@@ -1,11 +1,11 @@
-package com.smilemeback;
+package com.smilemeback.activities;
 
+import android.app.ActionBar;
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.os.Vibrator;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 
+import com.smilemeback.AddPictureActivity;
+import com.smilemeback.R;
 import com.smilemeback.storage.Category;
 import com.smilemeback.storage.Image;
 import com.smilemeback.storage.Storage;
@@ -51,37 +53,37 @@ public class IconDisplayActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_icondisplay);
-        if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
-                    .add(R.id.container, new CategoryFragment())
-                    .commit();
-        }
+        setContentView(R.layout.gallery_contents);
 
         // initialize view with suitable adapter
-        gridView = (GridView)findViewById(R.id.iconGridView);
+        gridView = (GridView)findViewById(R.id.gallery_contents_grid_view);
 
         // receive intent data
         Intent intent = getIntent();
         int category_idx = intent.getIntExtra(CATEGORY_IDX_STRING, -1);
 
         // load the categories/images
+        ActionBar actionBar = getActionBar();
         try {
             Storage storage = new Storage(this);
-            storage.initializeTestingCategories();
+            //storage.initializeTestingCategories();
             categories = storage.getCategories();
             if (category_idx == -1) {
+                actionBar.setDisplayHomeAsUpEnabled(false);
                 displayCategories = true;
                 gridView.setAdapter(getCategoryAdapter());
             } else {
                 displayCategories = false;
-                images = storage.getCategoryImages(categories.get(category_idx));
+                Category category = categories.get(category_idx);
+                images = storage.getCategoryImages(category);
                 gridView.setAdapter(getImageAdapter());
+                actionBar.setDisplayHomeAsUpEnabled(true);
+                actionBar.setTitle(category.getName().toString());
             }
         } catch (StorageException e) {
             throw new RuntimeException(e);
         }
+
     }
 
     public BaseAdapter getCategoryAdapter() {
@@ -105,7 +107,7 @@ public class IconDisplayActivity extends Activity {
             public View getView(int position, View convertView, ViewGroup parent) {
                 if (convertView == null) {
                     final Category category = categories.get(position);
-                    final IconView view = new IconView(IconDisplayActivity.this, IconDisplayActivity.this.getResources().getXml(R.layout.iconview_layout), false);
+                    final IconView view = new IconView(IconDisplayActivity.this, IconDisplayActivity.this.getResources().getXml(R.layout.icon_view), false);
                     view.setImageBitmap(category.getThumbnail());
                     view.setLabel(category.getName().toString());
 
@@ -153,7 +155,7 @@ public class IconDisplayActivity extends Activity {
             public View getView(int position, View convertView, ViewGroup parent) {
                 if (convertView == null) {
                     final Image image = images.get(position);
-                    final IconView view = new IconView(IconDisplayActivity.this, IconDisplayActivity.this.getResources().getXml(R.layout.iconview_layout), false);
+                    final IconView view = new IconView(IconDisplayActivity.this, IconDisplayActivity.this.getResources().getXml(R.layout.icon_view), false);
                     view.setImageBitmap(image.getImage());
                     view.setLabel(image.getName().toString());
 
@@ -179,6 +181,22 @@ public class IconDisplayActivity extends Activity {
                             }
                         }
                     });
+
+                    view.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            if (isLocked()) {
+                                setLocked(false);
+                                Vibrator vib = (Vibrator)getSystemService(VIBRATOR_SERVICE);
+                                if (vib.hasVibrator()) {
+                                    vib.vibrate(100);
+                                }
+                                return true;
+                            }
+                            return false;
+                        }
+                    });
+
                     return view;
                 } else {
                     return convertView;
@@ -227,6 +245,8 @@ public class IconDisplayActivity extends Activity {
             case R.id.add_category:
                 break;
             case R.id.add_image:
+                Intent intent = new Intent(IconDisplayActivity.this, AddPictureActivity.class);
+                startActivity(intent);
                 break;
             case R.id.rename_category:
                 break;
@@ -280,34 +300,6 @@ public class IconDisplayActivity extends Activity {
             }
         }
         return count;
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_icon, container, false);
-            return rootView;
-        }
-    }
-
-    /**
-     * Fragment for displaying categories.
-     */
-    public static class CategoryFragment extends Fragment {
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_categories, container, false);
-            return rootView;
-        }
     }
 
     public boolean isLocked() {

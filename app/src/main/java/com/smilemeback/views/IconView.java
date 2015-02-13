@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.widget.FrameLayout;
+import android.widget.Checkable;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,7 +20,7 @@ import java.io.File;
  *
  * IconView can also be in edit mode, including a custom checkbox.
  */
-public class IconView extends RelativeLayout {
+public class IconView extends RelativeLayout implements Checkable {
 
     protected ImageView image;
     protected TextView label;
@@ -38,7 +38,7 @@ public class IconView extends RelativeLayout {
      */
     public IconView(Context context, AttributeSet attrs, boolean useDefaultImage) {
         super(context, attrs);
-        LayoutInflater.from(context).inflate(R.layout.iconview_layout, this, true);
+        LayoutInflater.from(context).inflate(R.layout.icon_view, this, true);
 
         image = (ImageView) findViewById(R.id.iconview_image);
         if (!useDefaultImage) {
@@ -89,10 +89,17 @@ public class IconView extends RelativeLayout {
         }
     }
 
+    @Override
     public boolean isChecked() {
         return isChecked;
     }
 
+    @Override
+    public void toggle() {
+        setChecked(!isChecked());
+    }
+
+    @Override
     public void setChecked(boolean checked) {
         if (isChecked != checked) {
             if (checked) {

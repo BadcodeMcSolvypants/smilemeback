@@ -15,4 +15,16 @@
     <string name="delete_categories">Delete categories</string>
     <string name="delete_images">Delete images</string>
 
+    <string name="gallery_is_empty">Add new image</string>
+    <string name="gallery_select_images">Select images</string>
+
+    <!-- Values used in actionbar spinner -->
+    <string name="actionbar_num_selected">selected</string>
+    <string name="actionbar_select_all">Select all</string>
+    <string name="actionbar_deselect_all">Deselect all</string>
+
+    <!-- Values used in selection actionbar menu -->
+    <string name="actionbar_delete_image">Delete</string>
+    <string name="actionbar_rename_image">Rename</string>
+
 </resources>

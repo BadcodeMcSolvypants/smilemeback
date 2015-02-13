@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/actionbar_textview"
+    android:text="@string/actionbar_num_selected"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:textSize="@dimen/actionbar_textview_text_size"
+    style="?android:attr/spinnerStyle"
+    android:gravity="center" />
