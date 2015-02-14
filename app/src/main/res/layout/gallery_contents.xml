@@ -1,19 +1,34 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:ignore="MergeRootFrame" >
+    android:layout_height="match_parent">
+
+    <ListView
+        android:id="@+id/gallery_contents_list_view"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:paddingLeft="@dimen/icondisplay_listview_padding_left"
+        android:dividerHeight="16dp"
+        android:drawSelectorOnTop="true"
+        android:divider="@android:color/transparent"
+        tools:listitem="@layout/icon_view_side"
+        android:choiceMode="singleChoice">
+    </ListView>
 
     <GridView
-        android:horizontalSpacing="@dimen/icondisplay_gridview_horizontal_spacing"
         android:verticalSpacing="@dimen/icondisplay_gridview_vertical_spacing"
-
-        android:layout_width="fill_parent"
+        android:stretchMode="spacingWidthUniform"
+        android:columnWidth="@dimen/iconview_width"
+        android:layout_width="0dp"
         android:layout_height="fill_parent"
         android:id="@+id/gallery_contents_grid_view"
-        android:numColumns="3"
-        android:stretchMode="columnWidth"
-        android:layout_gravity="left|center_vertical"
-        tools:listitem="@layout/iconview_layout" />
-</FrameLayout>
+        android:numColumns="auto_fit"
+        android:layout_weight="4"
+        android:smoothScrollbar="false"
+        android:nestedScrollingEnabled="false"
+        tools:listitem="@layout/icon_view"/>
+
+</LinearLayout>

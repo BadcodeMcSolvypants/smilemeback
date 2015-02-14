@@ -4,21 +4,29 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <!-- IconDisplay layout -->
-    <dimen name="icondisplay_gridview_horizontal_spacing">50dp</dimen>
     <dimen name="icondisplay_gridview_vertical_spacing">90dp</dimen>
+    <dimen name="icondisplay_listview_padding_left">28dp</dimen>
+    <dimen name="icondisplay_listview_divider_height">16dp</dimen>
 
     <!-- IconView size and margins, easier to store here than in separate layouts -->
     <dimen name="iconview_width">300dp</dimen>
     <dimen name="iconview_height">250dp</dimen>
-
     <dimen name="iconview_image_padding">8dp</dimen>
     <dimen name="iconview_image_padding_bottom">50dp</dimen>
-
     <dimen name="iconview_text_padding_bottom">10dp</dimen>
     <dimen name="iconview_text_size">28sp</dimen>
-
     <dimen name="iconview_checkbox_size">30dp</dimen>
     <dimen name="iconview_checkbox_padding">8dp</dimen>
+
+    <!-- Side iconView size and margins, easier to store here than in separate layouts -->
+    <dimen name="iconview_side_width">150dp</dimen>
+    <dimen name="iconview_side_height">125dp</dimen>
+    <dimen name="iconview_side_image_padding">4dp</dimen>
+    <dimen name="iconview_side_image_padding_bottom">24dp</dimen>
+    <dimen name="iconview_side_text_padding_bottom">5dp</dimen>
+    <dimen name="iconview_side_text_size">14sp</dimen>
+    <dimen name="iconview_side_checkbox_size">15dp</dimen>
+    <dimen name="iconview_side_checkbox_padding">4dp</dimen>
 
     <!-- Actionbar spinner (select all, deselect all) text padding -->
     <dimen name="actionbar_textview_padding_left">20dp</dimen>

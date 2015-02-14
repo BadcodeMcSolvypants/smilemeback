@@ -14,14 +14,23 @@
  You should have received a copy of the GNU General Public License
  along with SmileMeBack.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.smilemeback;
+package com.smilemeback.views;
 
-import android.view.View;
+import android.content.Context;
+import android.util.AttributeSet;
+import android.view.LayoutInflater;
 
-/**
- * Class containing constants used in the application.
- */
-public class Constants {
-    public static final String CATEGORY_INDEX = "category_index";
-    public static final String IMAGE_DRAG_TAG = "image_drag_tag";
+import com.smilemeback.R;
+
+
+public class IconViewSide extends IconView {
+
+    public IconViewSide(Context context, AttributeSet attrs, boolean useDefaultImage) {
+        super(context, attrs, useDefaultImage);
+    }
+
+    @Override
+    protected void inflateLayout(Context context) {
+        LayoutInflater.from(context).inflate(R.layout.icon_view_side, this, true);
+    }
 }
