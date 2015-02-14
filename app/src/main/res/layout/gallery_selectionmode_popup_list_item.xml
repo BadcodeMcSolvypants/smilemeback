@@ -4,7 +4,7 @@
     android:paddingRight="@dimen/actionbar_textview_padding_right"
     android:paddingTop="@dimen/actionbar_textview_padding_top"
     android:paddingBottom="@dimen/actionbar_textview_padding_bottom"
-    android:textSize="@dimen/actionbar_textview_text_size"
+    android:textSize="@dimen/gallery_selectionmode_font_size"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 </TextView>

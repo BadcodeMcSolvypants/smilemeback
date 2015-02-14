@@ -69,7 +69,7 @@ public class IconDisplayActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.gallery_contents);
+        setContentView(R.layout.gallery);
 
         // initialize view with suitable adapter
         gridView = (GridView)findViewById(R.id.gallery_contents_grid_view);
