@@ -4,7 +4,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <!-- IconDisplay layout -->
-    <dimen name="icondisplay_gridview_vertical_spacing">90dp</dimen>
+    <dimen name="gallery_gridview_vertical_spacing">90dp</dimen>
     <dimen name="icondisplay_listview_padding_left">28dp</dimen>
     <dimen name="icondisplay_listview_divider_height">16dp</dimen>
 

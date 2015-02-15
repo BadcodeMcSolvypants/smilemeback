@@ -16,6 +16,7 @@
  */
 package com.smilemeback.activities;
 
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -31,12 +32,12 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.DragEvent;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.smilemeback.Constants;
@@ -61,17 +62,13 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
     protected GallerySelectionMode selectionMode;
     protected MediaPlayer player = new MediaPlayer();
 
-    // Categories displayed in the selection mode in the left.
-    protected List<Category> categories;
-
-    // List of images displayed in the gridview
-    protected List<Image> images;
-
-    // GridView showing the list of images.
+    protected ListView listView;
+    protected LinearLayout listViewContainer; // this is required for animation
     protected GridView gridView;
 
-    // Listview displaying the categories in the system.
-    protected ListView listView;
+    protected List<Category> categories;
+    protected List<Image> images;
+
 
     protected ImageDragEventListener dragListener = new ImageDragEventListener();
 
@@ -109,7 +106,9 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
             images = storage.getCategoryImages(categories.get(category_idx));
             gridView = (GridView) findViewById(R.id.gallery_contents_grid_view);
             gridView.setAdapter(new ImageAdapter());
-            listView = (ListView) findViewById(R.id.gallery_contents_list_view);
+            listViewContainer = (LinearLayout)findViewById(R.id.gallery_listview_container);
+            listView = (ListView) findViewById(R.id.gallery_list_view);
+            setListViewWeight(0);
             listView.setAdapter(new CategoryAdapter());
             listView.setOnDragListener(dragListener);
         } else {
@@ -122,6 +121,7 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
     public void gallerySelectionModeFinished() {
         state = GalleryActivityState.VIEW;
         setGridViewCheckBoxesVisible(false);
+        animateListViewOut();
     }
 
     @Override
@@ -200,6 +200,13 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
                             setAllGridViewItemsChecked(false);
                             iconView.setChecked(true);
                             gotoSelectionModeState();
+                            // make sure to scroll to currently selected element
+                            /*for (int idx=0 ; idx<gridView.getChildCount() ; ++idx) {
+                                if (gridView.getChildAt(idx) == iconView) {
+                                    gridView.smoothScrollToPosition(idx);
+                                    break;
+                                }
+                            }*/
                             break;
                         case SELECT:
                             break;
@@ -224,6 +231,7 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
      * Calling this method will enter the image selection state.
      */
     protected void gotoSelectionModeState() {
+        animateListViewIn();
         state = GalleryActivityState.SELECT;
         GalleryActivity.this.startActionMode(selectionMode);
         selectionMode.setNumSelected(1);
@@ -415,6 +423,37 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
             IconView view = (IconView) gridView.getChildAt(idx);
             view.setCheckboxVisible(visible);
         }
+    }
+
+    public void setListViewWeight(float weight) {
+        ((LinearLayout.LayoutParams)listViewContainer.getLayoutParams()).weight = weight;
+        listViewContainer.requestLayout();
+        logger.info("Animating to " + weight);
+    }
+
+    protected void animateListViewIn() {
+        ValueAnimator va = ValueAnimator.ofFloat(0, 1);
+        va.setRepeatMode(ValueAnimator.RESTART);
+        va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                setListViewWeight((float) animation.getAnimatedValue());
+            }
+        });
+        va.start();
+    }
+
+    protected void animateListViewOut() {
+        ValueAnimator va = ValueAnimator.ofFloat(1, 0);
+        va.setRepeatMode(ValueAnimator.RESTART);
+        va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                setListViewWeight((float) animation.getAnimatedValue());
+            }
+        });
+
+        va.start();
     }
 
     @Override

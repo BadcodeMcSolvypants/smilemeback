@@ -5,30 +5,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ListView
-        android:id="@+id/gallery_contents_list_view"
+    <LinearLayout
+        android:id="@+id/gallery_listview_container"
         android:layout_width="0dp"
-        android:layout_height="fill_parent"
-        android:layout_weight="1"
-        android:paddingLeft="@dimen/icondisplay_listview_padding_left"
-        android:dividerHeight="16dp"
-        android:drawSelectorOnTop="true"
-        android:divider="@android:color/transparent"
-        tools:listitem="@layout/icon_view_side"
-        android:choiceMode="singleChoice">
-    </ListView>
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+        <ListView
+            android:id="@+id/gallery_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/icondisplay_listview_padding_left"
+            android:dividerHeight="16dp"
+            android:drawSelectorOnTop="true"
+            android:divider="@android:color/transparent"
+            tools:listitem="@layout/icon_view_side"
+            android:choiceMode="singleChoice">
+        </ListView>
+            
+    </LinearLayout>
+
 
     <GridView
-        android:verticalSpacing="@dimen/icondisplay_gridview_vertical_spacing"
+        android:verticalSpacing="@dimen/gallery_gridview_vertical_spacing"
         android:stretchMode="spacingWidthUniform"
         android:columnWidth="@dimen/iconview_width"
         android:layout_width="0dp"
-        android:layout_height="fill_parent"
+        android:layout_height="match_parent"
         android:id="@+id/gallery_contents_grid_view"
         android:numColumns="auto_fit"
-        android:layout_weight="4"
         android:smoothScrollbar="false"
         android:nestedScrollingEnabled="false"
-        tools:listitem="@layout/icon_view"/>
+        tools:listitem="@layout/icon_view"
+        android:layout_weight="4" />
 
 </LinearLayout>
