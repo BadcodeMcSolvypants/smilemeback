@@ -267,9 +267,8 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
                             gotoSelectionModeState();
                             break;
                         case SELECT:
-                            // if the iconview is not selected, then ignore
                             if (!iconView.isChecked()) {
-                                return true;
+                                iconView.setChecked(true);
                             }
                             setSelectedIconViewsAlpha(Constants.SELECTED_ICONVIEW_ALPHA);
                             ClipData.Item item = new ClipData.Item(Constants.IMAGE_DRAG_TAG);
@@ -327,7 +326,7 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
             int height = (int)getResources().getDimension(R.dimen.iconview_side_height);
             shadow.setBounds(0, 0, shadow.getIntrinsicWidth(), shadow.getIntrinsicHeight());
             size.set(shadow.getIntrinsicWidth(), shadow.getIntrinsicHeight());
-            touch.set(width / 2, height / 2);
+            touch.set(0, height);
         }
 
         @Override
@@ -407,50 +406,32 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
     protected Drawable getCombinedIconViewDrawable() {
         List<IconView> selected = getSelectedIconViews();
         // use the width/height the same as with the IconViewSide dimensions.
-        int singleWidth = (int)getResources().getDimension(R.dimen.iconview_side_width);
-        int singleHeight = (int)getResources().getDimension(R.dimen.iconview_side_height);
-        int nrows = selected.size() / Constants.NUM_COLS_IN_DRAG_SHADOW;
-        if (selected.size() % Constants.NUM_COLS_IN_DRAG_SHADOW != 0) {
-            nrows += 1;
-        }
-        // in order to avoid memory errors when there are many iconviews,
-        // limit their numbers
-        int iconLimit = selected.size();
-        if (nrows > Constants.MAX_ROWS_IN_DRAG_SHADOW) {
-            iconLimit = Constants.MAX_ROWS_IN_DRAG_SHADOW * Constants.NUM_COLS_IN_DRAG_SHADOW;
-            nrows = Constants.MAX_ROWS_IN_DRAG_SHADOW;
-        }
+        final int singleWidth = (int)getResources().getDimension(R.dimen.iconview_side_width);
+        final int singleHeight = (int)getResources().getDimension(R.dimen.iconview_side_height);
+        final int offset = (int)(0.1f*singleHeight);
+        int totalWidth = singleWidth + (offset*(selected.size()-1));
+        int totalHeight = singleHeight + (offset*(selected.size()-1));
+        final int maxIcons = Math.min(selected.size(), Constants.MAX_ICONS_IN_DRAG_SHADOW);
+
         // create a big combined bitmap and erase its contents
         Bitmap combined = Bitmap.createBitmap(
-                Constants.NUM_COLS_IN_DRAG_SHADOW*singleWidth,
-                nrows*singleHeight,
+                totalWidth,
+                totalHeight,
                 Bitmap.Config.ARGB_8888);
         combined.eraseColor(0x00000000);
+
         Canvas canvas = new Canvas(combined);
-        int row = 0;
-        int col = 0;
-        int iconIndex = 0;
-        for (IconView iconView : selected) {
-            // in case we should not draw more icons, then exit the loop
-            if (iconIndex >= iconLimit) {
-                break;
-            }
-            // draw the iconimage to next free location on combiend bitmap
+        for (int iconIndex=maxIcons-1 ; iconIndex >= 0 ; --iconIndex) {
+            IconView iconView = selected.get(iconIndex);
             Drawable drawable = iconView.getDrawable();
             drawable.setBounds(
-                    col*singleWidth,
-                    row*singleHeight,
-                    col*singleWidth + singleWidth,
-                    row*singleHeight + singleHeight);
+                    iconIndex*offset,
+                    iconIndex*offset,
+                    singleWidth + iconIndex*offset,
+                    singleHeight + iconIndex*offset);
             drawable.draw(canvas);
-            col += 1;
-            iconIndex += 1;
-            // update col/row counter
-            if (col >= Constants.NUM_COLS_IN_DRAG_SHADOW) {
-                col = 0;
-                row += 1;
-            }
         }
+
 
         return new BitmapDrawable(getResources(), combined);
     }
