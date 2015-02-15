@@ -17,9 +17,10 @@
 
         <Button
             style="@style/ActionButtonAttrs"
-            android:drawableTop="@drawable/addnew_camera"
+            android:drawableTop="@drawable/actionbutton_camerastates"
+            android:drawablePadding="-10dp"
+            android:paddingTop="20dp"
             android:layout_width="match_parent"
-            android:background="@drawable/action_button"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:text="New with camera"
@@ -27,8 +28,10 @@
 
         <Button
             style="@style/ActionButtonAttrs"
+            android:drawableTop="@drawable/actionbutton_devicestates"
+            android:drawablePadding="-10dp"
+            android:paddingTop="20dp"
             android:layout_width="match_parent"
-            android:background="@drawable/action_button"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:text="From device"/>
@@ -80,7 +83,7 @@
 
 
             <Button
-                style="@style/NavButtonAttrs"
+                style="@style/NavButtonAttrs.Mobile"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:background="@drawable/navigatenext_button"
