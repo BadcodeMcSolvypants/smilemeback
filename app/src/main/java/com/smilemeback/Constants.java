@@ -24,4 +24,8 @@ import android.view.View;
 public class Constants {
     public static final String CATEGORY_INDEX = "category_index";
     public static final String IMAGE_DRAG_TAG = "image_drag_tag";
+
+    public static final int NUM_COLS_IN_DRAG_SHADOW = 4;
+    public static final int MAX_ROWS_IN_DRAG_SHADOW = 4;
+    public static final float SELECTED_ICONVIEW_ALPHA = 0.5f;
 }

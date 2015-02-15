@@ -18,8 +18,10 @@ package com.smilemeback.views;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.ViewGroup;
 import android.widget.Checkable;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -162,6 +164,10 @@ public class IconView extends RelativeLayout implements Checkable {
 
     public void setLabel(String text) {
         label.setText(text);
+    }
+
+    public Drawable getDrawable() {
+        return image.getDrawable();
     }
 
 }
