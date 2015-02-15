@@ -14,31 +14,23 @@
  You should have received a copy of the GNU General Public License
  along with SmileMeBack.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.smilemeback.storage;
+package com.smilemeback.views;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
+import android.content.Context;
+import android.util.AttributeSet;
+import android.view.LayoutInflater;
 
-/**
- * Category and Image Name class.
- */
-public class Name {
-    protected final String name;
+import com.smilemeback.R;
 
-    public Name(String name) {
-        this.name = name;
-    }
 
-    public Name(Name name) {
-        this.name = name.toString();
+public class IconViewSide extends IconView {
+
+    public IconViewSide(Context context, AttributeSet attrs, boolean useDefaultImage) {
+        super(context, attrs, useDefaultImage);
     }
 
     @Override
-    public String toString() {
-        return name;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        return EqualsBuilder.reflectionEquals(this, o);
+    protected void inflateLayout(Context context) {
+        LayoutInflater.from(context).inflate(R.layout.icon_view_side, this, true);
     }
 }

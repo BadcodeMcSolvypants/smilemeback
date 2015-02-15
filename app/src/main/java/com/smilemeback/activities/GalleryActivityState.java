@@ -14,31 +14,11 @@
  You should have received a copy of the GNU General Public License
  along with SmileMeBack.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.smilemeback.storage;
-
-import org.apache.commons.lang3.builder.EqualsBuilder;
+package com.smilemeback.activities;
 
 /**
- * Category and Image Name class.
+ * This enumeration defines the states GalleryActivity can hold.
  */
-public class Name {
-    protected final String name;
-
-    public Name(String name) {
-        this.name = name;
-    }
-
-    public Name(Name name) {
-        this.name = name.toString();
-    }
-
-    @Override
-    public String toString() {
-        return name;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        return EqualsBuilder.reflectionEquals(this, o);
-    }
+public enum GalleryActivityState {
+    VIEW, SELECT
 }

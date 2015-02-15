@@ -3,7 +3,6 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 21
     buildToolsVersion "21.1.1"
-
     defaultConfig {
         applicationId "com.smilemeback"
         minSdkVersion 15
@@ -17,6 +16,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    productFlavors {
+    }
 }
 
 dependencies {
@@ -25,7 +26,9 @@ dependencies {
     compile 'commons-io:commons-io:2.4'
     compile 'org.hamcrest:hamcrest-core:1.2.1'
     compile 'org.apache.commons:commons-lang3:3.0'
+    compile 'com.android.support:support-v13:21.0.3'
 }
+
 
 android {
     packagingOptions {

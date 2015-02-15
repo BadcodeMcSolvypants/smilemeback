@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingLeft="@dimen/actionbar_textview_padding_left"
+    android:paddingRight="@dimen/actionbar_textview_padding_right"
+    android:paddingTop="@dimen/actionbar_textview_padding_top"
+    android:paddingBottom="@dimen/actionbar_textview_padding_bottom"
+    android:textSize="@dimen/gallery_selectionmode_font_size"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+</TextView>

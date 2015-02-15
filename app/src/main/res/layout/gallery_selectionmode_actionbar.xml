@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/actionbar_textview"
+        android:text="@string/actionbar_num_selected"
+        android:layout_width="@dimen/gallery_selectionmode_text_width"
+        android:layout_height="match_parent"
+        android:textSize="@dimen/gallery_selectionmode_font_size"
+        style="?android:attr/spinnerStyle"
+        android:gravity="left" />
+</LinearLayout>
