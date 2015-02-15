@@ -17,8 +17,6 @@
 
         <Button
             style="@style/ActionButtonAttrs"
-            android:layout_gravity="center"
-
             android:drawableTop="@drawable/addnew_camera"
             android:layout_width="match_parent"
             android:background="@drawable/action_button"

@@ -16,4 +16,6 @@ public class AddPictureActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_picture_addpicture);
     }
+
+
 }
