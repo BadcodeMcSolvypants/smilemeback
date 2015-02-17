@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/iconview_side_width"
     android:layout_height="@dimen/iconview_side_height"
-    android:background="@drawable/imageview_border"
+    android:background="@drawable/imageview_shadow"
     >
 
     <ImageView
@@ -13,7 +13,7 @@
         android:paddingTop="@dimen/iconview_side_image_padding"
         android:paddingLeft="@dimen/iconview_side_image_padding"
         android:paddingRight="@dimen/iconview_side_image_padding"
-        android:paddingBottom="@dimen/iconview_side_image_padding_bottom"
+        android:paddingBottom="28dp"
         android:cropToPadding="true"
         android:scaleType="centerCrop"
         android:layout_alignParentTop="true"
