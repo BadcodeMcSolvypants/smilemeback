@@ -21,17 +21,18 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.smilemeback.R;
 import com.smilemeback.storage.Storage;
-import com.smilemeback.storage.StorageException;
 import com.squareup.picasso.Picasso;
 
 import org.apache.commons.io.FileUtils;
@@ -49,13 +50,19 @@ public class AddPictureActivity extends Activity {
     protected static final int PICK_PHOTO_GALLERY = 2;
     protected AddPictureActivityState state = AddPictureActivityState.ADD_PICTURE;
 
+    // add picture
     protected Button fromCameraButton;
     protected Button fromDeviceButton;
     protected Button prevButton;
     protected Button nextButton;
     protected ImageView imageView;
+    protected ImageView progressImageView;
 
     protected boolean imageAdded = false;
+
+    // add name
+    protected EditText imageEditText;
+    protected String imageName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,10 +71,13 @@ public class AddPictureActivity extends Activity {
     }
 
     protected void enterAddPictureState() {
+        state = AddPictureActivityState.ADD_PICTURE;
+
         setContentView(R.layout.create_picture_addpicture);
         fromCameraButton = (Button)findViewById(R.id.fromCameraButton);
         fromDeviceButton = (Button)findViewById(R.id.fromDeviceButton);
         imageView = (ImageView)findViewById(R.id.imageView);
+        progressImageView = (ImageView)findViewById(R.id.progressImageView);
         prevButton = (Button)findViewById(R.id.prevButton);
         nextButton = (Button)findViewById(R.id.nextButton);
 
@@ -84,6 +94,114 @@ public class AddPictureActivity extends Activity {
                 dispatchPickPhotoIntent();
             }
         });
+
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (state == AddPictureActivityState.ADD_PICTURE && imageAdded) {
+                    enterAddNameState();
+                }
+            }
+        });
+
+        if (imageAdded) {
+            Storage storage = new Storage(this);
+            loadImageFromFile(storage.getTemporaryImageFile());
+        }
+
+        updatePrevNextButtons();
+    }
+
+    protected void enterAddNameState() {
+        state = AddPictureActivityState.ADD_NAME;
+        setContentView(R.layout.create_picture_addname);
+
+        imageEditText = (EditText)findViewById(R.id.imageName);
+        imageEditText.setText(imageName);
+        prevButton = (Button)findViewById(R.id.prevButton);
+        nextButton = (Button)findViewById(R.id.nextButton);
+
+        imageEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                imageName = s.toString();
+                updatePrevNextButtons();
+            }
+        });
+
+        prevButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (state == AddPictureActivityState.ADD_NAME) {
+                    enterAddPictureState();
+                }
+            }
+        });
+
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (state == AddPictureActivityState.ADD_NAME && imageName.length() > 0) {
+                    enterRecordSoundState();
+                }
+            }
+        });
+
+        updatePrevNextButtons();
+    }
+
+    protected void enterRecordSoundState() {
+        state = AddPictureActivityState.RECORD_SOUND;
+        setContentView(R.layout.create_picture_addsound);
+
+        prevButton = (Button)findViewById(R.id.prevButton);
+
+        prevButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (state == AddPictureActivityState.RECORD_SOUND) {
+                    enterAddNameState();
+                }
+            }
+        });
+
+        updatePrevNextButtons();
+    }
+
+    protected void updatePrevNextButtons() {
+        switch (state) {
+            case ADD_PICTURE:
+                prevButton.setEnabled(false);
+                nextButton.setEnabled(imageAdded);
+                if (imageAdded) {
+                    progressImageView.setImageResource(R.drawable.progress1step1);
+                } else {
+                    progressImageView.setImageResource(R.drawable.progress0step1);
+                }
+                break;
+            case ADD_NAME:
+                prevButton.setEnabled(true);
+                if (imageName.length() > 0) {
+                    progressImageView.setImageResource(R.drawable.progress2step2);
+                    nextButton.setEnabled(true);
+                } else {
+                    progressImageView.setImageResource(R.drawable.progress1step2);
+                    nextButton.setEnabled(false);
+                }
+                break;
+            case RECORD_SOUND:
+                prevButton.setEnabled(true);
+                progressImageView.setImageResource(R.drawable.progress2step3);
+                break;
+        }
     }
 
     /**
@@ -110,9 +228,11 @@ public class AddPictureActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Storage storage = new Storage(this);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            logger.info("Adding image from camera");
             loadImageFromFile(storage.getTemporaryImageFile());
             imageAdded = true;
         } else if (requestCode == PICK_PHOTO_GALLERY && data != null && data.getData() != null) {
+            logger.info("Adding image from gallery");
             Uri uri = data.getData();
             Cursor cursor = getContentResolver().query(uri, new String[] { android.provider.MediaStore.Images.ImageColumns.DATA }, null, null, null);
             cursor.moveToFirst();
@@ -125,6 +245,7 @@ public class AddPictureActivity extends Activity {
                 showExceptionAlertAndFinish(e);
             }
         }
+        updatePrevNextButtons();
     }
     protected void showExceptionAlertAndFinish(Exception e) {
         logger.log(Level.SEVERE, e.getMessage());
@@ -140,11 +261,12 @@ public class AddPictureActivity extends Activity {
                 .show();
     }
 
-
     protected void loadImageFromFile(File file) {
+        // now load the real image
         Picasso.with(this)
                 .load(file)
                 .fit()
+                .skipMemoryCache()
                 .centerCrop()
                 .into(imageView);
     }

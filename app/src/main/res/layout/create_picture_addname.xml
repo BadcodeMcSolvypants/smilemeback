@@ -66,6 +66,7 @@
                 android:layout_height="72dp"
                 android:gravity="center"
                 android:inputType="text"
+                android:id="@+id/imageName"
                 android:src="@drawable/placeholder_mobile"
                 android:paddingBottom="10dp"
                 android:textColor="#333"
@@ -96,6 +97,7 @@
                 style="@style/NavButtonAttrs.Mobile"
                 android:layout_weight="1"
                 android:layout_width="0dp"
+                android:id="@+id/prevButton"
                 android:background="@drawable/navigateback_button"
                 android:text="back"
                 />
@@ -105,6 +107,7 @@
                 style="@style/NavButtonAttrs.Mobile"
                 android:layout_weight="1"
                 android:layout_width="0dp"
+                android:id="@+id/nextButton"
                 android:background="@drawable/navigatenext_button"
                 android:text="next"
                 />
