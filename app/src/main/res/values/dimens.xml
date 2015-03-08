@@ -6,7 +6,7 @@
     <!-- IconDisplay layout -->
     <dimen name="gallery_gridview_vertical_spacing">40dp</dimen>
     <dimen name="gallery_gridview_padding_left">15dp</dimen>
-    <dimen name="icondisplay_listview_padding_left">30dp</dimen>
+    <dimen name="icondisplay_listview_padding_left">12dp</dimen>
     <dimen name="icondisplay_listview_divider_height">16dp</dimen>
 
     <!-- IconView size and margins, easier to store here than in separate layouts -->
