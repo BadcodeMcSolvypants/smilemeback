@@ -2,13 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:baselineAligned="false"
+
 
     >
 
 
     <LinearLayout
-        style="@style/PaddingRight"
+        style="@style/PaddingRight.Mobile"
         android:orientation="vertical"
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -17,23 +17,14 @@
 
         <Button
             style="@style/ActionButtonAttrs"
-            android:layout_gravity="center"
-
-            android:drawableTop="@drawable/addnew_camera"
+            android:drawableTop="@drawable/actionbutton_recordstates"
+            android:drawablePadding="-60dp"
+            android:paddingTop="90dp"
             android:layout_width="match_parent"
-            android:background="@drawable/action_button"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="New with camera"
-            android:id="@+id/fromCameraButton" />
-
-        <Button
-            style="@style/ActionButtonAttrs"
-            android:layout_width="match_parent"
-            android:background="@drawable/action_button"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:text="From device"/>
+            android:text="Record sound"
+            android:id="@+id/recordSound" />
 
     </LinearLayout>
 
@@ -55,13 +46,23 @@
        android:layout_height="0dp"
        android:layout_weight="1"
        android:background="#fff">
-
        <ImageView
            android:layout_centerInParent="true"
            android:contentDescription="placeholder image"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:src="@drawable/placeholder" />
+           android:src="@drawable/placeholder_mobile"
+           android:paddingBottom="10dp" />
+
+
+      <ImageView
+          android:contentDescription="progressbar"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:src="@drawable/progress0step1"
+          android:layout_alignParentBottom="true"
+          android:layout_centerHorizontal="true"
+          android:paddingBottom="4dp" />
    </RelativeLayout>
 
         <LinearLayout
@@ -82,10 +83,10 @@
 
 
             <Button
-                style="@style/NavButtonAttrs"
+                style="@style/NavButtonAttrs.Mobile"
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                android:background="@drawable/navigatenext_button"
+                android:background="@drawable/navigatenext"
                 android:text="next"
                 />
 

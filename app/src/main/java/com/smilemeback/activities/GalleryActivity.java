@@ -115,6 +115,7 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
 
         Storage storage = new Storage(this);
         storage.initializeTestingCategories();
+
         loadCategories();
         if (categories.size() > 0) {
             setContentView(R.layout.gallery);

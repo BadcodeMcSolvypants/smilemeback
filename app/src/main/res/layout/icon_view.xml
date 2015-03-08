@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/iconview_width"
     android:layout_height="@dimen/iconview_height"
-    android:background="@drawable/imageview_border"
+    android:layout_marginTop="40dp"
+    android:background="@drawable/imageview_shadow"
     >
 
     <ImageView
@@ -13,7 +14,7 @@
         android:paddingTop="@dimen/iconview_image_padding"
         android:paddingLeft="@dimen/iconview_image_padding"
         android:paddingRight="@dimen/iconview_image_padding"
-        android:paddingBottom="@dimen/iconview_image_padding_bottom"
+        android:paddingBottom="56dp"
         android:cropToPadding="true"
         android:scaleType="centerCrop"
         android:layout_alignParentTop="true"
@@ -25,17 +26,17 @@
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:text="ORANGE"
-        android:layout_marginBottom="@dimen/iconview_text_padding_bottom"
+        android:layout_marginBottom="14dp"
         android:textSize="@dimen/iconview_text_size"
         android:gravity="center_horizontal"
         android:layout_height="wrap_content" />
 
     <ImageView
+
         android:id="@+id/iconview_chkbox_image"
-        android:layout_width="@dimen/iconview_checkbox_size"
-        android:layout_height="@dimen/iconview_checkbox_size"
-        android:layout_marginRight="@dimen/iconview_checkbox_padding"
-        android:layout_marginTop="@dimen/iconview_checkbox_padding"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginRight="1dp"
         android:background="@drawable/chkbox"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true" />

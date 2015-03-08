@@ -16,10 +16,12 @@ public class AddPictureActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.create_picture_addpicture);
+        setContentView(R.layout.create_picture_addname);
 
         //fromCameraButton = (Button)findViewById(R.id.fromCameraButton);
         //fromCameraButton.getLayoutParams()
         //fromCameraButton.setLayoutParams();
     }
+
+
 }
