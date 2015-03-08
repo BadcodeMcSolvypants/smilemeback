@@ -100,8 +100,6 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setTitle(getString(R.string.gallery_actionbar_title));
 
-        customizeStatusBar();
-
         try {
             loadContents();
         } catch (StorageException e) {
@@ -189,12 +187,12 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
         }
     }
 
-    public void customizeStatusBar() {
+    /*public void customizeStatusBar() {
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(getResources().getColor(R.color.actionbar_background));
-    }
+    }*/
 
     @Override
     public void gallerySelectionModeFinished() {

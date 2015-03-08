@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <!-- dropshadow -->
+    <item>
+        <shape>
+            <solid android:color="#108e8e8e" />
+            <padding android:top="2dp" android:right="1dp" android:bottom="0dp" android:left="1dp" />
+            <corners android:radius="5dp" />
+        </shape>
+
+    </item>
+
+    <item>
+        <shape>
+            <solid android:color="#208e8e8e" />
+            <padding android:top="2dp" android:right="1dp" android:bottom="0dp" android:left="1dp" />
+            <corners android:radius="5dp" />
+        </shape>
+    </item>
+
+    <item>
+        <shape>
+            <solid android:color="#408e8e8e" />
+            <padding android:top="2dp" android:right="1dp" android:bottom="0dp" android:left="1dp" />
+            <corners android:radius="5dp" />
+        </shape>
+    </item>
+
+    <item>
+        <shape>
+            <solid android:color="#508e8e8e" />
+            <padding android:top="2dp" android:right="0dp" android:bottom="0dp" android:left="1dp" />
+            <corners android:radius="10dp" />
+        </shape>
+    </item>
+
+    <item>
+        <shape>
+            <solid android:color="#608e8e8e" />
+            <padding android:top="2dp" android:right="1dp" android:bottom="0dp" android:left="1dp" />
+            <corners android:radius="10dp" />
+        </shape>
+    </item>
+
+    <!-- content background -->
+    <item>
+        <shape>
+            <solid android:color="#ffffff" />
+        </shape>
+    </item>
+</layer-list>

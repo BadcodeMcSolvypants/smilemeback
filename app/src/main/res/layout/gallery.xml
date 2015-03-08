@@ -8,11 +8,10 @@
     <LinearLayout
 
         android:id="@+id/gallery_listview_container"
-        android:layout_width="160dp"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
 
-        android:background="@color/actionbar_background"
-        >
+        android:layout_weight="1">
         <ListView
             android:paddingTop="@dimen/iconview_top_padding"
             android:layout_marginRight="2dp"
@@ -38,15 +37,14 @@
         android:verticalSpacing="@dimen/gallery_gridview_vertical_spacing"
         android:stretchMode="spacingWidthUniform"
         android:columnWidth="@dimen/iconview_width"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:paddingLeft="@dimen/gallery_gridview_padding_left"
         android:id="@+id/gallery_contents_grid_view"
         android:numColumns="auto_fit"
         android:smoothScrollbar="false"
         android:nestedScrollingEnabled="false"
         tools:listitem="@layout/icon_view"
-        />
-
-
+        android:layout_weight="4" />
 
 </LinearLayout>
