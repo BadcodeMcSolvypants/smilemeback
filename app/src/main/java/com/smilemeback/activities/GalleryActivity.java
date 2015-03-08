@@ -38,6 +38,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
@@ -98,6 +100,8 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setTitle(getString(R.string.gallery_actionbar_title));
 
+        customizeStatusBar();
+
         try {
             loadContents();
         } catch (StorageException e) {
@@ -109,6 +113,8 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
         Intent intent = getIntent();
         int category_idx = intent.getIntExtra(Constants.CATEGORY_INDEX, 0);
 
+        Storage storage = new Storage(this);
+        storage.initializeTestingCategories();
         loadCategories();
         if (categories.size() > 0) {
             setContentView(R.layout.gallery);
@@ -180,6 +186,13 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
         } catch (StorageException e) {
             showStorageExceptionAlertAndFinish(e);
         }
+    }
+
+    public void customizeStatusBar() {
+        Window window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(getResources().getColor(R.color.actionbar_background));
     }
 
     @Override
