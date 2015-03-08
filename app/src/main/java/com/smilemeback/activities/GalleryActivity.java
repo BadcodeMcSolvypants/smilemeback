@@ -109,6 +109,9 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
         Intent intent = getIntent();
         int category_idx = intent.getIntExtra(Constants.CATEGORY_INDEX, 0);
 
+        Storage storage = new Storage(this);
+        storage.initializeTestingCategories();
+
         loadCategories();
         if (categories.size() > 0) {
             setContentView(R.layout.gallery);

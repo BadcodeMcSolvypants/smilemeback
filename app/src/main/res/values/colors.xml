@@ -4,6 +4,6 @@
     <item name="statusbar_background" type="color">#117f80</item>
     <item name="gallery_background" type="color">#ffeccf</item>
     <item name="gallery_side_background" type="color">#333</item>
-
+    <item name="secondary_create_color" type="color">#ffd52c</item>
 
 </resources>
