@@ -29,4 +29,7 @@
     <string name="actionbar_delete_image">Delete</string>
     <string name="actionbar_rename_image">Rename</string>
 
+    <!-- AddPictureActivity -->
+    <string name="addpicture_photo_from_galery">Choose image</string>
+
 </resources>

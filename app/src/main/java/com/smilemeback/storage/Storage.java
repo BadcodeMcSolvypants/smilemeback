@@ -44,6 +44,7 @@ public class Storage {
     public static final String STORAGE_FOLDER = "SmileMeBack";
     public static final String CATEGORIES_FOLDER = "categories";
     public static final String CATEGORY_THUMBNAIL = "_thumbnail.jpg";
+    public static final String TEMPORARY_IMAGE = "temporary.jpg";
 
     /**
      * Application context.
@@ -129,7 +130,7 @@ public class Storage {
      * @throws StorageException
      */
     public void appendEmptyCategory(final Name name) throws StorageException {
-        appendEmptyCategory(name, context.getResources().openRawResource(R.drawable.iconview_testing));
+        appendEmptyCategory(name, context.getResources().openRawResource(R.drawable.iconview_default));
     }
 
     /**
@@ -248,6 +249,13 @@ public class Storage {
         logger.info(sb.toString());
 
         return images;
+    }
+
+    /**
+     * @return The file pointing to the path that should be used for temporary images.
+     */
+    public File getTemporaryImageFile() {
+        return new File(getStorageFolder(context), TEMPORARY_IMAGE);
     }
 
     /**

@@ -29,7 +29,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 
-import com.smilemeback.AddPictureActivity;
 import com.smilemeback.R;
 import com.smilemeback.storage.Category;
 import com.smilemeback.storage.Image;

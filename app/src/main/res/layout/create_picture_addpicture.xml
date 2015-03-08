@@ -34,6 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:id="@+id/fromDeviceButton"
             android:text="From device"/>
 
 
@@ -60,8 +61,9 @@
        <ImageView
            android:layout_centerInParent="true"
            android:contentDescription="placeholder image"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
+           android:layout_width="@dimen/addpictureactivity_imageview_width"
+           android:layout_height="@dimen/addpictureactivity_imageview_height"
+           android:id="@+id/imageView"
            android:src="@drawable/placeholder_mobile"
            android:paddingBottom="10dp" />
 
@@ -89,6 +91,7 @@
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:background="@drawable/navigateback_button"
+                android:id="@+id/prevButton"
                 android:text="back"
                 />
 
@@ -98,6 +101,7 @@
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:background="@drawable/navigatenext"
+                android:id="@+id/nextButton"
                 android:text="next"
                 />
 

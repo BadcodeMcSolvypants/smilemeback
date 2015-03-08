@@ -6,7 +6,7 @@
     <!-- IconDisplay layout -->
     <dimen name="gallery_gridview_vertical_spacing">40dp</dimen>
     <dimen name="gallery_gridview_padding_left">15dp</dimen>
-    <dimen name="icondisplay_listview_padding_left">12dp</dimen>
+    <dimen name="icondisplay_listview_padding_left">28dp</dimen>
     <dimen name="icondisplay_listview_divider_height">16dp</dimen>
 
     <!-- IconView size and margins, easier to store here than in separate layouts -->
@@ -31,7 +31,6 @@
     <dimen name="iconview_side_checkbox_size">20dp</dimen>
     <dimen name="iconview_side_checkbox_padding">0dp</dimen>
 
-
     <!-- Actionbar spinner (select all, deselect all) text padding -->
     <dimen name="actionbar_textview_padding_left">20dp</dimen>
     <dimen name="actionbar_textview_padding_right">15dp</dimen>
@@ -39,4 +38,8 @@
     <dimen name="actionbar_textview_padding_bottom">8dp</dimen>
     <dimen name="gallery_selectionmode_font_size">20sp</dimen>
     <dimen name="gallery_selectionmode_text_width">160dp</dimen>
+
+    <!-- AddPictureActivity imageview -->
+    <dimen name="addpictureactivity_imageview_width">450dp</dimen>
+    <dimen name="addpictureactivity_imageview_height">375dp</dimen>
 </resources>
