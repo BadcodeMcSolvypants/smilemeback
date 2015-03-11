@@ -55,6 +55,7 @@ import com.smilemeback.storage.StorageException;
 import com.smilemeback.views.IconView;
 import com.smilemeback.views.IconViewSide;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -586,7 +587,17 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ADD_PICUTURE_INTENT && resultCode == RESULT_OK) {
-            logger.info("Addpicture RESULT_OK");
+            String name = data.getStringExtra(Constants.ADDED_IMAGE_NAME);
+            String imagePath = data.getStringExtra(Constants.ADDED_IMAGE_PATH);
+            String audioPath = data.getStringExtra(Constants.ADDED_IMAGE_AUDIO_PATH);
+            Storage storage = new Storage(this);
+            try {
+                storage.addCategoryImage(currentCategory, name, new File(imagePath), new File(audioPath));
+                loadImages(currentCategory);
+                gridView.setAdapter(imageAdapter);
+            } catch (StorageException e) {
+                showStorageExceptionAlertAndFinish(e);
+            }
         }
     }
 }
