@@ -90,7 +90,7 @@ android:layout_height="match_parent"
             android:layout_width="0dp"
             android:id="@+id/nextButton"
             android:background="@drawable/savenew"
-            android:text="Apply all"
+            android:text="Save picture"
             />
 
     </LinearLayout>
