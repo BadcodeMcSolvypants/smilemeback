@@ -17,6 +17,7 @@
 package com.smilemeback.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -107,6 +108,7 @@ public class GallerySelectionMode implements ActionMode.Callback, View.OnClickLi
 
     @Override
     public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+        menu.findItem(R.id.gallery_selectionmode_menu_add_image).setVisible(true);
         menu.findItem(R.id.gallery_selectionmode_menu_rename_image).setVisible(numSelected == 1);
         menu.findItem(R.id.gallery_selectionmode_menu_delete_image).setVisible(numSelected >= 1);
         return true;
@@ -114,6 +116,12 @@ public class GallerySelectionMode implements ActionMode.Callback, View.OnClickLi
 
     @Override
     public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.gallery_selectionmode_menu_add_image:
+                Intent intent = new Intent(activity, AddPictureActivity.class);
+                activity.startActivityForResult(intent, GalleryActivity.ADD_PICUTURE_INTENT);
+                return true;
+        }
         return false;
     }
 

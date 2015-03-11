@@ -51,7 +51,8 @@ android:layout_height="match_parent"
             android:contentDescription="mediaplayer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="10dp" />
+            android:paddingBottom="10dp"
+            android:id="@+id/mediaplayer" />
 
 
         <ImageView
@@ -61,7 +62,8 @@ android:layout_height="match_parent"
             android:src="@drawable/progress2step3"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:paddingBottom="4dp" />
+            android:paddingBottom="4dp"
+            android:id="@+id/progressImageView" />
     </RelativeLayout>
 
     <LinearLayout

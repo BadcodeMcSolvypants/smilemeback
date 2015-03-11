@@ -65,6 +65,9 @@ import java.util.logging.Logger;
 
 public class GalleryActivity extends Activity implements GallerySelectionModeListener {
     private static Logger logger = Logger.getLogger(GalleryActivity.class.getCanonicalName());
+
+    public static final int ADD_PICUTURE_INTENT = 1;
+
     protected GalleryActivityState state = GalleryActivityState.VIEW;
     protected GallerySelectionMode selectionMode;
     protected MediaPlayer player = new MediaPlayer();
@@ -577,6 +580,13 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
         switch (item.getItemId()) {
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == ADD_PICUTURE_INTENT && resultCode == RESULT_OK) {
+            logger.info("Addpicture RESULT_OK");
         }
     }
 }

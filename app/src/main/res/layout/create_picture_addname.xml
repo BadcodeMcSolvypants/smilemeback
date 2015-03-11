@@ -82,7 +82,8 @@
                 android:src="@drawable/progress1step2"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:paddingBottom="4dp" />
+                android:paddingBottom="4dp"
+                android:id="@+id/progressImageView" />
         </RelativeLayout>
 
         <LinearLayout

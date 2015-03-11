@@ -21,6 +21,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -30,12 +32,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.MediaController;
 
 import com.smilemeback.R;
 import com.smilemeback.storage.Storage;
 import com.squareup.picasso.Picasso;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.ObjectUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,6 +52,7 @@ public class AddPictureActivity extends Activity {
 
     protected static final int REQUEST_IMAGE_CAPTURE = 1;
     protected static final int PICK_PHOTO_GALLERY = 2;
+    protected static final int RECORD_SOUND = 3;
     protected AddPictureActivityState state = AddPictureActivityState.ADD_PICTURE;
 
     // add picture
@@ -63,6 +68,10 @@ public class AddPictureActivity extends Activity {
     // add name
     protected EditText imageEditText;
     protected String imageName = "";
+
+    // add sound
+    protected Button recordSound;
+    protected boolean audioRecorded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +127,7 @@ public class AddPictureActivity extends Activity {
 
         imageEditText = (EditText)findViewById(R.id.imageName);
         imageEditText.setText(imageName);
+        progressImageView = (ImageView)findViewById(R.id.progressImageView);
         prevButton = (Button)findViewById(R.id.prevButton);
         nextButton = (Button)findViewById(R.id.nextButton);
 
@@ -162,14 +172,32 @@ public class AddPictureActivity extends Activity {
         state = AddPictureActivityState.RECORD_SOUND;
         setContentView(R.layout.create_picture_addsound);
 
+        progressImageView = (ImageView)findViewById(R.id.progressImageView);
         prevButton = (Button)findViewById(R.id.prevButton);
+        nextButton = (Button)findViewById(R.id.nextButton);
+        recordSound = (Button)findViewById(R.id.recordSound);
 
         prevButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (state == AddPictureActivityState.RECORD_SOUND) {
-                    enterAddNameState();
-                }
+            if (state == AddPictureActivityState.RECORD_SOUND) {
+                enterAddNameState();
+            }
+            }
+        });
+
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(RESULT_OK);
+                finish();
+            }
+        });
+
+        recordSound.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dispatchAudioRecordIntent();
             }
         });
 
@@ -199,7 +227,13 @@ public class AddPictureActivity extends Activity {
                 break;
             case RECORD_SOUND:
                 prevButton.setEnabled(true);
-                progressImageView.setImageResource(R.drawable.progress2step3);
+                if (audioRecorded) {
+                    progressImageView.setImageResource(R.drawable.progress3step3);
+                    nextButton.setEnabled(true);
+                } else {
+                    progressImageView.setImageResource(R.drawable.progress2step3);
+                    nextButton.setEnabled(false);
+                }
                 break;
         }
     }
@@ -224,6 +258,11 @@ public class AddPictureActivity extends Activity {
         startActivityForResult(Intent.createChooser(intent, getString(R.string.addpicture_photo_from_galery)), PICK_PHOTO_GALLERY);
     }
 
+    private void dispatchAudioRecordIntent() {
+        Intent intent = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
+        startActivityForResult(intent, RECORD_SOUND);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Storage storage = new Storage(this);
@@ -244,6 +283,22 @@ public class AddPictureActivity extends Activity {
             } catch (IOException e) {
                 showExceptionAlertAndFinish(e);
             }
+        } else if (requestCode == RECORD_SOUND && resultCode == RESULT_OK) {
+            logger.info("Adding audio recording");
+            Uri recorderAudioUri = data.getData();
+            File tempAudioPath = storage.getTemporaryAudioFile();
+            try {
+                FileUtils.copyFile(new File(getRealPathFromURI(recorderAudioUri)), tempAudioPath);
+                // todo: make a good media player
+                MediaPlayer player = new MediaPlayer();
+                player.setDataSource(tempAudioPath.getAbsolutePath());
+                player.prepare();
+                player.start();
+                audioRecorded = true;
+            } catch (IOException e) {
+                showExceptionAlertAndFinish(e);
+            }
+
         }
         updatePrevNextButtons();
     }
@@ -269,5 +324,15 @@ public class AddPictureActivity extends Activity {
                 .skipMemoryCache()
                 .centerCrop()
                 .into(imageView);
+    }
+
+    public String getRealPathFromURI(Uri contentUri) {
+        String[] proj = { MediaStore.Audio.Media.DATA };
+        Cursor cursor = managedQuery(contentUri, proj, null, null, null);
+        int column_index = cursor
+                .getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
+        cursor.moveToFirst();
+        logger.info("absolutepath audiopath in getRealPathFromURI : " + cursor.getString(column_index));
+        return cursor.getString(column_index);
     }
 }

@@ -44,7 +44,8 @@ public class Storage {
     public static final String STORAGE_FOLDER = "SmileMeBack";
     public static final String CATEGORIES_FOLDER = "categories";
     public static final String CATEGORY_THUMBNAIL = "_thumbnail.jpg";
-    public static final String TEMPORARY_IMAGE = "temporary.jpg";
+    public static final String TEMPORARY_IMAGE = "temporary_image.jpg";
+    public static final String TEMPORARY_AUDIO = "temporary_audio.3gpp";
 
     /**
      * Application context.
@@ -256,6 +257,13 @@ public class Storage {
      */
     public File getTemporaryImageFile() {
         return new File(getStorageFolder(context), TEMPORARY_IMAGE);
+    }
+
+    /**
+     * @return The file pointing to the path that should be used for temporary audio recordings.
+     */
+    public File getTemporaryAudioFile() {
+        return new File(getStorageFolder(context), TEMPORARY_AUDIO);
     }
 
     /**
