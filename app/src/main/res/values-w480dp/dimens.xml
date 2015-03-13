@@ -42,6 +42,6 @@
     <dimen name="gallery_selectionmode_text_width">160dp</dimen>
 
     <!-- AddPictureActivity imageview -->
-    <dimen name="addpictureactivity_imageview_width">144dp</dimen>
-    <dimen name="addpictureactivity_imageview_height">124dp</dimen>
+    <dimen name="addpictureactivity_imageview_width">240dp</dimen>
+    <dimen name="addpictureactivity_imageview_height">200dp</dimen>
 </resources>
