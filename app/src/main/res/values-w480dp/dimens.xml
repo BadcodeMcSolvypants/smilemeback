@@ -4,21 +4,21 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <!-- IconDisplay layout -->
-    <dimen name="gallery_gridview_vertical_spacing">40dp</dimen>
+    <dimen name="gallery_gridview_vertical_spacing">0dp</dimen>
     <dimen name="gallery_gridview_padding_sides">16dp</dimen>
     <dimen name="icondisplay_listview_padding_left">28dp</dimen>
     <dimen name="icondisplay_listview_divider_height">16dp</dimen>
 
     <!-- IconView size and margins, easier to store here than in separate layouts -->
-    <dimen name="iconview_top_padding">40dp</dimen>
-    <dimen name="iconview_width">288dp</dimen>
-    <dimen name="iconview_height">248dp</dimen>
-    <dimen name="iconview_image_padding_top">16dp</dimen>
-    <dimen name="iconview_image_padding_sides">8dp</dimen>
-    <dimen name="iconview_image_padding_bottom">56dp</dimen>
+    <dimen name="iconview_top_padding">10dp</dimen>
+    <dimen name="iconview_width">236dp</dimen>
+    <dimen name="iconview_height">164dp</dimen>
+    <dimen name="iconview_image_padding_top">14dp</dimen>
+    <dimen name="iconview_image_padding_sides">14dp</dimen>
+    <dimen name="iconview_image_padding_bottom">14dp</dimen>
     <dimen name="iconview_text_padding_bottom">14dp</dimen>
-    <dimen name="iconview_text_size">22sp</dimen>
-    <dimen name="iconview_checkbox_size">40dp</dimen>
+    <dimen name="iconview_text_size">18sp</dimen>
+    <dimen name="iconview_checkbox_size">28dp</dimen>
     <dimen name="iconview_checkbox_margin">12dp</dimen>
 
     <!-- Side iconView size and margins, easier to store here than in separate layouts -->
@@ -42,6 +42,6 @@
     <dimen name="gallery_selectionmode_text_width">160dp</dimen>
 
     <!-- AddPictureActivity imageview -->
-    <dimen name="addpictureactivity_imageview_width">450dp</dimen>
-    <dimen name="addpictureactivity_imageview_height">375dp</dimen>
+    <dimen name="addpictureactivity_imageview_width">144dp</dimen>
+    <dimen name="addpictureactivity_imageview_height">124dp</dimen>
 </resources>
