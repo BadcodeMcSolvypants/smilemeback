@@ -116,10 +116,17 @@ public class GallerySelectionMode implements ActionMode.Callback, View.OnClickLi
 
     @Override
     public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+        Intent intent;
         switch (item.getItemId()) {
             case R.id.gallery_selectionmode_menu_add_image:
-                Intent intent = new Intent(activity, AddPictureActivity.class);
+                intent = new Intent(activity, AddPictureActivity.class);
                 activity.startActivityForResult(intent, GalleryActivity.ADD_PICUTURE_INTENT);
+                return true;
+            case R.id.gallery_selectionmode_menu_rename_image:
+                listener.renameCurrentlySelectedIcon();
+                return true;
+            case R.id.gallery_selectionmode_menu_delete_image:
+                listener.deleteCurrentlySelectedIcons();
                 return true;
         }
         return false;

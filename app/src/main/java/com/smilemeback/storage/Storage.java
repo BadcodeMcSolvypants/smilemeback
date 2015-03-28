@@ -252,6 +252,23 @@ public class Storage {
         return images;
     }
 
+    public void addCategoryImage(final Category category, String name, File imagePath, File audioPath) throws StorageException {
+        List<Image> images = getCategoryImages(category);
+        int nextIdx = images.size();
+        // copy the files
+        File imageFile = new File(category.getFolder(), nextIdx + "_" + name + ".jpg");
+        File audioFile = new File(category.getFolder(), nextIdx + "_" + name + ".3gpp");
+        logger.info("Adding new Image to Category " + category.getFolder());
+        try {
+            logger.info("Copying image from " + imagePath + " to " + imageFile);
+            FileUtils.copyFile(imagePath, imageFile);
+            logger.info("Copying audio from " + audioPath + " to " + audioFile);
+            FileUtils.copyFile(audioPath, audioFile);
+        } catch (IOException e) {
+            throw new StorageException(e);
+        }
+    }
+
     /**
      * @return The file pointing to the path that should be used for temporary images.
      */
@@ -346,4 +363,5 @@ public class Storage {
     public static Map<Integer, File> scanCategoryAudio(final Category category) throws StorageException {
         return scanCategoryFiles(category, ".3gpp");
     }
+
 }

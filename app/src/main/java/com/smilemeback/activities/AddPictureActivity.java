@@ -34,6 +34,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.MediaController;
 
+import com.smilemeback.Constants;
 import com.smilemeback.R;
 import com.smilemeback.storage.Storage;
 import com.squareup.picasso.Picasso;
@@ -186,10 +187,16 @@ public class AddPictureActivity extends Activity {
             }
         });
 
+        final Storage storage = new Storage(this);
+
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setResult(RESULT_OK);
+                Intent result = new Intent();
+                result.putExtra(Constants.ADDED_IMAGE_NAME, imageName);
+                result.putExtra(Constants.ADDED_IMAGE_PATH, storage.getTemporaryImageFile().getAbsolutePath());
+                result.putExtra(Constants.ADDED_IMAGE_AUDIO_PATH, storage.getTemporaryAudioFile().getAbsolutePath());
+                setResult(RESULT_OK, result);
                 finish();
             }
         });
@@ -209,32 +216,52 @@ public class AddPictureActivity extends Activity {
             case ADD_PICTURE:
                 prevButton.setEnabled(false);
                 nextButton.setEnabled(imageAdded);
-                if (imageAdded) {
-                    progressImageView.setImageResource(R.drawable.progress1step1);
-                } else {
-                    progressImageView.setImageResource(R.drawable.progress0step1);
-                }
                 break;
             case ADD_NAME:
                 prevButton.setEnabled(true);
                 if (imageName.length() > 0) {
-                    progressImageView.setImageResource(R.drawable.progress2step2);
                     nextButton.setEnabled(true);
                 } else {
-                    progressImageView.setImageResource(R.drawable.progress1step2);
                     nextButton.setEnabled(false);
                 }
                 break;
             case RECORD_SOUND:
                 prevButton.setEnabled(true);
                 if (audioRecorded) {
-                    progressImageView.setImageResource(R.drawable.progress3step3);
                     nextButton.setEnabled(true);
                 } else {
-                    progressImageView.setImageResource(R.drawable.progress2step3);
                     nextButton.setEnabled(false);
                 }
                 break;
+        }
+        updateProgressView();
+    }
+
+    protected void updateProgressView() {
+        if (imageAdded && imageName.length() > 0 && audioRecorded) {
+            if (state == AddPictureActivityState.ADD_PICTURE) {
+                progressImageView.setImageResource(R.drawable.progress3step1);
+            } else if (state == AddPictureActivityState.ADD_NAME) {
+                progressImageView.setImageResource(R.drawable.progress3step2);
+            } else {
+                progressImageView.setImageResource(R.drawable.progress3step3);
+            }
+        } else if (imageAdded && imageName.length() > 0) {
+            if (state == AddPictureActivityState.ADD_PICTURE) {
+                progressImageView.setImageResource(R.drawable.progress2step1);
+            } else if (state == AddPictureActivityState.ADD_NAME) {
+                progressImageView.setImageResource(R.drawable.progress2step2);
+            } else {
+                progressImageView.setImageResource(R.drawable.progress2step3);
+            }
+        } else if (imageAdded) {
+            if (state == AddPictureActivityState.ADD_PICTURE) {
+                progressImageView.setImageResource(R.drawable.progress1step1);
+            } else {
+                progressImageView.setImageResource(R.drawable.progress1step2);
+            }
+        } else {
+            progressImageView.setImageResource(R.drawable.progress0step1);
         }
     }
 

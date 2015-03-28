@@ -42,9 +42,11 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.smilemeback.Constants;
 import com.smilemeback.R;
@@ -84,7 +86,6 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
     protected Category currentCategory;
     protected List<Image> images;
 
-
     protected ImageDragEventListener dragListener = new ImageDragEventListener();
 
     @Override
@@ -116,7 +117,8 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
         int category_idx = intent.getIntExtra(Constants.CATEGORY_INDEX, 0);
 
         Storage storage = new Storage(this);
-        storage.initializeTestingCategories();
+        // uncomment next line to initialize testing categories with images
+        //storage.initializeTestingCategories();
 
         loadCategories();
         if (categories.size() > 0) {
@@ -168,6 +170,7 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
                     selectionMode.setTotal(images.size());
                     selectionMode.setNumSelected(0);
                 }
+                listView.setSelection(position);
             }
         });
     }
@@ -496,6 +499,17 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
         return count;
     }
 
+    protected int getSelectedGridViewItemPosition() {
+        int n = gridView.getChildCount();
+        for (int idx = 0; idx < n; ++idx) {
+            IconView view = (IconView) gridView.getChildAt(idx);
+            if (view.isChecked()) {
+                return idx;
+            }
+        }
+        return -1;
+    }
+
     protected void setAllGridViewItemsChecked(boolean checked) {
         final int n = gridView.getChildCount();
         for (int idx = 0; idx < n; ++idx) {
@@ -595,9 +609,65 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
                 storage.addCategoryImage(currentCategory, name, new File(imagePath), new File(audioPath));
                 loadImages(currentCategory);
                 gridView.setAdapter(imageAdapter);
+                deselectAllItems();
+                selectionMode.setTotal(images.size());
+                selectionMode.setNumSelected(0);
             } catch (StorageException e) {
                 showStorageExceptionAlertAndFinish(e);
             }
         }
+    }
+
+    @Override
+    public void renameCurrentlySelectedIcon() {
+        int pos = getSelectedGridViewItemPosition();
+        Image image = images.get(pos);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("Rename image");
+        final EditText edit = new EditText(this);
+        edit.setSingleLine(true);
+        edit.setText(image.getName().toString());
+        dialog.setView(edit);
+        dialog.setPositiveButton("Rename", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                logger.info("Renaming current icon to " + edit.getText());
+                loadImages(currentCategory);
+                gridView.setAdapter(imageAdapter);
+                deselectAllItems();
+            }
+        });
+        dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
+    @Override
+    public void deleteCurrentlySelectedIcons() {
+        int nselected = getNumSelectedInGridView();
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("Really delete " + nselected + " images?");
+        dialog.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                logger.info("Deleting selected images");
+                loadImages(currentCategory);
+                gridView.setAdapter(imageAdapter);
+                deselectAllItems();
+                selectionMode.setTotal(images.size());
+                selectionMode.setNumSelected(0);
+            }
+        });
+        dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 }

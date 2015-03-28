@@ -25,4 +25,6 @@ public interface GallerySelectionModeListener {
     void gallerySelectionModeFinished();
     void selectAllItems();
     void deselectAllItems();
+    void renameCurrentlySelectedIcon();
+    void deleteCurrentlySelectedIcons();
 }

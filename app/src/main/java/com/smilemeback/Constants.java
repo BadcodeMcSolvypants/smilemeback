@@ -22,8 +22,13 @@ import android.view.View;
  * Class containing constants used in the application.
  */
 public class Constants {
+    // Intent variables
     public static final String CATEGORY_INDEX = "category_index";
     public static final String IMAGE_DRAG_TAG = "image_drag_tag";
+
+    public static final String ADDED_IMAGE_NAME = "added_image_name";
+    public static final String ADDED_IMAGE_PATH = "added_image_path";
+    public static final String ADDED_IMAGE_AUDIO_PATH = "added_image_audio_path";
 
     public static final int MAX_ICONS_IN_DRAG_SHADOW = 16;
     public static final float SELECTED_ICONVIEW_ALPHA = 0.5f;
