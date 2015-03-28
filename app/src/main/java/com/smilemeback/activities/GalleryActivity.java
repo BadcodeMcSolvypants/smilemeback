@@ -38,15 +38,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.smilemeback.Constants;
 import com.smilemeback.R;
@@ -61,7 +58,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -85,6 +84,7 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
     protected List<Category> categories;
     protected Category currentCategory;
     protected List<Image> images;
+    protected Set<Integer> checkedImages = new HashSet<>();
 
     protected ImageDragEventListener dragListener = new ImageDragEventListener();
 
@@ -189,6 +189,7 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
         currentCategory = category;
         try {
             images = storage.getCategoryImages(category);
+            checkedImages.clear();
         } catch (StorageException e) {
             showStorageExceptionAlertAndFinish(e);
         }
@@ -235,7 +236,7 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             IconView view;
             if (convertView != null) {
                 view = (IconView)convertView;
@@ -247,6 +248,7 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
             view.setLabel(image.getName().toString());
 
             view.setCheckboxVisible(state == GalleryActivityState.SELECT);
+            view.setChecked(checkedImages.contains(position));
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -267,6 +269,11 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
                             break;
                         case SELECT:
                             iconView.toggle();
+                            if (iconView.isChecked()) {
+                                checkedImages.add(position);
+                            } else {
+                                checkedImages.remove(position);
+                            }
                             selectionMode.setNumSelected(getNumSelectedInGridView());
                             break;
                         default:
@@ -283,11 +290,13 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
                         case VIEW:
                             setAllGridViewItemsChecked(false);
                             iconView.setChecked(true);
+                            checkedImages.add(getIconViewPositionInGridView(iconView));
                             gotoSelectionModeState();
                             break;
                         case SELECT:
                             if (!iconView.isChecked()) {
                                 iconView.setChecked(true);
+                                checkedImages.add(position);
                             }
                             setSelectedIconViewsAlpha(Constants.SELECTED_ICONVIEW_ALPHA);
                             ClipData.Item item = new ClipData.Item(Constants.IMAGE_DRAG_TAG);
@@ -511,12 +520,18 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
     }
 
     protected void setAllGridViewItemsChecked(boolean checked) {
-        final int n = gridView.getChildCount();
+        final int n = images.size();
+        checkedImages.clear();
         for (int idx = 0; idx < n; ++idx) {
             IconView view = (IconView) gridView.getChildAt(idx);
-            view.setChecked(checked);
-            if (!checked) {
-                view.setAlpha(1f);
+            if (view != null) {
+                view.setChecked(checked);
+                if (!checked) {
+                    view.setAlpha(1f);
+                }
+            }
+            if (checked) {
+                checkedImages.add(idx);
             }
         }
         gridView.invalidate();
