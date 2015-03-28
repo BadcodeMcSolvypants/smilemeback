@@ -3,29 +3,44 @@
     android:id="@+id/container"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
     <LinearLayout
         android:id="@+id/gallery_listview_container"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:background="@color/actionbar_background"
-        android:layout_weight="1">
-        <ListView
-            android:paddingTop="@dimen/iconview_top_padding"
-            android:layout_marginRight="2dp"
-            android:background="@color/gallery_side_background"
-            android:id="@+id/gallery_list_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="@dimen/icondisplay_listview_padding_left"
-            android:dividerHeight="16dp"
-            android:drawSelectorOnTop="true"
-            android:divider="@android:color/transparent"
-            tools:listitem="@layout/icon_view_side"
-            android:choiceMode="singleChoice">
-        </ListView>
-            
+        android:layout_weight="@integer/iconview_side_layoutweight"
+        android:focusable="false"
+        android:orientation="vertical"
+        android:background="@color/gallery_side_background"
+        >
+
+        <RelativeLayout
+            android:background="@drawable/rightbordertexlines"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/iconview_side_marginleft"
+            >
+
+            <ListView
+
+                android:gravity="center_horizontal"
+                android:layout_centerHorizontal="true"
+                android:paddingTop="@dimen/iconview_top_padding"
+
+                android:id="@+id/gallery_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:dividerHeight="@dimen/icondisplay_listview_divider_height"
+                android:drawSelectorOnTop="true"
+                android:divider="@android:color/transparent"
+                tools:listitem="@layout/icon_view_side"
+                android:choiceMode="singleChoice"
+                android:clickable="false">
+            </ListView>
+   </RelativeLayout>
     </LinearLayout>
 
 
@@ -36,13 +51,15 @@
         android:stretchMode="spacingWidthUniform"
         android:columnWidth="@dimen/iconview_width"
         android:layout_width="0dp"
+        android:gravity="center_horizontal"
         android:layout_height="match_parent"
-        android:paddingLeft="@dimen/gallery_gridview_padding_left"
+        android:paddingLeft="@dimen/gallery_gridview_padding_sides"
+        android:paddingRight="@dimen/gallery_gridview_padding_sides"
         android:id="@+id/gallery_contents_grid_view"
         android:numColumns="auto_fit"
         android:smoothScrollbar="false"
         android:nestedScrollingEnabled="false"
         tools:listitem="@layout/icon_view"
-        android:layout_weight="4" />
+        android:layout_weight="@integer/iconview_gridview_layoutweight" />
 
 </LinearLayout>

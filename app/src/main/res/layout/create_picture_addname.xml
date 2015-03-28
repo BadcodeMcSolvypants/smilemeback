@@ -67,7 +67,6 @@
                 android:gravity="center"
                 android:inputType="text"
                 android:id="@+id/imageName"
-                android:src="@drawable/placeholder_mobile"
                 android:paddingBottom="10dp"
                 android:textColor="#333"
                 android:background="@drawable/textlines"
