@@ -174,6 +174,7 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
             categoryAdapter.setHoverPosition(-1);
             categoryAdapter.notifyDataSetChanged();
             loadImages(category);
+            deselectAllItems();
             imageAdapter.notifyDataSetChanged();
             setAllGridViewItemsChecked(false);
             selectionMode.setTotal(images.size());
@@ -721,6 +722,16 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 logger.info("Deleting selected images");
+                Storage storage = new Storage(GalleryActivity.this);
+                List<Image> selectedImages = new ArrayList<>();
+                for (int idx : checkedImages) {
+                    selectedImages.add(images.get(idx));
+                }
+                try {
+                    storage.deleteImages(currentCategory, selectedImages);
+                } catch (StorageException e) {
+                    showStorageExceptionAlertAndFinish(e);
+                }
                 loadImages(currentCategory);
                 gridView.setAdapter(imageAdapter);
                 deselectAllItems();

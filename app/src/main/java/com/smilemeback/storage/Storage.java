@@ -274,6 +274,22 @@ public class Storage {
         }
     }
 
+    public void deleteImages(final Category category, List<Image> images) throws StorageException {
+        logger.info("Deleting " + images.size() + " images from category <" + category.getName() + ">");
+        try {
+            for (Image image : images) {
+                logger.info("Deleting image <" + image.getImage() + ">");
+                FileUtils.forceDelete(image.getImage());
+                logger.info("Deleting audio <" + image.getAudio() + ">");
+                FileUtils.forceDelete(image.getAudio());
+            }
+        } catch(IOException e) {
+            throw new StorageException(e);
+        } finally {
+            reorganizeCategory(category);
+        }
+    }
+
     public void moveImage(final Category srcCategory, final Image image, final Category destCategory) throws StorageException {
         List<Image> images = new ArrayList<>();
         images.add(image);
