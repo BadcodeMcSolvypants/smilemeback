@@ -26,6 +26,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
@@ -161,16 +162,16 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                view.setSelected(true);
                 Category category = categories.get(position);
                 if (category != currentCategory) {
+                    categoryAdapter.setSelectedItemPosition(position);
+                    categoryAdapter.notifyDataSetChanged();
                     loadImages(category);
                     imageAdapter.notifyDataSetChanged();
                     setAllGridViewItemsChecked(false);
                     selectionMode.setTotal(images.size());
                     selectionMode.setNumSelected(0);
                 }
-                listView.setSelection(position);
             }
         });
     }
@@ -465,6 +466,8 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
     }
 
     class CategoryAdapter extends BaseAdapter {
+        protected int selectedPosition = 0;
+
         @Override
         public int getCount() {
             return categories.size();
@@ -480,14 +483,30 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
             return position;
         }
 
+        public void setSelectedItemPosition(int pos) {
+            selectedPosition = pos;
+        }
+
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             final Category category = categories.get(position);
-            final IconView view = new IconViewSide(GalleryActivity.this, getResources().getXml(R.layout.icon_view_side), false);
+            IconViewSide view;
+            if (convertView != null) {
+                view = (IconViewSide)convertView;
+            } else {
+                view = new IconViewSide(GalleryActivity.this, getResources().getXml(R.layout.icon_view_side), false);
+            }
+
             view.setImageBitmap(category.getThumbnail());
             view.setLabel(category.getName().toString());
 
             view.setCheckboxVisible(false);
+
+            if (selectedPosition == position) {
+                view.setBackgroundResource(R.drawable.listview_selector_selected);
+            } else {
+                view.setBackgroundColor(Color.TRANSPARENT);
+            }
 
             return view;
         }

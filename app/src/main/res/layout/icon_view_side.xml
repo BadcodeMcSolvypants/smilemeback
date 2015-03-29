@@ -5,6 +5,7 @@
     android:background="@drawable/small_gallery_listitem_bg"
     android:layout_gravity="center_horizontal"
     android:orientation="vertical"
+    android:layout_marginLeft="10dp"
 
     >
 
