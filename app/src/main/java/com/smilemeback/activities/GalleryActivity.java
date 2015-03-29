@@ -119,6 +119,7 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
 
         Storage storage = new Storage(this);
         // uncomment next line to initialize testing categories with images
+        storage.truncateAllCategories();
         storage.initializeTestingCategories();
 
         loadCategories();
