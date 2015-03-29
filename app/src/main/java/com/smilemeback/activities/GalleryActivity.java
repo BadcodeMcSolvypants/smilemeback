@@ -119,7 +119,7 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
 
         Storage storage = new Storage(this);
         // uncomment next line to initialize testing categories with images
-        //storage.initializeTestingCategories();
+        storage.initializeTestingCategories();
 
         loadCategories();
         if (categories.size() > 0) {
@@ -162,18 +162,23 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Category category = categories.get(position);
-                if (category != currentCategory) {
-                    categoryAdapter.setSelectedItemPosition(position);
-                    categoryAdapter.notifyDataSetChanged();
-                    loadImages(category);
-                    imageAdapter.notifyDataSetChanged();
-                    setAllGridViewItemsChecked(false);
-                    selectionMode.setTotal(images.size());
-                    selectionMode.setNumSelected(0);
-                }
+                selectAndLoadListViewCategory(position);
             }
         });
+    }
+
+    public void selectAndLoadListViewCategory(int categoryPosition) {
+        Category category = categories.get(categoryPosition);
+        if (category != currentCategory) {
+            categoryAdapter.setSelectedItemPosition(categoryPosition);
+            categoryAdapter.setHoverPosition(-1);
+            categoryAdapter.notifyDataSetChanged();
+            loadImages(category);
+            imageAdapter.notifyDataSetChanged();
+            setAllGridViewItemsChecked(false);
+            selectionMode.setTotal(images.size());
+            selectionMode.setNumSelected(0);
+        }
     }
 
     protected void loadCategories() {
@@ -388,10 +393,14 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
                 case DragEvent.ACTION_DRAG_EXITED:
                     return true;
                 case DragEvent.ACTION_DROP:
-                    if (idx >= 0) {
-                        categoryAdapter.setSelectedItemPosition(idx);
-                    }
                     categoryAdapter.setHoverPosition(-1);
+                    if (idx >= 0) {
+                        if (idx != categoryAdapter.getSelectedItemPosition()) {
+                            moveSelectedImages(categories.get(idx));
+                            selectAndLoadListViewCategory(idx);
+                            v.performClick();
+                        }
+                    }
                     categoryAdapter.notifyDataSetChanged();
                     return true;
                 case DragEvent.ACTION_DRAG_ENDED:
@@ -726,5 +735,18 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
             }
         });
         dialog.show();
+    }
+
+    public void moveSelectedImages(Category destination) {
+        Storage storage = new Storage(GalleryActivity.this);
+        List<Image> selectedImages = new ArrayList<>();
+        for (int idx : checkedImages) {
+            selectedImages.add(images.get(idx));
+        }
+        try {
+            storage.moveImages(currentCategory, selectedImages, destination);
+        } catch (StorageException e) {
+            showStorageExceptionAlertAndFinish(e);
+        }
     }
 }

@@ -29,8 +29,11 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 /**
@@ -44,8 +47,10 @@ public class Storage {
     public static final String STORAGE_FOLDER = "SmileMeBack";
     public static final String CATEGORIES_FOLDER = "categories";
     public static final String CATEGORY_THUMBNAIL = "_thumbnail.jpg";
-    public static final String TEMPORARY_IMAGE = "temporary_image.jpg";
-    public static final String TEMPORARY_AUDIO = "temporary_audio.3gpp";
+    public static final String IMAGE_SUFFIX = ".jpg";
+    public static final String AUDIO_SUFFIX = ".3gpp";
+    public static final String TEMPORARY_IMAGE = "temporary_image" + IMAGE_SUFFIX;
+    public static final String TEMPORARY_AUDIO = "temporary_audio" + AUDIO_SUFFIX;
 
     /**
      * Application context.
@@ -256,8 +261,8 @@ public class Storage {
         List<Image> images = getCategoryImages(category);
         int nextIdx = images.size();
         // copy the files
-        File imageFile = new File(category.getFolder(), nextIdx + "_" + name + ".jpg");
-        File audioFile = new File(category.getFolder(), nextIdx + "_" + name + ".3gpp");
+        File imageFile = new File(category.getFolder(), constructStringFromName(nextIdx, new Name(name), IMAGE_SUFFIX));
+        File audioFile = new File(category.getFolder(), constructStringFromName(nextIdx, new Name(name), AUDIO_SUFFIX));
         logger.info("Adding new Image to Category " + category.getFolder());
         try {
             logger.info("Copying image from " + imagePath + " to " + imageFile);
@@ -268,6 +273,98 @@ public class Storage {
             throw new StorageException(e);
         }
     }
+
+    public void moveImage(final Category srcCategory, final Image image, final Category destCategory) throws StorageException {
+        List<Image> images = new ArrayList<>();
+        images.add(image);
+        moveImages(srcCategory, images, destCategory);
+    }
+
+    /**
+     * Move a list of images from one category directory to another.
+     * The moved images are appended to the end of the destination directory.
+     * @param srcCategory Source category.
+     * @param images List of images in source category.
+     * @param destCategory Destination category
+     * @throws StorageException
+     */
+    public void moveImages(final Category srcCategory, final List<Image> images, final Category destCategory) throws StorageException {
+        List<Image> destImages = getCategoryImages(destCategory);
+        int destIndex = destImages.size();
+        File destFolderPath = destCategory.getFolder();
+        logger.info("Moving images from category <" + srcCategory.getFolder() + "> to <" + destCategory.getFolder() + ">");
+        try {
+            for (Image image : images) {
+                File imagePath = new File(destFolderPath, constructStringFromName(destIndex, image.getName(), IMAGE_SUFFIX));
+                File audioPath = new File(destFolderPath, constructStringFromName(destIndex, image.getName(), AUDIO_SUFFIX));
+                logger.info("Moving <" + image.getImage() + "> to <" + imagePath +">");
+                FileUtils.moveFile(image.getImage(), imagePath);
+                logger.info("Moving <" + image.getAudio() + "> to <" + audioPath +">");
+                FileUtils.moveFile(image.getAudio(), audioPath);
+                destIndex += 1;
+            }
+            reorganizeCategory(srcCategory);
+        } catch (IOException e) {
+            throw new StorageException(e);
+        } finally {
+            reorganizeCategory(srcCategory);
+        }
+    }
+
+    /**
+     * Reorganize given category.
+     * - Corrects image and audio indices, fills gaps and moved folders.
+     * - Removes any files that should not belong to the category folder.
+     * @param category
+     * @throws StorageException
+     */
+    public void reorganizeCategory(final Category category) throws StorageException {
+        logger.info("Reorganizing category <" + category.getName() + ">");
+        Map<Integer, File> images = scanCategoryImages(category);
+        Map<Integer, File> sounds = scanCategoryAudio(category);
+        Set<Integer> common = new LinkedHashSet<>(images.keySet());
+        common.retainAll(sounds.keySet());
+        List<Integer> commonIdxs = new ArrayList<>(common);
+        Collections.sort(commonIdxs);
+        int lastUnused = 0;
+        Set<File> keepPaths = new HashSet<>();
+        keepPaths.add(category.getThumbnail());
+        try {
+            logger.info("Removing gaps between icons");
+            for (int current : commonIdxs) {
+                if (current > lastUnused) {
+                    // rename the indices
+                    Name name = getName(images.get(current));
+                    File imagePath = new File(category.getFolder(), constructStringFromName(lastUnused, name, IMAGE_SUFFIX));
+                    File audioPath = new File(category.getFolder(), constructStringFromName(lastUnused, name, AUDIO_SUFFIX));
+                    // move files
+                    FileUtils.deleteQuietly(imagePath);
+                    FileUtils.deleteQuietly(audioPath);
+                    logger.info("Moving <" + images.get(current) + "> to <" + imagePath +">");
+                    FileUtils.moveFile(images.get(current), imagePath);
+                    logger.info("Moving <" + sounds.get(current) + "> to <" + audioPath +">");
+                    FileUtils.moveFile(sounds.get(current), audioPath);
+                    keepPaths.add(imagePath);
+                    keepPaths.add(audioPath);
+                } else {
+                    keepPaths.add(images.get(current));
+                    keepPaths.add(sounds.get(current));
+                }
+                lastUnused += 1;
+            }
+
+            // remove all files that should not be in directory
+            logger.info("Deleting unused files");
+            for (File file : category.getFolder().listFiles()) {
+                if (!keepPaths.contains(file)) {
+                    logger.info("Deleting unused file <" + file + ">");
+                    FileUtils.forceDelete(file);
+                }
+            }
+        } catch (IOException e) {
+            throw new StorageException(e);
+        }
+     }
 
     /**
      * @return The file pointing to the path that should be used for temporary images.
@@ -325,6 +422,10 @@ public class Storage {
         return new Name(name);
     }
 
+    public String constructStringFromName(int position, Name name, String suffix) {
+        return String.format("%d_%s%s", position, name.toString(), suffix);
+    }
+
     /**
      * Filter files with given suffix and return them as indexed map.
      * Assumes that the files are from a category folder, therefore
@@ -357,11 +458,11 @@ public class Storage {
     }
 
     public static Map<Integer, File> scanCategoryImages(final Category category) throws StorageException {
-        return scanCategoryFiles(category, ".jpg");
+        return scanCategoryFiles(category, IMAGE_SUFFIX);
     }
 
     public static Map<Integer, File> scanCategoryAudio(final Category category) throws StorageException {
-        return scanCategoryFiles(category, ".3gpp");
+        return scanCategoryFiles(category, AUDIO_SUFFIX);
     }
 
 }
