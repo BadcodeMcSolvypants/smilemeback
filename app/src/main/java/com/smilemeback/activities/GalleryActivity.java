@@ -369,6 +369,7 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
         @Override
         public boolean onDrag(View v, DragEvent event) {
             final int action = event.getAction();
+            int idx = getListViewChildInCoords((int) event.getX(), (int) event.getY());
 
             switch (action) {
                 case DragEvent.ACTION_DRAG_STARTED:
@@ -376,7 +377,6 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
                 case DragEvent.ACTION_DRAG_ENTERED:
                     return true;
                 case DragEvent.ACTION_DRAG_LOCATION:
-                    int idx = getListViewChildInCoords((int) event.getX(), (int) event.getY());
                     if (idx >= 0) {
                         listView.smoothScrollToPosition(idx);
                         if (categoryAdapter.getHoverPosition() != idx) {
@@ -388,6 +388,11 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
                 case DragEvent.ACTION_DRAG_EXITED:
                     return true;
                 case DragEvent.ACTION_DROP:
+                    if (idx >= 0) {
+                        categoryAdapter.setSelectedItemPosition(idx);
+                    }
+                    categoryAdapter.setHoverPosition(-1);
+                    categoryAdapter.notifyDataSetChanged();
                     return true;
                 case DragEvent.ACTION_DRAG_ENDED:
                     setSelectedIconViewsAlpha(1f);
