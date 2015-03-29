@@ -379,7 +379,10 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
                     int idx = getListViewChildInCoords((int) event.getX(), (int) event.getY());
                     if (idx >= 0) {
                         listView.smoothScrollToPosition(idx);
-                        listView.setSelection(idx);
+                        if (categoryAdapter.getHoverPosition() != idx) {
+                            categoryAdapter.setHoverPosition(idx);
+                            categoryAdapter.notifyDataSetChanged();
+                        }
                     }
                     return true;
                 case DragEvent.ACTION_DRAG_EXITED:
@@ -467,6 +470,7 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
 
     class CategoryAdapter extends BaseAdapter {
         protected int selectedPosition = 0;
+        protected int hoverPosition = -1;
 
         @Override
         public int getCount() {
@@ -487,6 +491,18 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
             selectedPosition = pos;
         }
 
+        public void setHoverPosition(int pos) {
+            hoverPosition = pos;
+        }
+
+        public int getSelectedItemPosition() {
+            return selectedPosition;
+        }
+
+        public int getHoverPosition() {
+            return hoverPosition;
+        }
+
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             final Category category = categories.get(position);
@@ -504,6 +520,8 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
 
             if (selectedPosition == position) {
                 view.setBackgroundResource(R.drawable.listview_selector_selected);
+            } else if (hoverPosition == position) {
+                view.setBackgroundResource(R.drawable.listview_selector_pressed);
             } else {
                 view.setBackgroundColor(Color.TRANSPARENT);
             }
