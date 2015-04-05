@@ -243,7 +243,15 @@ public class Storage {
                 String err = "Names for image and audio differ for index <" + idx + ">: <" + imageName + "> <" + audioName + ">";
                 throw new StorageException(err);
             }
-            images.add(new Image(new Name(imageName), imageFile, audioFile));
+            images.add(new Image(category, new Name(imageName), imageFile, audioFile, idx));
+        }
+        Collections.sort(images);
+
+        // check positions
+        for (int idx=0 ; idx<images.size() ; ++idx) {
+            if (images.get(idx).getPosition() != idx) {
+                throw new StorageException("Image at position " + idx + " reports position " + images.get(idx).getPosition());
+            }
         }
 
         // log the images
@@ -380,7 +388,73 @@ public class Storage {
         } catch (IOException e) {
             throw new StorageException(e);
         }
-     }
+    }
+
+    /**
+     * Rename given image.
+     * @param image The image to rename
+     * @param newName New name for the image.
+     * @throws StorageException
+     */
+    public void renameImage(Image image, String newName) throws StorageException {
+        Name name = new Name(newName);
+        File newAudio = new File(image.getCategory().getFolder(),
+                constructStringFromName(image.getPosition(), name, AUDIO_SUFFIX));
+        File newImage = new File(image.getCategory().getFolder(),
+                constructStringFromName(image.getPosition(), name, IMAGE_SUFFIX));
+        try {
+            FileUtils.moveFile(image.getAudio(), newAudio);
+            FileUtils.moveFile(image.getImage(), newImage);
+        } catch (IOException e) {
+            throw new StorageException(e);
+        }
+    }
+
+    /**
+     * Switch the positions of selected images.
+     * @param images
+     * @param switchImage
+     */
+    public void switchImages(List<Image> images, Image switchImage) throws StorageException {
+        ImageSwitcher imageSwitcher = new ImageSwitcher(this, images, switchImage);
+        List<Integer> srcPositions = imageSwitcher.getSourcePositions();
+        List<Integer> destPositions = imageSwitcher.getDestinationPositions();
+
+        // copy everything to temporary positions
+        Category category = switchImage.getCategory();
+        List<File> tempImages = new ArrayList<>();
+        List<File> tempAudios = new ArrayList<>();
+        for (int tempIdx=0 ; tempIdx<srcPositions.size() ; ++tempIdx) {
+            File tempImage = new File(category.getFolder(), "temp_ " + tempIdx + IMAGE_SUFFIX);
+            File tempAudio = new File(category.getFolder(), "temp_" + tempIdx + AUDIO_SUFFIX);
+            tempImages.add(tempImage);
+            tempAudios.add(tempAudio);
+        }
+
+        try {
+            // move source data to temporary data
+            List<Image> catImages = getCategoryImages(category);
+            for (int idx = 0; idx < srcPositions.size(); ++idx) {
+                int srcIdx = srcPositions.get(idx);
+                Image catImage = catImages.get(srcIdx);
+                FileUtils.moveFile(catImage.getImage(), tempImages.get(idx));
+                FileUtils.moveFile(catImage.getAudio(), tempAudios.get(idx));
+            }
+
+            // move temporary data to final positions
+            for (int idx = 0; idx < destPositions.size(); ++idx) {
+                int srcIdx = srcPositions.get(idx);
+                int destIdx = destPositions.get(idx);
+                Name name = catImages.get(srcIdx).getName();
+                File destImage = new File(category.getFolder(), constructStringFromName(destIdx, name, IMAGE_SUFFIX));
+                File destAudio = new File(category.getFolder(), constructStringFromName(destIdx, name, AUDIO_SUFFIX));
+                FileUtils.moveFile(tempImages.get(idx), destImage);
+                FileUtils.moveFile(tempAudios.get(idx), destAudio);
+            }
+        } catch (IOException e) {
+            throw new StorageException(e);
+        }
+    }
 
     /**
      * @return The file pointing to the path that should be used for temporary images.

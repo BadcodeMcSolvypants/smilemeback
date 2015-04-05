@@ -19,16 +19,24 @@ package com.smilemeback.storage;
 
 import java.io.File;
 
-public class Image {
+public class Image implements Comparable<Image> {
 
+    protected Category category;
     protected Name name;
     protected File image;
     protected File audio;
+    protected int position;
 
-    public Image(Name imageName, File image, File audio) {
+    public Image(Category category, Name imageName, File image, File audio, int position) {
+        this.category = category;
         this.name = imageName;
         this.image = image;
         this.audio = audio;
+        this.position = position;
+    }
+
+    public Category getCategory() {
+        return category;
     }
 
     public Name getName() {
@@ -41,5 +49,14 @@ public class Image {
 
     public File getAudio() {
         return audio;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    @Override
+    public int compareTo(Image another) {
+        return Integer.compare(getPosition(), another.getPosition());
     }
 }

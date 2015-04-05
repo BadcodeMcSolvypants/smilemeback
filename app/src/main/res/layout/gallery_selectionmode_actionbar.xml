@@ -7,9 +7,16 @@
     <TextView
         android:id="@+id/actionbar_textview"
         android:text="@string/actionbar_num_selected"
+        android:textColor="@color/actionbar_textcolor"
         android:layout_width="@dimen/gallery_selectionmode_text_width"
         android:layout_height="match_parent"
         android:textSize="@dimen/gallery_selectionmode_font_size"
         style="?android:attr/spinnerStyle"
         android:gravity="left" />
+    <TextView
+        android:id="@+id/actionbar_statustext"
+        android:textColor="@color/actionbar_textcolor"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
 </LinearLayout>

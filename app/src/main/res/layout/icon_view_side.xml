@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/iconview_side_width"
     android:layout_height="@dimen/iconview_side_height"
     android:background="@drawable/small_gallery_listitem_bg"
@@ -45,5 +45,16 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true" />
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:id="@+id/iconview_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:background="@color/icon_overlay_color"
+        android:visibility="gone"
+        />
 
-</LinearLayout>
+
+</RelativeLayout>

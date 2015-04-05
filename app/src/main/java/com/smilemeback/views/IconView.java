@@ -21,9 +21,9 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.ViewGroup;
 import android.widget.Checkable;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -42,9 +42,9 @@ public class IconView extends RelativeLayout implements Checkable {
 
     protected ImageView image;
     protected TextView label;
+    protected LinearLayout overlay;
 
     // checkbox with blank layer hovering over the image
-    //protected FrameLayout blank;
     protected ImageView checkbox;
 
     protected boolean isChecked = false;
@@ -63,15 +63,14 @@ public class IconView extends RelativeLayout implements Checkable {
             image.setImageBitmap(null);
         }
         label = (TextView) findViewById(R.id.iconview_label);
-        //blank = (FrameLayout) findViewById(R.id.iconview_blank);
         checkbox = (ImageView) findViewById(R.id.iconview_chkbox_image);
+        overlay = (LinearLayout) findViewById(R.id.iconview_overlay);
 
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.iconview);
         boolean showLabel = array.getBoolean(R.styleable.iconview_showLabel, true);
         setLabelVisible(showLabel);
         setCheckboxVisible(isCheckboxVisible());
         setChecked(isChecked());
-        updateBlankVisibility();
     }
 
     /**
@@ -104,15 +103,10 @@ public class IconView extends RelativeLayout implements Checkable {
         } else {
             checkbox.setVisibility(GONE);
         }
-        updateBlankVisibility();
     }
 
-    private void updateBlankVisibility() {
-        if (isCheckboxVisible() && isChecked()) {
-            //blank.setVisibility(VISIBLE);
-        } else {
-            //blank.setVisibility(GONE);
-        }
+    public void setOverlayVisibility(int visibility) {
+        overlay.setVisibility(visibility);
     }
 
     @Override
@@ -135,7 +129,6 @@ public class IconView extends RelativeLayout implements Checkable {
             }
         }
         isChecked = checked;
-        updateBlankVisibility();
     }
 
     /**

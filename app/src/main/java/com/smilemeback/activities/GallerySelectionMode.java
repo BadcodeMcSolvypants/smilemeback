@@ -37,6 +37,7 @@ public class GallerySelectionMode implements ActionMode.Callback, View.OnClickLi
 
     protected Activity activity;
     protected TextView textView;
+    protected TextView statusText;
     protected GallerySelectionModeListener listener;
     protected ListPopupWindow popup;
     protected ActionMode actionMode;
@@ -68,6 +69,7 @@ public class GallerySelectionMode implements ActionMode.Callback, View.OnClickLi
         LayoutInflater inflater = activity.getLayoutInflater();
         View customView = inflater.inflate(R.layout.gallery_selectionmode_actionbar, null);
         mode.setCustomView(customView);
+        statusText = (TextView)customView.findViewById(R.id.actionbar_statustext);
         textView = (TextView)customView.findViewById(R.id.actionbar_textview);
 
         // whenever textview is clicked, we will show the popup.
@@ -174,5 +176,13 @@ public class GallerySelectionMode implements ActionMode.Callback, View.OnClickLi
      */
     public void updateNumSelectedText() {
         textView.setText("#" + numSelected + " " + activity.getString(R.string.actionbar_num_selected));
+    }
+
+    /**
+     * Set the text displayed in the actionmode's statustext field.
+     * @param text
+     */
+    public void setStatusText(String text) {
+        statusText.setText(text);
     }
 }

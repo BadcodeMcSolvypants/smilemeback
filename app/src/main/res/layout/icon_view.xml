@@ -43,5 +43,15 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true" />
 
+    <LinearLayout
+        android:id="@+id/iconview_overlay"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:background="@color/icon_overlay_color"
+        />
+
 
 </RelativeLayout>

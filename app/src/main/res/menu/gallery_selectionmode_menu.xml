@@ -3,13 +3,16 @@
 
     <item android:id="@+id/gallery_selectionmode_menu_add_image"
         android:showAsAction="always"
+        android:icon="@android:drawable/ic_menu_add"
         android:title="Add image" />
 
     <item android:id="@+id/gallery_selectionmode_menu_rename_image"
           android:showAsAction="always"
+          android:icon="@android:drawable/ic_menu_edit"
           android:title="@string/actionbar_rename_image" />
 
     <item android:id="@+id/gallery_selectionmode_menu_delete_image"
         android:showAsAction="always"
+        android:icon="@android:drawable/ic_menu_delete"
         android:title="@string/actionbar_delete_image" />
 </menu>

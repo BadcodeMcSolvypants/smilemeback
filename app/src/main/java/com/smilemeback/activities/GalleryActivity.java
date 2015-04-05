@@ -59,6 +59,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -196,7 +197,7 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
         Storage storage = new Storage(this);
         currentCategory = category;
         try {
-            images = storage.getCategoryImages(category);
+            images = storage.getCategoryImages(currentCategory);
             checkedImages.clear();
         } catch (StorageException e) {
             showStorageExceptionAlertAndFinish(e);
@@ -251,6 +252,9 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
             } else {
                 view = new IconView(GalleryActivity.this, getResources().getXml(R.layout.icon_view), false);
             }
+            view.setOverlayVisibility(View.GONE);
+            view.setOnDragListener(dragListener);
+
             final Image image = images.get(position);
             view.setImageBitmap(image.getImage());
             view.setLabel(image.getName().toString());
@@ -327,6 +331,7 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
 
     /**
      * Calling this method will enter the image selection state.
+     * Calling this method will enter the image selection state.
      */
     protected void gotoSelectionModeState() {
         animateListViewIn();
@@ -374,14 +379,23 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
     protected class ImageDragEventListener implements View.OnDragListener {
 
         @Override
-        public boolean onDrag(View v, DragEvent event) {
+        public boolean onDrag(View view, DragEvent event) {
             final int action = event.getAction();
+            if (view == listView) {
+                return handleListViewDragEvent(view, action, event);
+            } else {
+                return handleIconDragEvent(view, action, event);
+            }
+        }
+
+        private boolean handleListViewDragEvent(final View view, final int action, final DragEvent event) {
             int idx = getListViewChildInCoords((int) event.getX(), (int) event.getY());
 
             switch (action) {
                 case DragEvent.ACTION_DRAG_STARTED:
                     return true;
                 case DragEvent.ACTION_DRAG_ENTERED:
+                    selectionMode.setStatusText("Drop selected images to category");
                     return true;
                 case DragEvent.ACTION_DRAG_LOCATION:
                     if (idx >= 0) {
@@ -393,6 +407,7 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
                     }
                     return true;
                 case DragEvent.ACTION_DRAG_EXITED:
+                    selectionMode.setStatusText("");
                     return true;
                 case DragEvent.ACTION_DROP:
                     categoryAdapter.setHoverPosition(-1);
@@ -400,13 +415,49 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
                         if (idx != categoryAdapter.getSelectedItemPosition()) {
                             moveSelectedImages(categories.get(idx));
                             selectAndLoadListViewCategory(idx);
-                            v.performClick();
+                            view.performClick();
                         }
                     }
                     categoryAdapter.notifyDataSetChanged();
                     return true;
                 case DragEvent.ACTION_DRAG_ENDED:
+                    selectionMode.setStatusText("");
                     setSelectedIconViewsAlpha(1f);
+                    return true;
+            }
+            return false;
+        }
+
+        private boolean handleIconDragEvent(final View view, final int action, final DragEvent event) {
+            IconView iconView = (IconView)view;
+            switch (action) {
+                case DragEvent.ACTION_DRAG_STARTED:
+                    return true;
+                case DragEvent.ACTION_DRAG_ENTERED:
+                    if (!checkedImages.contains(getIconViewPositionInGridView(iconView))) {
+                        selectionMode.setStatusText("Switch images");
+                        iconView.setOverlayVisibility(View.VISIBLE);
+                    }
+                    return true;
+                case DragEvent.ACTION_DRAG_LOCATION:
+                    return true;
+                case DragEvent.ACTION_DRAG_EXITED:
+                    selectionMode.setStatusText("");
+                    iconView.setOverlayVisibility(View.GONE);
+                    return true;
+                case DragEvent.ACTION_DROP:
+                    setSelectedIconViewsAlpha(1f);
+                    int switchIdx = getIconViewPositionInGridView(iconView);
+                    if (!checkedImages.contains(switchIdx)) {
+                        reorderSelectedImages(switchIdx);
+                        loadImages(currentCategory);
+                        imageAdapter.notifyDataSetChanged();
+                        selectionMode.setNumSelected(0);
+                    }
+                    return true;
+                case DragEvent.ACTION_DRAG_ENDED:
+                    selectionMode.setStatusText("");
+                    iconView.setOverlayVisibility(View.GONE);
                     return true;
             }
             return false;
@@ -617,7 +668,7 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
     public void setListViewWeight(float weight) {
         ((LinearLayout.LayoutParams)listViewContainer.getLayoutParams()).weight = weight;
         listViewContainer.requestLayout();
-        logger.info("Animating to " + weight);
+        //logger.info("Animating to " + weight);
     }
 
     protected void animateListViewIn() {
@@ -689,7 +740,7 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
     @Override
     public void renameCurrentlySelectedIcon() {
         int pos = getSelectedGridViewItemPosition();
-        Image image = images.get(pos);
+        final Image image = images.get(pos);
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle("Rename image");
         final EditText edit = new EditText(this);
@@ -700,6 +751,12 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 logger.info("Renaming current icon to " + edit.getText());
+                Storage storage = new Storage(GalleryActivity.this);
+                try {
+                    storage.renameImage(image, edit.getText().toString());
+                } catch (StorageException e) {
+                    showStorageExceptionAlertAndFinish(e);
+                }
                 loadImages(currentCategory);
                 gridView.setAdapter(imageAdapter);
                 deselectAllItems();
@@ -757,6 +814,26 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
         }
         try {
             storage.moveImages(currentCategory, selectedImages, destination);
+        } catch (StorageException e) {
+            showStorageExceptionAlertAndFinish(e);
+        }
+    }
+
+    public void reorderSelectedImages(int switchIndex) {
+        List<Integer> sortedIdxs = new ArrayList<>(checkedImages);
+        Collections.sort(sortedIdxs);
+        List<Image> selectedImages = new ArrayList<>();
+        logger.info("Number of selected images " + checkedImages.size());
+        logger.info("Switch index is " + switchIndex);
+        for (int selectedIdx : sortedIdxs) {
+            selectedImages.add(images.get(selectedIdx));
+            logger.info("Selected index is " + selectedIdx);
+        }
+        Image switchImage = images.get(switchIndex);
+
+        Storage storage = new Storage(GalleryActivity.this);
+        try {
+            storage.switchImages(selectedImages, switchImage);
         } catch (StorageException e) {
             showStorageExceptionAlertAndFinish(e);
         }
