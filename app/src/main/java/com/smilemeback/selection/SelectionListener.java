@@ -14,11 +14,33 @@
  You should have received a copy of the GNU General Public License
  along with SmileMeBack.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.smilemeback.activities;
+package com.smilemeback.selection;
 
 /**
- * This enumeration defines the states GalleryActivity can hold.
+ * Interface for {@link com.smilemeback.selection.SelectionManager} events.
  */
-public enum GalleryActivityState {
-    VIEW, SELECT
+public interface SelectionListener {
+    /**
+     * Called when a position gets selected.
+     * @param position
+     */
+    void positionSelected(int position);
+
+    /**
+     * Called when a position gets deselected.
+     * @param position
+     */
+    void positionDeselected(int position);
+
+    /**
+     * Called when total number of elements changed.
+     * @param total
+     */
+    void numTotalChanged(int total);
+
+    /**
+     * Called when total number of selected positions changed.
+     * @param selected
+     */
+    void numSelectedChanged(int selected);
 }

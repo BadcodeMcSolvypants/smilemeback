@@ -14,17 +14,11 @@
  You should have received a copy of the GNU General Public License
  along with SmileMeBack.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.smilemeback.activities;
+package com.smilemeback.adapters;
 
-/**
- * Interface that defines the listener for various activities of
- * {@link com.smilemeback.activities.GallerySelectionMode}.
- */
-public interface GallerySelectionModeListener {
-
-    void gallerySelectionModeFinished();
-    void selectAllItems();
-    void deselectAllItems();
-    void renameCurrentlySelectedIcon();
-    void deleteCurrentlySelectedIcons();
+public interface GridAdapterListener {
+    /**
+     * Notifies the listener, that it should enter selection mode.
+     */
+    void enterSelectionMode();
 }

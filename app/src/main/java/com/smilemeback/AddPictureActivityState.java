@@ -14,7 +14,7 @@
  You should have received a copy of the GNU General Public License
  along with SmileMeBack.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.smilemeback.activities;
+package com.smilemeback;
 
 /**
  * This enum defines states in AddPictureActivity.

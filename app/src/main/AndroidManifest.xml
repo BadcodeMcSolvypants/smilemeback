@@ -17,24 +17,22 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
 
-         android:theme="@style/AppTheme" >
+        <activity
+            android:name=".activities.CategoriesActivity">
+            <!--android:parentActivityName=".activities.IconDisplayActivity"--> >
 
-        <activity android:name=".activities.GalleryActivity" >
+            <!--<meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.smilemeback.activities.IconDisplayActivity" />-->
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activities.IconDisplayActivity"
-            android:label="@string/app_name"
-            android:parentActivityName=".activities.IconDisplayActivity" >
 
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.smilemeback.activities.IconDisplayActivity" />
-        </activity>
         <activity android:name=".activities.AddPictureActivity">
 
         </activity>

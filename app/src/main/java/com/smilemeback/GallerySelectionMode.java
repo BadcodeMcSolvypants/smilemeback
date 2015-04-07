@@ -14,7 +14,7 @@
  You should have received a copy of the GNU General Public License
  along with SmileMeBack.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.smilemeback.activities;
+package com.smilemeback;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -29,7 +29,8 @@ import android.widget.ListAdapter;
 import android.widget.ListPopupWindow;
 import android.widget.TextView;
 
-import com.smilemeback.R;
+import com.smilemeback.activities.AddPictureActivity;
+import com.smilemeback.activities.OldGalleryActivity;
 import com.smilemeback.views.IconView;
 
 
@@ -122,7 +123,7 @@ public class GallerySelectionMode implements ActionMode.Callback, View.OnClickLi
         switch (item.getItemId()) {
             case R.id.gallery_selectionmode_menu_add_image:
                 intent = new Intent(activity, AddPictureActivity.class);
-                activity.startActivityForResult(intent, GalleryActivity.ADD_PICUTURE_INTENT);
+                activity.startActivityForResult(intent, OldGalleryActivity.ADD_PICUTURE_INTENT);
                 return true;
             case R.id.gallery_selectionmode_menu_rename_image:
                 listener.renameCurrentlySelectedIcon();
