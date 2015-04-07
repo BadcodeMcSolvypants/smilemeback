@@ -130,8 +130,6 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
             loadImages(currentCategory);
             initializeGridView();
             initializeListView();
-        } else {
-            setContentView(R.layout.gallery_empty);
         }
 
     }
@@ -250,7 +248,7 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
             if (convertView != null) {
                 view = (IconView)convertView;
             } else {
-                view = new IconView(GalleryActivity.this, getResources().getXml(R.layout.icon_view), false);
+                view = new IconView(GalleryActivity.this, getResources().getLayout(R.layout.icon_view), false);
             }
             view.setOverlayVisibility(View.GONE);
             view.setOnDragListener(dragListener);
@@ -577,7 +575,7 @@ public class GalleryActivity extends Activity implements GallerySelectionModeLis
             if (convertView != null) {
                 view = (IconViewSide)convertView;
             } else {
-                view = new IconViewSide(GalleryActivity.this, getResources().getXml(R.layout.icon_view_side), false);
+                view = new IconViewSide(GalleryActivity.this, getResources().getLayout(R.layout.icon_view_side), false);
             }
 
             view.setImageBitmap(category.getThumbnail());
