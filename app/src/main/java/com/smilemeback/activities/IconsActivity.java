@@ -18,20 +18,42 @@ package com.smilemeback.activities;
 
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 
+import com.smilemeback.Constants;
+import com.smilemeback.GalleryActivityState;
 import com.smilemeback.R;
+import com.smilemeback.adapters.IconGridAdapter;
+import com.smilemeback.storage.Category;
+import com.smilemeback.storage.Storage;
+import com.smilemeback.storage.StorageException;
+
+import java.util.List;
 
 public class IconsActivity extends GalleryActivity {
+
+    protected int startCategoryIndex;
+    protected List<Category> categories;
+    protected Category currentCategory;
+
+    protected IconGridAdapter gridAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // define the category we will be living in
+        Intent intent = getIntent();
+        startCategoryIndex = intent.getIntExtra(Constants.CATEGORY_INDEX, 0);
+
+        // load categories
+        loadCategories();
+        currentCategory = categories.get(startCategoryIndex);
+
+        gridAdapter = new IconGridAdapter(this, this, selectionManager, data);
+        gridAdapter.setCurrentCategory(currentCategory);
+        gridAdapter.initialize();
     }
 
     @Override
@@ -42,30 +64,46 @@ public class IconsActivity extends GalleryActivity {
         actionBar.setTitle(getString(R.string.gallery_actionbar_title));
     }
 
-    @Override
-    protected void initializeGridView() {
-        //gridView.setAdapter(imageAdapter);
+    protected void loadCategories() {
+        Storage storage = new Storage(this);
+        try {
+            categories = storage.getCategories();
+        } catch (StorageException e) {
+            showStorageExceptionAlertAndFinish(e);
+        }
     }
 
     @Override
+    protected void initializeGridView() {
+        data.gridView.setAdapter(gridAdapter);
+    }
+
+
+    @Override
     public void initializeListView() {
-        /*listView.setAdapter(categoryAdapter);
-        listView.setOnDragListener(dragListener);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectAndLoadListViewCategory(position);
-            }
-        });*/
     }
 
     @Override
     protected void refreshGridView() {
+        gridAdapter.notifyDataSetChanged();
+        gridAdapter.setSelectedIconsChecked();
+    }
+
+    @Override
+    protected void refreshSidePane() {
 
     }
 
     @Override
-    protected void refreshListView() {
-
+    public void gallerySelectionModeFinished() {
+        super.gallerySelectionModeFinished();
+        animateListViewOut();
     }
+
+    @Override
+    public void enterSelectionMode() {
+        super.enterSelectionMode();
+        animateListViewIn();
+    }
+
 }

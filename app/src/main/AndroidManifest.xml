@@ -21,16 +21,21 @@
 
         <activity
             android:name=".activities.CategoriesActivity">
-            <!--android:parentActivityName=".activities.IconDisplayActivity"--> >
 
-            <!--<meta-data
+        </activity>
+
+        <activity android:name=".activities.IconsActivity"
+                  android:parentActivityName=".activities.CategoriesActivity">
+
+            <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.smilemeback.activities.IconDisplayActivity" />-->
+                android:value="com.smilemeback.activities.CategoriesActivity" />
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
         <activity android:name=".activities.AddPictureActivity">

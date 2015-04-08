@@ -16,42 +16,45 @@
  */
 package com.smilemeback.adapters;
 
-import android.content.Intent;
+import android.media.MediaPlayer;
 
-import com.smilemeback.Constants;
 import com.smilemeback.GalleryActivityData;
-import com.smilemeback.activities.CategoriesActivity;
 import com.smilemeback.activities.IconsActivity;
 import com.smilemeback.selection.SelectionManager;
 import com.smilemeback.storage.Category;
+import com.smilemeback.storage.Image;
 import com.smilemeback.storage.Storage;
 import com.smilemeback.storage.StorageException;
 import com.smilemeback.views.IconView;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.List;
 
 /**
- * Manages gallery icons in a gridView.
+ * Manages images/icons in a gallery.
  */
-public class CategoryGridAdapter extends BaseGridAdapter {
+public class IconGridAdapter extends BaseGridAdapter {
 
-    private List<Category> categories;
+    private List<Image> images;
+    private Category currentCategory;
+    private MediaPlayer player = new MediaPlayer();
 
-    public CategoryGridAdapter(CategoriesActivity activity, GridAdapterListener listener, SelectionManager selectionManager, GalleryActivityData data) {
+    public IconGridAdapter(IconsActivity activity, GridAdapterListener listener, SelectionManager selectionManager, GalleryActivityData data) {
         super(activity, listener, selectionManager, data);
     }
 
-    /**
-     * Load the categories and initialize the adapter,
-     * also refresh the associated gridview.
-     *
-     * @throws StorageException
-     */
+    public void setCurrentCategory(Category category) {
+        this.currentCategory = category;
+        initialize();
+    }
+
+    @Override
     public void initialize()  {
         try {
             Storage storage = new Storage(activity);
-            categories = storage.getCategories();
-            selectionManager.setNumTotal(categories.size());
+            images = storage.getCategoryImages(currentCategory);
+            selectionManager.setNumTotal(images.size());
             selectionManager.deselectAll();
             data.gridView.setAdapter(this);
         } catch (StorageException e) {
@@ -61,25 +64,32 @@ public class CategoryGridAdapter extends BaseGridAdapter {
 
     @Override
     public int getCount() {
-        return categories.size();
+        return images.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return categories.get(position);
+        return images.get(position);
     }
 
     @Override
     void prepareIconView(IconView view, int position) {
-        final Category category = categories.get(position);
-        view.setImageBitmap(category.getThumbnail());
-        view.setLabel(category.getName().toString());
+        final Image image = images.get(position);
+        view.setImageBitmap(image.getImage());
+        view.setLabel(image.getName().toString());
     }
 
     @Override
     void handleIconClick(IconView view, int position) {
-        Intent intent = new Intent(activity, IconsActivity.class);
-        intent.putExtra(Constants.CATEGORY_INDEX, position);
-        activity.startActivity(intent);
+        try {
+            if (!player.isPlaying()) {
+                player.reset();
+                player.setDataSource(new FileInputStream(images.get(position).getAudio()).getFD());
+                player.prepare();
+                player.start();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

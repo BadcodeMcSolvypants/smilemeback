@@ -44,12 +44,11 @@ abstract public class BaseGridAdapter extends BaseAdapter {
      * @param selectionManager
      * @param data
      */
-    public BaseGridAdapter(CategoriesActivity activity, GridAdapterListener listener, SelectionManager selectionManager, GalleryActivityData data) {
+    public BaseGridAdapter(GalleryActivity activity, GridAdapterListener listener, SelectionManager selectionManager, GalleryActivityData data) {
         this.activity = activity;
         this.listener = listener;
         this.selectionManager = selectionManager;
         this.data = data;
-        initialize();
     }
 
     /**

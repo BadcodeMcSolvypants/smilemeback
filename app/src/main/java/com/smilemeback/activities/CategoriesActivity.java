@@ -35,6 +35,7 @@ public class CategoriesActivity extends GalleryActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         gridAdapter = new CategoryGridAdapter(this, this, selectionManager, data);
+        gridAdapter.initialize();
     }
 
     @Override
@@ -60,5 +61,5 @@ public class CategoriesActivity extends GalleryActivity {
     }
 
     @Override
-    protected void refreshListView() { }
+    protected void refreshSidePane() { }
 }

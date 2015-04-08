@@ -94,7 +94,7 @@ public abstract class GalleryActivity extends Activity implements GallerySelecti
     /**
      * Refresh sidebar list view.
      */
-    abstract protected void refreshListView();
+    abstract protected void refreshSidePane();
     /**
      * Method that deletes all content and sets up some categories to test the application
      * with.
@@ -243,7 +243,7 @@ public abstract class GalleryActivity extends Activity implements GallerySelecti
         data.state = GalleryActivityState.SELECT;
         startActionMode(selectionMode);
         refreshGridView();
-        refreshListView();
+        refreshSidePane();
         selectionMode.setTotal(selectionManager.getNumTotal());
         selectionMode.setNumSelected(selectionManager.getNumSelected());
     }
