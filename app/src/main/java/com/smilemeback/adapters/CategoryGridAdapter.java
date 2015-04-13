@@ -18,8 +18,8 @@ package com.smilemeback.adapters;
 
 import android.content.Intent;
 
-import com.smilemeback.Constants;
-import com.smilemeback.GalleryActivityData;
+import com.smilemeback.misc.Constants;
+import com.smilemeback.misc.GalleryActivityData;
 import com.smilemeback.activities.CategoriesActivity;
 import com.smilemeback.activities.IconsActivity;
 import com.smilemeback.selection.SelectionManager;

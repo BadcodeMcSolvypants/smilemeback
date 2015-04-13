@@ -23,10 +23,11 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 
-import com.smilemeback.Constants;
+import com.smilemeback.misc.Constants;
 import com.smilemeback.adapters.CategoryListAdapter;
 import com.smilemeback.adapters.IconGridAdapter;
 import com.smilemeback.adapters.ListAdapterListener;
+import com.smilemeback.misc.ListViewDragListener;
 import com.smilemeback.storage.Category;
 import com.smilemeback.storage.Storage;
 import com.smilemeback.storage.StorageException;
@@ -90,6 +91,8 @@ public class IconsActivity extends GalleryActivity implements ListAdapterListene
     public void initializeListView() {
         listAdapter = new CategoryListAdapter(this, this, gridAdapter.getCurrentCategory(), data.listView);
         data.listView.setAdapter(listAdapter);
+        ListViewDragListener dragListener = new ListViewDragListener(selectionManager, selectionMode, listAdapter);
+        data.listView.setOnDragListener(dragListener);
     }
 
     @Override

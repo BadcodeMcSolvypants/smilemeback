@@ -128,4 +128,8 @@ public class CategoryListAdapter extends BaseAdapter {
 
         return view;
     }
+
+    public ListView getListView() {
+        return listView;
+    }
 }

@@ -46,8 +46,8 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import com.smilemeback.Constants;
-import com.smilemeback.GalleryActivityState;
+import com.smilemeback.misc.Constants;
+import com.smilemeback.misc.GalleryActivityState;
 import com.smilemeback.GallerySelectionMode;
 import com.smilemeback.GallerySelectionModeListener;
 import com.smilemeback.R;

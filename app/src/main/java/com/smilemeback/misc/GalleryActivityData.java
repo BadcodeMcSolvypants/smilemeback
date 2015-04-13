@@ -14,7 +14,7 @@
  You should have received a copy of the GNU General Public License
  along with SmileMeBack.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.smilemeback;
+package com.smilemeback.misc;
 
 import android.widget.GridView;
 import android.widget.LinearLayout;

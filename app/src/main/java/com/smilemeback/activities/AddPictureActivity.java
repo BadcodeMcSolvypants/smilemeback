@@ -32,8 +32,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.smilemeback.AddPictureActivityState;
-import com.smilemeback.Constants;
+import com.smilemeback.misc.AddPictureActivityState;
+import com.smilemeback.misc.Constants;
 import com.smilemeback.R;
 import com.smilemeback.storage.Storage;
 import com.squareup.picasso.Picasso;

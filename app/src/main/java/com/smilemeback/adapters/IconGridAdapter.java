@@ -18,7 +18,7 @@ package com.smilemeback.adapters;
 
 import android.media.MediaPlayer;
 
-import com.smilemeback.GalleryActivityData;
+import com.smilemeback.misc.GalleryActivityData;
 import com.smilemeback.activities.IconsActivity;
 import com.smilemeback.selection.SelectionManager;
 import com.smilemeback.storage.Category;

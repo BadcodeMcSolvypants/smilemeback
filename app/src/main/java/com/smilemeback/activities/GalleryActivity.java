@@ -22,12 +22,14 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.view.View;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import com.smilemeback.GalleryActivityData;
-import com.smilemeback.GalleryActivityState;
+import com.smilemeback.misc.Constants;
+import com.smilemeback.misc.GalleryActivityData;
+import com.smilemeback.misc.GalleryActivityState;
 import com.smilemeback.GallerySelectionMode;
 import com.smilemeback.GallerySelectionModeListener;
 import com.smilemeback.R;
@@ -36,6 +38,7 @@ import com.smilemeback.selection.SelectionListener;
 import com.smilemeback.selection.SelectionManager;
 import com.smilemeback.storage.Storage;
 import com.smilemeback.storage.StorageException;
+import com.smilemeback.views.IconView;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -142,7 +145,7 @@ public abstract class GalleryActivity extends Activity implements GallerySelecti
 
     /**
      * Function that initializes various views and data defined in
-     * {@link com.smilemeback.GalleryActivityData}.
+     * {@link GalleryActivityData}.
      */
     protected void initializeDataAndFindLayoutItems() {
         data.gridView = (GridView) findViewById(R.id.gallery_contents_grid_view);
@@ -235,6 +238,22 @@ public abstract class GalleryActivity extends Activity implements GallerySelecti
     public void numSelectedChanged(int selected) {
         if (data.state == GalleryActivityState.SELECT) {
             selectionMode.setNumSelected(selected);
+        }
+    }
+
+    @Override
+    public void highlight(int position) {
+        View view = data.gridView.getChildAt(position);
+        if (view != null) {
+            view.setAlpha(Constants.SELECTED_ICONVIEW_ALPHA);
+        }
+    }
+
+    @Override
+    public void dehighlight(int position) {
+        View view = data.gridView.getChildAt(position);
+        if (view != null) {
+            view.setAlpha(1f);
         }
     }
 
