@@ -19,7 +19,9 @@ package com.smilemeback.adapters;
 import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
 
 import com.smilemeback.R;
 import com.smilemeback.activities.IconsActivity;
@@ -39,9 +41,15 @@ public class CategoryListAdapter extends BaseAdapter {
     protected int selectedPosition = 0;
     protected int hoverPosition = -1;
     protected List<Category> categories = new ArrayList<>();
+    protected Category currentCategory;
+    protected ListAdapterListener listener;
+    protected ListView listView;
 
-    public CategoryListAdapter(IconsActivity activity) {
+    public CategoryListAdapter(IconsActivity activity, final ListAdapterListener listener, final Category currentCategory, ListView listView) {
         this.activity = activity;
+        this.listener = listener;
+        this.currentCategory = currentCategory;
+        this.listView = listView;
 
         try {
             Storage storage = new Storage(activity);
@@ -49,6 +57,19 @@ public class CategoryListAdapter extends BaseAdapter {
         } catch (StorageException e) {
             activity.showStorageExceptionAlertAndFinish(e);
         }
+
+        this.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Category category = categories.get(position);
+                if (category != currentCategory) {
+                    setSelectedItemPosition(position);
+                    setHoverPosition(-1);
+                    notifyDataSetChanged();
+                    listener.categorySelected(category);
+                }
+            }
+        });
     }
 
     @Override

@@ -49,13 +49,17 @@ public class IconGridAdapter extends BaseGridAdapter {
         initialize();
     }
 
+    public Category getCurrentCategory() {
+        return currentCategory;
+    }
+
     @Override
     public void initialize()  {
         try {
             Storage storage = new Storage(activity);
             images = storage.getCategoryImages(currentCategory);
-            selectionManager.setNumTotal(images.size());
             selectionManager.deselectAll();
+            selectionManager.setNumTotal(images.size());
             data.gridView.setAdapter(this);
         } catch (StorageException e) {
             activity.showStorageExceptionAlertAndFinish(e);

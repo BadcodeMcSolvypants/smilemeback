@@ -20,24 +20,23 @@ package com.smilemeback.activities;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.view.MenuItem;
 
 import com.smilemeback.Constants;
-import com.smilemeback.GalleryActivityState;
-import com.smilemeback.R;
+import com.smilemeback.adapters.CategoryListAdapter;
 import com.smilemeback.adapters.IconGridAdapter;
+import com.smilemeback.adapters.ListAdapterListener;
 import com.smilemeback.storage.Category;
 import com.smilemeback.storage.Storage;
 import com.smilemeback.storage.StorageException;
 
 import java.util.List;
 
-public class IconsActivity extends GalleryActivity {
-
-    protected int startCategoryIndex;
-    protected List<Category> categories;
-    protected Category currentCategory;
+public class IconsActivity extends GalleryActivity implements ListAdapterListener {
 
     protected IconGridAdapter gridAdapter;
+    protected CategoryListAdapter listAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,15 +44,17 @@ public class IconsActivity extends GalleryActivity {
 
         // define the category we will be living in
         Intent intent = getIntent();
-        startCategoryIndex = intent.getIntExtra(Constants.CATEGORY_INDEX, 0);
+        int startCategoryIndex = intent.getIntExtra(Constants.CATEGORY_INDEX, 0);
 
         // load categories
-        loadCategories();
-        currentCategory = categories.get(startCategoryIndex);
+        List<Category> categories = loadCategories();
+        Category currentCategory = categories.get(startCategoryIndex);
 
         gridAdapter = new IconGridAdapter(this, this, selectionManager, data);
         gridAdapter.setCurrentCategory(currentCategory);
         gridAdapter.initialize();
+
+        setActionBarTitle(currentCategory.getName().toString());
     }
 
     @Override
@@ -61,17 +62,23 @@ public class IconsActivity extends GalleryActivity {
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setTitle(getString(R.string.gallery_actionbar_title));
     }
 
-    protected void loadCategories() {
+    protected void setActionBarTitle(String title) {
+        getActionBar().setTitle(title);
+    }
+
+    protected List<Category> loadCategories() {
+        List<Category> categories = null;
         Storage storage = new Storage(this);
         try {
             categories = storage.getCategories();
         } catch (StorageException e) {
             showStorageExceptionAlertAndFinish(e);
         }
+        return categories;
     }
+
 
     @Override
     protected void initializeGridView() {
@@ -81,6 +88,8 @@ public class IconsActivity extends GalleryActivity {
 
     @Override
     public void initializeListView() {
+        listAdapter = new CategoryListAdapter(this, this, gridAdapter.getCurrentCategory(), data.listView);
+        data.listView.setAdapter(listAdapter);
     }
 
     @Override
@@ -106,4 +115,20 @@ public class IconsActivity extends GalleryActivity {
         animateListViewIn();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void categorySelected(Category category) {
+        gridAdapter.setCurrentCategory(category);
+        setActionBarTitle(category.getName().toString());
+    }
 }
