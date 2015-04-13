@@ -57,7 +57,7 @@ public abstract class GalleryActivity extends Activity implements GallerySelecti
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setupTestingCategories();
+        setupTestingCategories();
 
         selectionManager.addListener(this);
         selectionMode = new SelectionMode(this, this);
@@ -209,16 +209,6 @@ public abstract class GalleryActivity extends Activity implements GallerySelecti
     public void deselectAllItems() {
         selectionManager.deselectAll();
         refreshGridView();
-    }
-
-    @Override
-    public void renameCurrentlySelectedIcon() {
-
-    }
-
-    @Override
-    public void deleteCurrentlySelectedIcons() {
-
     }
 
     @Override

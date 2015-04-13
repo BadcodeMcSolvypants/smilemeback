@@ -18,21 +18,25 @@ package com.smilemeback.activities;
 
 
 import android.app.ActionBar;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 
-import com.smilemeback.drag.ListDragResultListener;
-import com.smilemeback.misc.Constants;
 import com.smilemeback.adapters.CategoryListAdapter;
 import com.smilemeback.adapters.IconGridAdapter;
 import com.smilemeback.adapters.ListAdapterListener;
+import com.smilemeback.drag.ListDragResultListener;
 import com.smilemeback.drag.ListViewDragListener;
+import com.smilemeback.misc.Constants;
+import com.smilemeback.misc.Dialogs;
 import com.smilemeback.storage.Category;
+import com.smilemeback.storage.Image;
 import com.smilemeback.storage.Storage;
 import com.smilemeback.storage.StorageException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class IconsActivity extends GalleryActivity implements ListAdapterListener, ListDragResultListener {
@@ -138,11 +142,46 @@ public class IconsActivity extends GalleryActivity implements ListAdapterListene
 
     @Override
     public void moveSelectedIconsTo(int position) {
-
     }
 
     @Override
     public void moveSelectedIconsToCategory(int categoryIndex) {
+    }
 
+    @Override
+    public void renameCurrentlySelectedIcon() {
+    }
+
+    @Override
+    public void deleteCurrentlySelectedIcons() {
+        String title = "Really delete " + selectionManager.getNumSelected() + " image";
+        if (selectionManager.getNumSelected() > 1) {
+            title += "s?";
+        } else {
+            title += '?';
+        }
+        String posTitle = "Delete";
+        String negTitle = "Cancel";
+        DialogInterface.OnClickListener callback = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                logger.info("Deleting selected images");
+                try {
+                    Storage storage = new Storage(IconsActivity.this);
+                    List<Image> categoryImages = storage.getCategoryImages(gridAdapter.getCurrentCategory());
+                    List<Image> selectedImages = new ArrayList<>();
+                    for (int idx : selectionManager.getSelectedPositions()) {
+                        selectedImages.add(categoryImages.get(idx));
+                    }
+                    storage.deleteImages(gridAdapter.getCurrentCategory(), selectedImages);
+                } catch (StorageException e) {
+                    showStorageExceptionAlertAndFinish(e);
+                }
+                selectionManager.deselectAll();
+                data.gridView.setAdapter(gridAdapter);
+                gridAdapter.initialize();
+            }
+        };
+        Dialogs.confirmation(this, title, posTitle, negTitle, callback);
     }
 }

@@ -148,6 +148,13 @@ public class SelectionManager {
     }
 
     /**
+     * Get the set of all selected positions.
+     */
+    public Set<Integer> getSelectedPositions() {
+        return selectedPositions;
+    }
+
+    /**
      * Is the position selected.
      * @param position
      * @return

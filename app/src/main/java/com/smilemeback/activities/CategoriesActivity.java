@@ -65,6 +65,13 @@ public class CategoriesActivity extends GalleryActivity {
 
     @Override
     public void moveSelectedIconsTo(int position) {
+    }
 
+    @Override
+    public void renameCurrentlySelectedIcon() {
+    }
+
+    @Override
+    public void deleteCurrentlySelectedIcons() {
     }
 }
