@@ -27,11 +27,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import com.smilemeback.GallerySelectionMode;
 import com.smilemeback.misc.Constants;
 import com.smilemeback.misc.GalleryActivityData;
 import com.smilemeback.misc.GalleryActivityState;
 import com.smilemeback.R;
 import com.smilemeback.activities.GalleryActivity;
+import com.smilemeback.misc.GridViewDragListener;
 import com.smilemeback.selection.SelectionManager;
 import com.smilemeback.views.IconView;
 
@@ -47,18 +49,17 @@ abstract public class BaseGridAdapter extends BaseAdapter {
     protected GridAdapterListener listener;
     protected SelectionManager selectionManager;
     protected GalleryActivityData data;
+    protected GridViewDragListener dragListener;
 
     /**
      * Initialize the {@link com.smilemeback.adapters.BaseGridAdapter}.
-     * @param activity
-     * @param selectionManager
-     * @param data
      */
-    public BaseGridAdapter(GalleryActivity activity, GridAdapterListener listener, SelectionManager selectionManager, GalleryActivityData data) {
+    public BaseGridAdapter(GalleryActivity activity, GridAdapterListener listener, GallerySelectionMode selectionMode, SelectionManager selectionManager, GalleryActivityData data) {
         this.activity = activity;
         this.listener = listener;
         this.selectionManager = selectionManager;
         this.data = data;
+        this.dragListener = new GridViewDragListener(selectionMode, selectionManager);
     }
 
     /**
@@ -79,7 +80,7 @@ abstract public class BaseGridAdapter extends BaseAdapter {
         } else {
             view = new IconView(activity, activity.getResources().getLayout(R.layout.icon_view), false);
         }
-
+        view.setOnDragListener(dragListener);
         prepareIconView(view, position);
 
         // deal with selection stuff

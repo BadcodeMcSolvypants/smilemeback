@@ -34,7 +34,7 @@ public class CategoriesActivity extends GalleryActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        gridAdapter = new CategoryGridAdapter(this, this, selectionManager, data);
+        gridAdapter = new CategoryGridAdapter(this, this, selectionMode, selectionManager, data);
         gridAdapter.initialize();
     }
 

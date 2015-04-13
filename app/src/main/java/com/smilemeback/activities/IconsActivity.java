@@ -51,7 +51,7 @@ public class IconsActivity extends GalleryActivity implements ListAdapterListene
         List<Category> categories = loadCategories();
         Category currentCategory = categories.get(startCategoryIndex);
 
-        gridAdapter = new IconGridAdapter(this, this, selectionManager, data);
+        gridAdapter = new IconGridAdapter(this, this, selectionMode, selectionManager, data);
         gridAdapter.setCurrentCategory(currentCategory);
         gridAdapter.initialize();
 

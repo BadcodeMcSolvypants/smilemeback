@@ -26,7 +26,9 @@ import com.smilemeback.adapters.CategoryListAdapter;
 import com.smilemeback.selection.SelectionManager;
 import com.smilemeback.views.IconViewSide;
 
-
+/**
+ * Handle drag events, when user drags selected icons over the side panel listview.
+ */
 public class ListViewDragListener implements View.OnDragListener {
 
     protected SelectionManager selectionManager;
