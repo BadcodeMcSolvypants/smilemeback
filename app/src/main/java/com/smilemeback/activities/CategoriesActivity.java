@@ -62,4 +62,9 @@ public class CategoriesActivity extends GalleryActivity {
 
     @Override
     protected void refreshSidePane() { }
+
+    @Override
+    public void moveSelectedIconsTo(int position) {
+
+    }
 }

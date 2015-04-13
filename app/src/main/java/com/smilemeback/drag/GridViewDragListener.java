@@ -14,13 +14,13 @@
  You should have received a copy of the GNU General Public License
  along with SmileMeBack.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.smilemeback.misc;
+package com.smilemeback.drag;
 
 
 import android.view.DragEvent;
 import android.view.View;
 
-import com.smilemeback.GallerySelectionMode;
+import com.smilemeback.selectionmode.SelectionMode;
 import com.smilemeback.selection.SelectionManager;
 import com.smilemeback.views.IconView;
 
@@ -29,12 +29,14 @@ import com.smilemeback.views.IconView;
  */
 public class GridViewDragListener implements View.OnDragListener {
 
-    protected GallerySelectionMode selectionMode;
+    protected SelectionMode selectionMode;
     protected SelectionManager selectionManager;
+    protected GridDragResultListener listener;
 
-    public GridViewDragListener(GallerySelectionMode selectionMode, SelectionManager selectionManager) {
+    public GridViewDragListener(SelectionMode selectionMode, SelectionManager selectionManager, GridDragResultListener listener) {
         this.selectionMode = selectionMode;
         this.selectionManager = selectionManager;
+        this.listener = listener;
     }
 
     @Override
@@ -58,13 +60,7 @@ public class GridViewDragListener implements View.OnDragListener {
                 return true;
             case DragEvent.ACTION_DROP:
                 selectionManager.dehighlight();
-                /*int switchIdx = getIconViewPositionInGridView(iconView);
-                if (!checkedImages.contains(switchIdx)) {
-                    reorderSelectedImages(switchIdx);
-                    loadImages(currentCategory);
-                    imageAdapter.notifyDataSetChanged();
-                    selectionMode.setNumSelected(0);
-                }*/
+                listener.moveSelectedIconsTo(iconView.getPosition());
                 return true;
             case DragEvent.ACTION_DRAG_ENDED:
                 selectionMode.setStatusText("");

@@ -48,11 +48,10 @@ public class IconView extends RelativeLayout implements Checkable {
     protected ImageView checkbox;
 
     protected boolean isChecked = false;
+    protected int position = -1;
 
     /**
      * Initialize a new IconView.
-     * @param context
-     * @param attrs
      */
     public IconView(Context context, AttributeSet attrs, boolean useDefaultImage) {
         super(context, attrs);
@@ -75,7 +74,6 @@ public class IconView extends RelativeLayout implements Checkable {
 
     /**
      * Override this method to inflate layouts in subclasses.
-     * @param context
      */
     protected void inflateLayout(Context context) {
         LayoutInflater.from(context).inflate(R.layout.icon_view, this, true);
@@ -133,7 +131,6 @@ public class IconView extends RelativeLayout implements Checkable {
 
     /**
      * Load the views bitmap from a file.
-     * @param file
      */
     public void setImageBitmap(File file) {
         Picasso.with(getContext())
@@ -161,6 +158,26 @@ public class IconView extends RelativeLayout implements Checkable {
 
     public Drawable getDrawable() {
         return image.getDrawable();
+    }
+
+    /**
+     * Set the position of the {@link IconView} in the grid.
+     * Note that this is just for storing the position in the view, not really setting
+     * it in the grid.
+     * Also, note that hidden iconviews have invalid positions. Keep that in mind!
+     */
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    /**
+     * @return The stored position in the view.
+     * Note that this is just for storing the position in the view, not really setting
+     * it in the grid.
+     * Also, note that hidden iconviews have invalid positions. Keep that in mind!
+     */
+    public int getPosition() {
+        return position;
     }
 
 }

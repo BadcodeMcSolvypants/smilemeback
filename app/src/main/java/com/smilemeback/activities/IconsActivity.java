@@ -23,18 +23,19 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 
+import com.smilemeback.drag.ListDragResultListener;
 import com.smilemeback.misc.Constants;
 import com.smilemeback.adapters.CategoryListAdapter;
 import com.smilemeback.adapters.IconGridAdapter;
 import com.smilemeback.adapters.ListAdapterListener;
-import com.smilemeback.misc.ListViewDragListener;
+import com.smilemeback.drag.ListViewDragListener;
 import com.smilemeback.storage.Category;
 import com.smilemeback.storage.Storage;
 import com.smilemeback.storage.StorageException;
 
 import java.util.List;
 
-public class IconsActivity extends GalleryActivity implements ListAdapterListener {
+public class IconsActivity extends GalleryActivity implements ListAdapterListener, ListDragResultListener {
 
     protected IconGridAdapter gridAdapter;
     protected CategoryListAdapter listAdapter;
@@ -91,7 +92,7 @@ public class IconsActivity extends GalleryActivity implements ListAdapterListene
     public void initializeListView() {
         listAdapter = new CategoryListAdapter(this, this, gridAdapter.getCurrentCategory(), data.listView);
         data.listView.setAdapter(listAdapter);
-        ListViewDragListener dragListener = new ListViewDragListener(selectionManager, selectionMode, listAdapter);
+        ListViewDragListener dragListener = new ListViewDragListener(selectionManager, selectionMode, listAdapter, this);
         data.listView.setOnDragListener(dragListener);
     }
 
@@ -133,5 +134,15 @@ public class IconsActivity extends GalleryActivity implements ListAdapterListene
     public void categorySelected(Category category) {
         gridAdapter.setCurrentCategory(category);
         setActionBarTitle(category.getName().toString());
+    }
+
+    @Override
+    public void moveSelectedIconsTo(int position) {
+
+    }
+
+    @Override
+    public void moveSelectedIconsToCategory(int categoryIndex) {
+
     }
 }

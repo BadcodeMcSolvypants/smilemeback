@@ -14,7 +14,7 @@
  You should have received a copy of the GNU General Public License
  along with SmileMeBack.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.smilemeback;
+package com.smilemeback.selectionmode;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -29,12 +29,13 @@ import android.widget.ListAdapter;
 import android.widget.ListPopupWindow;
 import android.widget.TextView;
 
+import com.smilemeback.R;
 import com.smilemeback.activities.AddPictureActivity;
 import com.smilemeback.activities.OldGalleryActivity;
 import com.smilemeback.views.IconView;
 
 
-public class GallerySelectionMode implements ActionMode.Callback, View.OnClickListener {
+public class SelectionMode implements ActionMode.Callback, View.OnClickListener {
 
     protected Activity activity;
     protected TextView textView;
@@ -47,7 +48,7 @@ public class GallerySelectionMode implements ActionMode.Callback, View.OnClickLi
     protected int numSelected;
     protected int total;
 
-    public GallerySelectionMode(Activity activity, GallerySelectionModeListener listener) {
+    public SelectionMode(Activity activity, GallerySelectionModeListener listener) {
         this.activity = activity;
         this.listener = listener;
     }

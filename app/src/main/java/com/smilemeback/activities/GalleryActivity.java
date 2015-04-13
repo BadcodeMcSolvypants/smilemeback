@@ -27,18 +27,18 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.smilemeback.drag.GridDragResultListener;
 import com.smilemeback.misc.Constants;
 import com.smilemeback.misc.GalleryActivityData;
 import com.smilemeback.misc.GalleryActivityState;
-import com.smilemeback.GallerySelectionMode;
-import com.smilemeback.GallerySelectionModeListener;
+import com.smilemeback.selectionmode.SelectionMode;
+import com.smilemeback.selectionmode.GallerySelectionModeListener;
 import com.smilemeback.R;
 import com.smilemeback.adapters.GridAdapterListener;
 import com.smilemeback.selection.SelectionListener;
 import com.smilemeback.selection.SelectionManager;
 import com.smilemeback.storage.Storage;
 import com.smilemeback.storage.StorageException;
-import com.smilemeback.views.IconView;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,12 +47,12 @@ import java.util.logging.Logger;
  * {@link com.smilemeback.activities.GalleryActivity} is the main activity of the application,
  * which manages interactions between all other activities of the application.
  */
-public abstract class GalleryActivity extends Activity implements GallerySelectionModeListener, SelectionListener, GridAdapterListener {
+public abstract class GalleryActivity extends Activity implements GallerySelectionModeListener, SelectionListener, GridAdapterListener, GridDragResultListener {
     protected static Logger logger = Logger.getLogger("SmileMeBack");
 
     protected GalleryActivityData data = new GalleryActivityData();
     protected SelectionManager selectionManager = new SelectionManager();
-    protected GallerySelectionMode selectionMode;
+    protected SelectionMode selectionMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +60,7 @@ public abstract class GalleryActivity extends Activity implements GallerySelecti
         //setupTestingCategories();
 
         selectionManager.addListener(this);
-        selectionMode = new GallerySelectionMode(this, this);
+        selectionMode = new SelectionMode(this, this);
         setContentView(R.layout.gallery);
         initializeDataAndFindLayoutItems();
     }

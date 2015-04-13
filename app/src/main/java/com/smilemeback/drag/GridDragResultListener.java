@@ -14,36 +14,20 @@
  You should have received a copy of the GNU General Public License
  along with SmileMeBack.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.smilemeback;
+package com.smilemeback.drag;
+
+
+import com.smilemeback.views.IconView;
 
 /**
- * Interface that defines the listener for various activities of
- * {@link GallerySelectionMode}.
+ * Interface that responds to drags that ended on grid elements.
  */
-public interface GallerySelectionModeListener {
+public interface GridDragResultListener {
 
     /**
-     * Called when selection mode is finished.
+     * Move all selected grid elements to given position as a drag result
+     * on a grid element identified by {@literal position}.
+     * @param position
      */
-    void gallerySelectionModeFinished();
-
-    /**
-     * Called when items should be selected.
-     */
-    void selectAllItems();
-
-    /**
-     * Called when all items should be deselected.
-     */
-    void deselectAllItems();
-
-    /**
-     * Called when current icon should be renamed.
-     */
-    void renameCurrentlySelectedIcon();
-
-    /**
-     * Called when current icon should be deleted.
-     */
-    void deleteCurrentlySelectedIcons();
+    void moveSelectedIconsTo(int position);
 }

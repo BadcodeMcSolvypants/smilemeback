@@ -14,14 +14,14 @@
  You should have received a copy of the GNU General Public License
  along with SmileMeBack.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.smilemeback.misc;
+package com.smilemeback.drag;
 
 import android.graphics.Rect;
 import android.view.DragEvent;
 import android.view.View;
 import android.widget.ListView;
 
-import com.smilemeback.GallerySelectionMode;
+import com.smilemeback.selectionmode.SelectionMode;
 import com.smilemeback.adapters.CategoryListAdapter;
 import com.smilemeback.selection.SelectionManager;
 import com.smilemeback.views.IconViewSide;
@@ -32,15 +32,17 @@ import com.smilemeback.views.IconViewSide;
 public class ListViewDragListener implements View.OnDragListener {
 
     protected SelectionManager selectionManager;
-    protected GallerySelectionMode selectionMode;
+    protected SelectionMode selectionMode;
     protected CategoryListAdapter listAdapter;
     protected ListView listView;
+    protected ListDragResultListener listener;
 
-    public ListViewDragListener(SelectionManager selectionManager, GallerySelectionMode selectionMode, CategoryListAdapter listAdapter) {
+    public ListViewDragListener(SelectionManager selectionManager, SelectionMode selectionMode, CategoryListAdapter listAdapter, ListDragResultListener listener) {
         this.selectionManager = selectionManager;
         this.selectionMode = selectionMode;
         this.listAdapter = listAdapter;
         this.listView = listAdapter.getListView();
+        this.listener = listener;
     }
 
     @Override
@@ -71,9 +73,7 @@ public class ListViewDragListener implements View.OnDragListener {
                 listAdapter.setHoverPosition(-1);
                 if (idx >= 0) {
                     if (idx != listAdapter.getSelectedItemPosition()) {
-                        //moveSelectedImages(categories.get(idx));
-                        //selectAndLoadListViewCategory(idx);
-                        //view.performClick();
+                        listener.moveSelectedIconsToCategory(idx);
                     }
                 }
                 listAdapter.notifyDataSetChanged();

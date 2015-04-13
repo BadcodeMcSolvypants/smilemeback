@@ -48,8 +48,8 @@ import android.widget.ListView;
 
 import com.smilemeback.misc.Constants;
 import com.smilemeback.misc.GalleryActivityState;
-import com.smilemeback.GallerySelectionMode;
-import com.smilemeback.GallerySelectionModeListener;
+import com.smilemeback.selectionmode.SelectionMode;
+import com.smilemeback.selectionmode.GallerySelectionModeListener;
 import com.smilemeback.R;
 import com.smilemeback.storage.Category;
 import com.smilemeback.storage.Image;
@@ -76,7 +76,7 @@ public class OldGalleryActivity extends Activity implements GallerySelectionMode
     public static final int ADD_PICUTURE_INTENT = 1;
 
     protected GalleryActivityState state = GalleryActivityState.VIEW;
-    protected GallerySelectionMode selectionMode;
+    protected SelectionMode selectionMode;
     protected MediaPlayer player = new MediaPlayer();
 
     protected ListView listView;
@@ -98,7 +98,7 @@ public class OldGalleryActivity extends Activity implements GallerySelectionMode
         super.onCreate(savedInstanceState);
 
         // set up the gallery selection mode callback
-        selectionMode = new GallerySelectionMode(this, this);
+        selectionMode = new SelectionMode(this, this);
 
         // set up adapters
         imageAdapter = new ImageAdapter();

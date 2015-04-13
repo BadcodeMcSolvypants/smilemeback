@@ -112,6 +112,7 @@ public class CategoryListAdapter extends BaseAdapter {
         } else {
             view = new IconViewSide(activity, activity.getResources().getLayout(R.layout.icon_view_side), false);
         }
+        view.setPosition(position);
 
         view.setImageBitmap(category.getThumbnail());
         view.setLabel(category.getName().toString());

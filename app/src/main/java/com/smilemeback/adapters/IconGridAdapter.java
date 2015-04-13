@@ -18,7 +18,7 @@ package com.smilemeback.adapters;
 
 import android.media.MediaPlayer;
 
-import com.smilemeback.GallerySelectionMode;
+import com.smilemeback.selectionmode.SelectionMode;
 import com.smilemeback.misc.GalleryActivityData;
 import com.smilemeback.activities.IconsActivity;
 import com.smilemeback.selection.SelectionManager;
@@ -41,7 +41,7 @@ public class IconGridAdapter extends BaseGridAdapter {
     private Category currentCategory;
     private MediaPlayer player = new MediaPlayer();
 
-    public IconGridAdapter(IconsActivity activity, GridAdapterListener listener, GallerySelectionMode selectionMode, SelectionManager selectionManager, GalleryActivityData data) {
+    public IconGridAdapter(IconsActivity activity, GridAdapterListener listener, SelectionMode selectionMode, SelectionManager selectionManager, GalleryActivityData data) {
         super(activity, listener, selectionMode, selectionManager, data);
     }
 

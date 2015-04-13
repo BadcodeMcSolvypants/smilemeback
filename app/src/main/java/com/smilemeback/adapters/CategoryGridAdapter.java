@@ -18,7 +18,7 @@ package com.smilemeback.adapters;
 
 import android.content.Intent;
 
-import com.smilemeback.GallerySelectionMode;
+import com.smilemeback.selectionmode.SelectionMode;
 import com.smilemeback.misc.Constants;
 import com.smilemeback.misc.GalleryActivityData;
 import com.smilemeback.activities.CategoriesActivity;
@@ -38,7 +38,7 @@ public class CategoryGridAdapter extends BaseGridAdapter {
 
     private List<Category> categories;
 
-    public CategoryGridAdapter(CategoriesActivity activity, GridAdapterListener listener, GallerySelectionMode selectionMode, SelectionManager selectionManager, GalleryActivityData data) {
+    public CategoryGridAdapter(CategoriesActivity activity, GridAdapterListener listener, SelectionMode selectionMode, SelectionManager selectionManager, GalleryActivityData data) {
         super(activity, listener, selectionMode, selectionManager, data);
     }
 
