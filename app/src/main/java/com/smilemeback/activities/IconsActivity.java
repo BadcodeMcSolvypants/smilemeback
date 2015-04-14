@@ -60,6 +60,9 @@ public class IconsActivity extends GalleryActivity implements ListAdapterListene
         gridAdapter.setCurrentCategory(currentCategory);
         gridAdapter.initialize();
 
+        listAdapter = new CategoryListAdapter(this, this, gridAdapter.getCurrentCategory(), data.listView);
+        listAdapter.setSelectedItemPosition(startCategoryIndex);
+
         setActionBarTitle(currentCategory.getName().toString());
     }
 
@@ -102,7 +105,6 @@ public class IconsActivity extends GalleryActivity implements ListAdapterListene
 
     @Override
     public void initializeListView() {
-        listAdapter = new CategoryListAdapter(this, this, gridAdapter.getCurrentCategory(), data.listView);
         data.listView.setAdapter(listAdapter);
         ListViewDragListener dragListener = new ListViewDragListener(selectionManager, selectionMode, listAdapter, this);
         data.listView.setOnDragListener(dragListener);
@@ -154,6 +156,20 @@ public class IconsActivity extends GalleryActivity implements ListAdapterListene
 
     @Override
     public void moveSelectedIconsToCategory(int categoryIndex) {
+        Storage storage = new Storage(IconsActivity.this);
+        List<Image> selectedImages = new ArrayList<>();
+        for (int idx : selectionManager.getSelectedPositions()) {
+            selectedImages.add((Image)gridAdapter.getItem(idx));
+        }
+        try {
+            List<Category> categories = loadCategories();
+            Category destination = categories.get(categoryIndex);
+            storage.moveImages(gridAdapter.getCurrentCategory(), selectedImages, destination);
+            gridAdapter.setCurrentCategory(destination);
+            listAdapter.setSelectedItemPosition(categoryIndex);
+        } catch (StorageException e) {
+            showStorageExceptionAlertAndFinish(e);
+        }
     }
 
     @Override
