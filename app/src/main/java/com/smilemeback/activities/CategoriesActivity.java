@@ -59,6 +59,12 @@ public class CategoriesActivity extends GalleryActivity {
         gridAdapter.initialize();
     }
 
+    protected void reloadGrid() {
+        selectionManager.deselectAll();
+        data.gridView.setAdapter(gridAdapter);
+        gridAdapter.initialize();
+    }
+
     @Override
     protected void initializeListView() {
     }
@@ -78,6 +84,24 @@ public class CategoriesActivity extends GalleryActivity {
 
     @Override
     public void renameCurrentlySelectedIcon() {
+        final Category category = (Category)gridAdapter.getItem(selectionManager.getSelectedPosition());
+        String title = "Rename category";
+        String posTitle = "Rename";
+        String negTitle = "Cancel";
+        Dialogs.InputCallback callback = new Dialogs.InputCallback() {
+            @Override
+            public void inputDone(String text) {
+                logger.info("Renaming current category to " + text);
+                Storage storage = new Storage(CategoriesActivity.this);
+                try {
+                    storage.renameCategory(category, text);
+                } catch (StorageException e) {
+                    showStorageExceptionAlertAndFinish(e);
+                }
+                reloadGrid();
+            }
+        };
+        Dialogs.input(this, title, category.getName().toString(), posTitle, negTitle, callback);
     }
 
     @Override
@@ -104,9 +128,7 @@ public class CategoriesActivity extends GalleryActivity {
                 } catch (StorageException e) {
                     showStorageExceptionAlertAndFinish(e);
                 }
-                selectionManager.deselectAll();
-                data.gridView.setAdapter(gridAdapter);
-                gridAdapter.initialize();
+                reloadGrid();
             }
         };
         Dialogs.confirmation(this, title, posTitle, negTitle, callback);

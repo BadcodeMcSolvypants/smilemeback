@@ -88,7 +88,7 @@ public class IconsActivity extends GalleryActivity implements ListAdapterListene
     /**
      * Deselect all items, reload and initialize grid.
      */
-    void reloadGrid() {
+    protected void reloadGrid() {
         selectionManager.deselectAll();
         data.gridView.setAdapter(gridAdapter);
         gridAdapter.initialize();

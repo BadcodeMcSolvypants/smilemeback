@@ -454,6 +454,10 @@ public class Storage {
      * @throws StorageException
      */
     public void renameImage(Image image, String newName) throws StorageException {
+        if (image.getName().toString().compareTo(newName) == 0) {
+            // same name, do nothing
+            return;
+        }
         Name name = new Name(newName);
         File newAudio = new File(image.getCategory().getFolder(),
                 constructStringFromName(image.getPosition(), name, AUDIO_SUFFIX));
@@ -462,6 +466,26 @@ public class Storage {
         try {
             FileUtils.moveFile(image.getAudio(), newAudio);
             FileUtils.moveFile(image.getImage(), newImage);
+        } catch (IOException e) {
+            throw new StorageException(e);
+        }
+    }
+
+    /**
+     * Rename category.
+     * @param category The category instance to rename.
+     * @param newName The new name.
+     * @throws StorageException In case rename failed.
+     */
+    public void renameCategory(Category category, String newName) throws StorageException {
+        if (category.getName().toString().compareTo(newName) == 0) {
+            // same name, do nothing!
+            return;
+        }
+        File categories = getCategoriesFolder(context);
+        File newCategory = new File(categories, category.getIndex() + "_" + newName);
+        try {
+            FileUtils.moveDirectory(category.getFolder(), newCategory);
         } catch (IOException e) {
             throw new StorageException(e);
         }
