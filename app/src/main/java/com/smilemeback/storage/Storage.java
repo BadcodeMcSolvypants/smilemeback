@@ -18,6 +18,7 @@ package com.smilemeback.storage;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.util.TypedValue;
 
 import com.smilemeback.R;
 
@@ -39,6 +40,8 @@ import java.util.logging.Logger;
 /**
  * Storage class deals with Android filesystem and
  * manages categories, icons and user data.
+ *
+ * TODO: needs unit tests and more robust reorganization functions.
  */
 public class Storage {
     private static Logger logger = Logger.getLogger(Storage.class.getCanonicalName());
@@ -295,6 +298,60 @@ public class Storage {
             throw new StorageException(e);
         } finally {
             reorganizeCategory(category);
+        }
+    }
+
+    public void deleteCategories(List<Category> categories) throws StorageException {
+        try {
+            for (Category category : categories) {
+                FileUtils.deleteDirectory(category.getFolder());
+            }
+        } catch (IOException e) {
+            throw new StorageException(e);
+        } finally {
+            reorganizeCategories();
+        }
+    }
+
+    /**
+     * Reorganize categories.
+     * Removes gaps in category indices, if there are any.
+     *
+     * TODO: create temporary
+     */
+    public void reorganizeCategories() throws StorageException {
+        File categoriesFolder = getCategoriesFolder(context);
+        Map<Integer, File> categories = new HashMap<>();
+        Map<Integer, String> names = new HashMap<>();
+        try {
+            FileUtils.forceMkdir(categoriesFolder);
+            for (File category : categoriesFolder.listFiles()) {
+                if (category.isDirectory()) {
+                    String[] tokens = category.getName().split("_");
+                    int pos = Integer.parseInt(tokens[0]);
+                    String name = tokens[1];
+                    categories.put(pos, category);
+                    names.put(pos, name);
+                } else {
+                    logger.info("Deleting non-directory <" + category + ">");
+                    FileUtils.forceDelete(category);
+                }
+            }
+            List<Integer> indices = new ArrayList<>(categories.keySet());
+            Collections.sort(indices);
+            int nextPos = 0;
+            for (int idx : indices) {
+                File srcFile = categories.get(idx);
+                String name = names.get(idx);
+                File destFile = new File(categoriesFolder, nextPos + "_" + name);
+                if (srcFile.compareTo(destFile) != 0) {
+                    logger.info("Moving category <" + srcFile + "> to <" + destFile + ">");
+                    FileUtils.moveDirectory(srcFile, destFile);
+                }
+                nextPos += 1;
+            }
+        } catch (IOException e) {
+            throw new StorageException(e);
         }
     }
 

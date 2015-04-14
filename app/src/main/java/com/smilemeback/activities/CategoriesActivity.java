@@ -18,10 +18,19 @@ package com.smilemeback.activities;
 
 
 import android.app.ActionBar;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import com.smilemeback.R;
 import com.smilemeback.adapters.CategoryGridAdapter;
+import com.smilemeback.misc.Dialogs;
+import com.smilemeback.storage.Category;
+import com.smilemeback.storage.Image;
+import com.smilemeback.storage.Storage;
+import com.smilemeback.storage.StorageException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Top-level activity that displays available categories
@@ -73,5 +82,34 @@ public class CategoriesActivity extends GalleryActivity {
 
     @Override
     public void deleteCurrentlySelectedIcons() {
+        String title = "Really delete " + selectionManager.getNumSelected() + " categor";
+        if (selectionManager.getNumSelected() > 1) {
+            title += "ies?";
+        } else {
+            title += "y?";
+        }
+        String posTitle = "Delete";
+        String negTitle = "Cancel";
+        DialogInterface.OnClickListener callback = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                logger.info("Deleting selected categories");
+                try {
+                    Storage storage = new Storage(CategoriesActivity.this);
+                    List<Category> categories = storage.getCategories();
+                    List<Category> selectedCategories = new ArrayList<>();
+                    for (int idx : selectionManager.getSelectedPositions()) {
+                        selectedCategories.add(categories.get(idx));
+                    }
+                    storage.deleteCategories(selectedCategories);
+                } catch (StorageException e) {
+                    showStorageExceptionAlertAndFinish(e);
+                }
+                selectionManager.deselectAll();
+                data.gridView.setAdapter(gridAdapter);
+                gridAdapter.initialize();
+            }
+        };
+        Dialogs.confirmation(this, title, posTitle, negTitle, callback);
     }
 }
