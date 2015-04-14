@@ -96,10 +96,9 @@ public class CategoriesActivity extends GalleryActivity {
                 logger.info("Deleting selected categories");
                 try {
                     Storage storage = new Storage(CategoriesActivity.this);
-                    List<Category> categories = storage.getCategories();
                     List<Category> selectedCategories = new ArrayList<>();
                     for (int idx : selectionManager.getSelectedPositions()) {
-                        selectedCategories.add(categories.get(idx));
+                        selectedCategories.add((Category)gridAdapter.getItem(idx));
                     }
                     storage.deleteCategories(selectedCategories);
                 } catch (StorageException e) {

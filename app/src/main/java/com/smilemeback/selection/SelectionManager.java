@@ -155,6 +155,18 @@ public class SelectionManager {
     }
 
     /**
+     * Get a single selected position.
+     * Throws {@link RuntimeException} in case there are more.
+     * @return
+     */
+    public int getSelectedPosition() {
+        if (getNumSelected() != 1) {
+            throw new RuntimeException("Exactly one item has to be selected. There are " + getNumSelected() + " currently selected!");
+        }
+        return (int)selectedPositions.toArray()[0];
+    }
+
+    /**
      * Is the position selected.
      * @param position
      * @return

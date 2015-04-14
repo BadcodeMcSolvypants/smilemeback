@@ -21,7 +21,6 @@ import android.app.ActionBar;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 
 import com.smilemeback.adapters.CategoryListAdapter;
@@ -35,6 +34,7 @@ import com.smilemeback.storage.Category;
 import com.smilemeback.storage.Image;
 import com.smilemeback.storage.Storage;
 import com.smilemeback.storage.StorageException;
+import android.support.v4.app.NavUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,6 +85,14 @@ public class IconsActivity extends GalleryActivity implements ListAdapterListene
         return categories;
     }
 
+    /**
+     * Deselect all items, reload and initialize grid.
+     */
+    void reloadGrid() {
+        selectionManager.deselectAll();
+        data.gridView.setAdapter(gridAdapter);
+        gridAdapter.initialize();
+    }
 
     @Override
     protected void initializeGridView() {
@@ -150,6 +158,24 @@ public class IconsActivity extends GalleryActivity implements ListAdapterListene
 
     @Override
     public void renameCurrentlySelectedIcon() {
+        final Image image = (Image)gridAdapter.getItem(selectionManager.getSelectedPosition());
+        String title = "Rename image";
+        String posTitle = "Rename";
+        String negTitle = "Cancel";
+        Dialogs.InputCallback callback = new Dialogs.InputCallback() {
+            @Override
+            public void inputDone(String text) {
+                logger.info("Renaming current icon to " + text);
+                Storage storage = new Storage(IconsActivity.this);
+                try {
+                    storage.renameImage(image, text);
+                } catch (StorageException e) {
+                    showStorageExceptionAlertAndFinish(e);
+                }
+                reloadGrid();
+            }
+        };
+        Dialogs.input(this, title, image.getName().toString(), posTitle, negTitle, callback);
     }
 
     @Override
@@ -168,18 +194,15 @@ public class IconsActivity extends GalleryActivity implements ListAdapterListene
                 logger.info("Deleting selected images");
                 try {
                     Storage storage = new Storage(IconsActivity.this);
-                    List<Image> categoryImages = storage.getCategoryImages(gridAdapter.getCurrentCategory());
                     List<Image> selectedImages = new ArrayList<>();
                     for (int idx : selectionManager.getSelectedPositions()) {
-                        selectedImages.add(categoryImages.get(idx));
+                        selectedImages.add((Image)gridAdapter.getItem(idx));
                     }
                     storage.deleteImages(gridAdapter.getCurrentCategory(), selectedImages);
                 } catch (StorageException e) {
                     showStorageExceptionAlertAndFinish(e);
                 }
-                selectionManager.deselectAll();
-                data.gridView.setAdapter(gridAdapter);
-                gridAdapter.initialize();
+                reloadGrid();
             }
         };
         Dialogs.confirmation(this, title, posTitle, negTitle, callback);

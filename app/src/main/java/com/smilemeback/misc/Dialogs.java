@@ -19,6 +19,7 @@ package com.smilemeback.misc;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.widget.EditText;
 
 public class Dialogs {
 
@@ -36,5 +37,37 @@ public class Dialogs {
             }
         });
         dialog.show();
+    }
+
+    /**
+     * Show a text input dialog.
+     */
+    public static void input(Context context, String title, String initialText, String posButtonTitle, String negButtonTitle, final InputCallback callBack) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+        dialog.setTitle(title);
+        final EditText edit = new EditText(context);
+        edit.setSingleLine(true);
+        edit.setText(initialText);
+        dialog.setView(edit);
+        dialog.setPositiveButton(posButtonTitle, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                callBack.inputDone(edit.getText().toString());
+            }
+        });
+        dialog.setNegativeButton(negButtonTitle, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
+    /**
+     * Callback for input function result.
+     */
+    public interface InputCallback {
+        void inputDone(String text);
     }
 }

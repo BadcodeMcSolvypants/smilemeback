@@ -27,6 +27,7 @@ dependencies {
     compile 'org.hamcrest:hamcrest-core:1.2.1'
     compile 'org.apache.commons:commons-lang3:3.0'
     compile 'com.android.support:support-v13:21.0.3'
+    compile 'com.android.support:support-v4:21.0.0'
 }
 
 
