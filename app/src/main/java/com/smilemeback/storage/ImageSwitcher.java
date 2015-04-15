@@ -21,6 +21,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Class for helping image reordering.
+ */
 public class ImageSwitcher {
     protected Storage storage;
     protected List<Integer> srcPositions = new ArrayList<>();

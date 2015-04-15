@@ -36,7 +36,9 @@ import com.smilemeback.storage.Storage;
 import com.smilemeback.storage.StorageException;
 import android.support.v4.app.NavUtils;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class IconsActivity extends GalleryActivity implements ListAdapterListener, ListDragResultListener {
@@ -152,6 +154,25 @@ public class IconsActivity extends GalleryActivity implements ListAdapterListene
 
     @Override
     public void moveSelectedIconsTo(int position) {
+        List<Integer> sortedIdxs = new ArrayList<>(selectionManager.getSelectedPositions());
+        Collections.sort(sortedIdxs);
+        List<Image> selectedImages = new ArrayList<>();
+        logger.info("Number of selected images " + selectionManager.getNumSelected());
+        logger.info("Switch index is " + position);
+        for (int selectedIdx : sortedIdxs) {
+            selectedImages.add((Image)gridAdapter.getItem(selectedIdx));
+            logger.info("Selected index is " + selectedIdx);
+        }
+        Image switchImage = (Image)gridAdapter.getItem(position);
+
+        Storage storage = new Storage(IconsActivity.this);
+        try {
+            storage.switchImages(selectedImages, switchImage);
+        } catch (StorageException e) {
+            showStorageExceptionAlertAndFinish(e);
+        } finally {
+            reloadGrid();
+        }
     }
 
     @Override
@@ -222,5 +243,27 @@ public class IconsActivity extends GalleryActivity implements ListAdapterListene
             }
         };
         Dialogs.confirmation(this, title, posTitle, negTitle, callback);
+    }
+
+    @Override
+    public void addNewIcon() {
+        Intent intent = new Intent(this, AddPictureActivity.class);
+        startActivityForResult(intent, IconsActivity.ADD_PICUTURE_INTENT);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == ADD_PICUTURE_INTENT && resultCode == RESULT_OK) {
+            String name = data.getStringExtra(Constants.ADDED_IMAGE_NAME);
+            String imagePath = data.getStringExtra(Constants.ADDED_IMAGE_PATH);
+            String audioPath = data.getStringExtra(Constants.ADDED_IMAGE_AUDIO_PATH);
+            Storage storage = new Storage(this);
+            try {
+                storage.addCategoryImage(gridAdapter.getCurrentCategory(), name, new File(imagePath), new File(audioPath));
+                reloadGrid();
+            } catch (StorageException e) {
+                showStorageExceptionAlertAndFinish(e);
+            }
+        }
     }
 }

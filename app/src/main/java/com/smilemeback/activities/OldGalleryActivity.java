@@ -807,6 +807,11 @@ public class OldGalleryActivity extends Activity implements GallerySelectionMode
         dialog.show();
     }
 
+    @Override
+    public void addNewIcon() {
+
+    }
+
     public void moveSelectedImages(Category destination) {
         Storage storage = new Storage(OldGalleryActivity.this);
         List<Image> selectedImages = new ArrayList<>();

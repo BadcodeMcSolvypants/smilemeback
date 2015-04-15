@@ -492,12 +492,12 @@ public class Storage {
     }
 
     /**
-     * Switch the positions of selected images.
-     * @param images
+     * Switch the positions of selected selectedImages.
+     * @param selectedImages
      * @param switchImage
      */
-    public void switchImages(List<Image> images, Image switchImage) throws StorageException {
-        ImageSwitcher imageSwitcher = new ImageSwitcher(this, images, switchImage);
+    public void switchImages(List<Image> selectedImages, Image switchImage) throws StorageException {
+        ImageSwitcher imageSwitcher = new ImageSwitcher(this, selectedImages, switchImage);
         List<Integer> srcPositions = imageSwitcher.getSourcePositions();
         List<Integer> destPositions = imageSwitcher.getDestinationPositions();
 

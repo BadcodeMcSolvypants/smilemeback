@@ -123,8 +123,7 @@ public class SelectionMode implements ActionMode.Callback, View.OnClickListener 
         Intent intent;
         switch (item.getItemId()) {
             case R.id.gallery_selectionmode_menu_add_image:
-                intent = new Intent(activity, AddPictureActivity.class);
-                activity.startActivityForResult(intent, OldGalleryActivity.ADD_PICUTURE_INTENT);
+                listener.addNewIcon();
                 return true;
             case R.id.gallery_selectionmode_menu_rename_image:
                 listener.renameCurrentlySelectedIcon();

@@ -46,4 +46,9 @@ public interface GallerySelectionModeListener {
      * Called when current icon should be deleted.
      */
     void deleteCurrentlySelectedIcons();
+
+    /**
+     * Called when selection mode prompts to add new icon (image or category).
+     */
+    void addNewIcon();
 }

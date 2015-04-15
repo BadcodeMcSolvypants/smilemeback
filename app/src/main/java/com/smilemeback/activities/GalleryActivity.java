@@ -49,6 +49,7 @@ import java.util.logging.Logger;
  */
 public abstract class GalleryActivity extends Activity implements GallerySelectionModeListener, SelectionListener, GridAdapterListener, GridDragResultListener {
     protected static Logger logger = Logger.getLogger("SmileMeBack");
+    public static final int ADD_PICUTURE_INTENT = 1;
 
     protected GalleryActivityData data = new GalleryActivityData();
     protected SelectionManager selectionManager = new SelectionManager();
