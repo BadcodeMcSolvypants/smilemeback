@@ -58,7 +58,7 @@ public abstract class GalleryActivity extends Activity implements GallerySelecti
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setupTestingCategories();
+        setupTestingCategories();
 
         selectionManager.addListener(this);
         selectionMode = new SelectionMode(this, this);
