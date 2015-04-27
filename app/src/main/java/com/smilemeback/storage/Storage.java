@@ -18,7 +18,6 @@ package com.smilemeback.storage;
 
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.util.TypedValue;
 
 import com.smilemeback.R;
 
@@ -139,7 +138,7 @@ public class Storage {
      * @throws StorageException
      */
     public void appendEmptyCategory(final Name name) throws StorageException {
-        appendEmptyCategory(name, context.getResources().openRawResource(R.drawable.iconview_default));
+        appendEmptyCategory(name, context.getResources().openRawResource(+R.drawable.iconview_default));
     }
 
     /**
@@ -492,7 +491,7 @@ public class Storage {
     }
 
     /**
-     * Switch the positions of selected selectedImages.
+     * Switch the positions of selection selectedImages.
      * @param selectedImages
      * @param switchImage
      */
@@ -534,6 +533,8 @@ public class Storage {
             }
         } catch (IOException e) {
             throw new StorageException(e);
+        } finally {
+            reorganizeCategory(category);
         }
     }
 

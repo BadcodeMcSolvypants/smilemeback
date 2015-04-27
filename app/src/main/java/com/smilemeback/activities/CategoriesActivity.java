@@ -24,14 +24,11 @@ import android.os.Bundle;
 
 import com.smilemeback.R;
 import com.smilemeback.adapters.CategoryGridAdapter;
-import com.smilemeback.misc.Constants;
 import com.smilemeback.misc.Dialogs;
 import com.smilemeback.storage.Category;
-import com.smilemeback.storage.Image;
 import com.smilemeback.storage.Storage;
 import com.smilemeback.storage.StorageException;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -120,7 +117,7 @@ public class CategoriesActivity extends GalleryActivity {
         DialogInterface.OnClickListener callback = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                logger.info("Deleting selected categories");
+                logger.info("Deleting selection categories");
                 try {
                     Storage storage = new Storage(CategoriesActivity.this);
                     List<Category> selectedCategories = new ArrayList<>();
@@ -140,7 +137,7 @@ public class CategoriesActivity extends GalleryActivity {
     @Override
     public void addNewIcon() {
         Intent intent = new Intent(this, AddPictureActivity.class);
-        startActivityForResult(intent, OldGalleryActivity.ADD_PICUTURE_INTENT);
+        startActivityForResult(intent, GalleryActivity.ADD_PICUTURE_INTENT);
     }
 
     @Override

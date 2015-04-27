@@ -21,7 +21,7 @@ package com.smilemeback.selection;
  */
 public interface SelectionListener {
     /**
-     * Called when a position gets selected.
+     * Called when a position gets selection.
      * @param position
      */
     void positionSelected(int position);
@@ -39,21 +39,21 @@ public interface SelectionListener {
     void numTotalChanged(int total);
 
     /**
-     * Called when total number of selected positions changed.
+     * Called when total number of selection positions changed.
      * @param selected
      */
     void numSelectedChanged(int selected);
 
     /**
      * Request to highlight element at specified element.
-     * It is ensured that the position is selected.
+     * It is ensured that the position is selection.
      * @param position
      */
     void highlight(int position);
 
     /**
      * Request to dehighlight element at specified element.
-     * It is ensured that the position is selected.
+     * It is ensured that the position is selection.
      * @param position
      */
     void dehighlight(int position);

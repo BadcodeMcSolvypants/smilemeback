@@ -16,13 +16,6 @@
  */
 package com.smilemeback.misc;
 
-import android.content.Context;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.RawRes;
-import android.view.View;
-
-import java.io.InputStream;
-
 /**
  * Class containing constants used in the application.
  */

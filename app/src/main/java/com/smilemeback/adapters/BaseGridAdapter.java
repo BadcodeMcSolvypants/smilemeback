@@ -180,7 +180,7 @@ abstract public class BaseGridAdapter extends BaseAdapter {
     }
 
     /**
-     * Get a drag shadow of selected positions.
+     * Get a drag shadow of selection positions.
      * @return
      */
     private Drawable getCombinedIconViewDrawable() {
@@ -217,7 +217,7 @@ abstract public class BaseGridAdapter extends BaseAdapter {
     }
 
     /**
-     * @return The {@link IconView} instances that are selected.
+     * @return The {@link IconView} instances that are selection.
      */
     private List<IconView> getSelectedIconViews() {
         int n = data.gridView.getChildCount();

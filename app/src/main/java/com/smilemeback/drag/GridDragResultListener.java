@@ -25,7 +25,7 @@ import com.smilemeback.views.IconView;
 public interface GridDragResultListener {
 
     /**
-     * Move all selected grid elements to given position as a drag result
+     * Move all selection grid elements to given position as a drag result
      * on a grid element identified by {@literal position}.
      * @param position
      */

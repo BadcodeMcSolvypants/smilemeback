@@ -17,10 +17,6 @@
 package com.smilemeback.storage;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Category contains an category thumbnail image
@@ -88,5 +84,22 @@ public class Category implements Comparable<Category> {
     @Override
     public int compareTo(Category another) {
         return getIndex() - another.getIndex();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Category)) return false;
+
+        Category category = (Category) o;
+
+        if (index != category.index) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return index;
     }
 }

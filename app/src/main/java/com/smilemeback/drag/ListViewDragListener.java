@@ -27,7 +27,7 @@ import com.smilemeback.selection.SelectionManager;
 import com.smilemeback.views.IconViewSide;
 
 /**
- * Handle drag events, when user drags selected icons over the side panel listview.
+ * Handle drag events, when user drags selection icons over the side panel listview.
  */
 public class ListViewDragListener implements View.OnDragListener {
 
@@ -55,7 +55,7 @@ public class ListViewDragListener implements View.OnDragListener {
                 selectionManager.highlight();
                 return true;
             case DragEvent.ACTION_DRAG_ENTERED:
-                selectionMode.setStatusText("Drop selected images to category");
+                selectionMode.setStatusText("Drop selection images to category");
                 return true;
             case DragEvent.ACTION_DRAG_LOCATION:
                 if (idx >= 0) {

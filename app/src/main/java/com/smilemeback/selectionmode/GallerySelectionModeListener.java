@@ -28,12 +28,12 @@ public interface GallerySelectionModeListener {
     void gallerySelectionModeFinished();
 
     /**
-     * Called when items should be selected.
+     * Called when collection should be selection.
      */
     void selectAllItems();
 
     /**
-     * Called when all items should be deselected.
+     * Called when all collection should be deselected.
      */
     void deselectAllItems();
 

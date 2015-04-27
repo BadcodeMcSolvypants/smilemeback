@@ -57,9 +57,9 @@ public class DataMoverTest extends TestCase {
         Map<Integer, Integer> map = new TreeMap<>();
         for (int idx=0 ; idx<original.size() ; ++idx) {
             int o = (Integer)original.get(idx);
-            int d = (Integer)result.get(idx);
-            if (o != d) {
-                map.put(o, d);
+            int dest = result.indexOf(o);
+            if (idx != dest) {
+                map.put(idx, dest);
             }
         }
         return map;
@@ -132,14 +132,14 @@ public class DataMoverTest extends TestCase {
     /**
      * Test that a single icon that is before that target icon,
      * gets moved after the target icon.
-     * The selected icon and target icons are consequent.
+     * The selection icon and target icons are consequent.
      */
     @Test
     public void testSingleSelectedMovedAfterTargetIfTargetConsequent() {
         List<Comparable> original = collection();
         DataMover dm = new DataMover(
                 collection(),           // all items
-                list(4),       // selected
+                list(4),                // selection
                 integer(5)              // drop target
         );
         List<Comparable> result = list(0,1,2,3,5,4,6,7,8,9);
@@ -151,7 +151,7 @@ public class DataMoverTest extends TestCase {
     /**
      * Test that a single icon that is before that target icon,
      * gets moved after the target icon.
-     * The selected icon and target icon are not consequent and there are icons between them.
+     * The selection icon and target icon are not consequent and there are icons between them.
      */
     @Test
     public void testSingleSelectedMovedAfterTargetIfTargetNotConsequent() {
@@ -170,29 +170,10 @@ public class DataMoverTest extends TestCase {
     /**
      * Test that a single icon that is after the target icon,
      * gets moved before the target icon.
-     * The target and selected icon are consequent.
+     * The target and selection icon are consequent.
      */
     @Test
     public void testSingleSelectedMovedBeforeTargetIfTargetNotConsequent() {
-        List<Comparable> original = collection();
-        DataMover dm = new DataMover(
-                collection(),
-                list(integer(5)),
-                integer(4)
-        );
-        List<Comparable> result = list(0,1,2,3,5,4,6,7,8,9);
-        // assert
-        assertThat(dm.getResultCollection(), is(equalTo(result)));
-        assertThat(dm.getSourceTargetMapping(), is(equalTo(map(original, result))));
-    }
-
-    /**
-     * Test that a single icon that is after the target icon,
-     * gets moved before the target icon.
-     * The target and selected icon are not consequent.
-     */
-    @Test
-    public void testSingleSelectedMovedBeforeTargetIfTargetConsequent() {
         List<Comparable> original = collection();
         DataMover dm = new DataMover(
                 collection(),
@@ -206,7 +187,26 @@ public class DataMoverTest extends TestCase {
     }
 
     /**
-     * Test that multiple consequent selected icons are moved after target that
+     * Test that a single icon that is after the target icon,
+     * gets moved before the target icon.
+     * The target and selection icon are not consequent.
+     */
+    @Test
+    public void testSingleSelectedMovedBeforeTargetIfTargetConsequent() {
+        List<Comparable> original = collection();
+        DataMover dm = new DataMover(
+                collection(),
+                list(integer(5)),
+                integer(4)
+        );
+        List<Comparable> result = list(0,1,2,3,5,4,6,7,8,9);
+        // assert
+        assertThat(dm.getResultCollection(), is(equalTo(result)));
+        assertThat(dm.getSourceTargetMapping(), is(equalTo(map(original, result))));
+    }
+
+    /**
+     * Test that multiple consequent selection icons are moved after target that
      * is not consequent.
      */
     @Test
@@ -224,7 +224,7 @@ public class DataMoverTest extends TestCase {
     }
 
     /**
-     * Test that multiple consequent selected icons are moved after target that
+     * Test that multiple consequent selection icons are moved after target that
      * is consequent.
      */
     @Test
@@ -242,7 +242,7 @@ public class DataMoverTest extends TestCase {
     }
 
     /**
-     * Test that multiple consequent selected icons are moved before target that
+     * Test that multiple consequent selection icons are moved before target that
      * is consequent to the range.
      */
     @Test
@@ -260,7 +260,7 @@ public class DataMoverTest extends TestCase {
     }
 
     /**
-     * Test that multiple consequent selected icons are moved before target that
+     * Test that multiple consequent selection icons are moved before target that
      * is not consequent to the range.
      */
     @Test
@@ -278,8 +278,8 @@ public class DataMoverTest extends TestCase {
     }
 
     /**
-     * Test that multiple scattered selected icons are moved after that target
-     * that is consequent to the last selected icon.
+     * Test that multiple scattered selection icons are moved after that target
+     * that is consequent to the last selection icon.
      */
     @Test
     public void testMultipleScatteredMovedAfterTargetIfTargetConsequent() {
@@ -296,8 +296,8 @@ public class DataMoverTest extends TestCase {
     }
 
     /**
-     * Test that multiple scattered selected icons are moved after that target
-     * that is not consequent to the last selected icon.
+     * Test that multiple scattered selection icons are moved after that target
+     * that is not consequent to the last selection icon.
      */
     @Test
     public void testMultipleScatteredMovedAfterTargetIfTargetNotConsequent() {
@@ -314,8 +314,8 @@ public class DataMoverTest extends TestCase {
     }
 
     /**
-     * Test that multiple scattered selected icons are moved before the target
-     * that is consequent to the first selected icon.
+     * Test that multiple scattered selection icons are moved before the target
+     * that is consequent to the first selection icon.
      */
     @Test
     public void testMultipleScatteredMovedBeforeTargetIfTargetConsequent() {
@@ -332,8 +332,8 @@ public class DataMoverTest extends TestCase {
     }
 
     /**
-     * Test that multiple scattered selected icons are moved before the target
-     * that is not consequent to the first selected icon.
+     * Test that multiple scattered selection icons are moved before the target
+     * that is not consequent to the first selection icon.
      */
     @Test
     public void testMultipleScatteredMovedBeforeTargetIfTargetNotConsequent() {
@@ -351,7 +351,7 @@ public class DataMoverTest extends TestCase {
 
     /**
      * Test that multiple scattered icons are moved after the target that is
-     * inside the range of selected icons, but is not itself selected.
+     * inside the range of selection icons, but is not itself selection.
      */
     @Test
     public void testMultipleScatteredMovedAfterTargetThatIsInsideDirtyRange() {

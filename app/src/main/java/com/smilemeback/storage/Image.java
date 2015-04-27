@@ -59,4 +59,24 @@ public class Image implements Comparable<Image> {
     public int compareTo(Image another) {
         return Integer.compare(getPosition(), another.getPosition());
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Image)) return false;
+
+        Image image = (Image) o;
+
+        if (position != image.position) return false;
+        if (!category.equals(image.category)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = category.hashCode();
+        result = 31 * result + position;
+        return result;
+    }
 }

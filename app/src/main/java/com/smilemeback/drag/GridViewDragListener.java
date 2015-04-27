@@ -25,7 +25,7 @@ import com.smilemeback.selection.SelectionManager;
 import com.smilemeback.views.IconView;
 
 /**
- * Handle drag events when user drags selected icons over unselected icons.
+ * Handle drag events when user drags selection icons over unselected icons.
  */
 public class GridViewDragListener implements View.OnDragListener {
 

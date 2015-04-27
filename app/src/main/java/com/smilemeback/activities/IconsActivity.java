@@ -91,7 +91,7 @@ public class IconsActivity extends GalleryActivity implements ListAdapterListene
     }
 
     /**
-     * Deselect all items, reload and initialize grid.
+     * Deselect all collection, reload and initialize grid.
      */
     protected void reloadGrid() {
         selectionManager.deselectAll();
@@ -157,7 +157,7 @@ public class IconsActivity extends GalleryActivity implements ListAdapterListene
         List<Integer> sortedIdxs = new ArrayList<>(selectionManager.getSelectedPositions());
         Collections.sort(sortedIdxs);
         List<Image> selectedImages = new ArrayList<>();
-        logger.info("Number of selected images " + selectionManager.getNumSelected());
+        logger.info("Number of selection images " + selectionManager.getNumSelected());
         logger.info("Switch index is " + position);
         for (int selectedIdx : sortedIdxs) {
             selectedImages.add((Image)gridAdapter.getItem(selectedIdx));
@@ -228,7 +228,7 @@ public class IconsActivity extends GalleryActivity implements ListAdapterListene
         DialogInterface.OnClickListener callback = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                logger.info("Deleting selected images");
+                logger.info("Deleting selection images");
                 try {
                     Storage storage = new Storage(IconsActivity.this);
                     List<Image> selectedImages = new ArrayList<>();

@@ -30,8 +30,7 @@ import android.widget.ListPopupWindow;
 import android.widget.TextView;
 
 import com.smilemeback.R;
-import com.smilemeback.activities.AddPictureActivity;
-import com.smilemeback.activities.OldGalleryActivity;
+import com.smilemeback.activities.IconsActivity;
 import com.smilemeback.views.IconView;
 
 
@@ -44,7 +43,7 @@ public class SelectionMode implements ActionMode.Callback, View.OnClickListener 
     protected ListPopupWindow popup;
     protected ActionMode actionMode;
 
-    // number of selected vs total items.
+    // number of selection vs total collection.
     protected int numSelected;
     protected int total;
 
@@ -61,6 +60,16 @@ public class SelectionMode implements ActionMode.Callback, View.OnClickListener 
 
     public void setTotal(int total) {
         this.total = total;
+    }
+
+    /**
+     * @return true, if {@literal listener} is an instance of {@link com.smilemeback.activities.IconsActivity}.
+     */
+    public boolean isListenerIconsActivity() {
+        if (listener != null) {
+            return listener instanceof IconsActivity;
+        }
+        return false;
     }
 
     @Override
@@ -112,7 +121,8 @@ public class SelectionMode implements ActionMode.Callback, View.OnClickListener 
 
     @Override
     public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-        menu.findItem(R.id.gallery_selectionmode_menu_add_image).setVisible(true);
+        menu.findItem(R.id.gallery_selectionmode_menu_add_image).setVisible(isListenerIconsActivity());
+        menu.findItem(R.id.gallery_selectionmode_menu_add_album).setVisible(!isListenerIconsActivity());
         menu.findItem(R.id.gallery_selectionmode_menu_rename_image).setVisible(numSelected == 1);
         menu.findItem(R.id.gallery_selectionmode_menu_delete_image).setVisible(numSelected >= 1);
         return true;
@@ -123,6 +133,9 @@ public class SelectionMode implements ActionMode.Callback, View.OnClickListener 
         Intent intent;
         switch (item.getItemId()) {
             case R.id.gallery_selectionmode_menu_add_image:
+                listener.addNewIcon();
+                return true;
+            case R.id.gallery_selectionmode_menu_add_album: // almost duplicates previous behaviour
                 listener.addNewIcon();
                 return true;
             case R.id.gallery_selectionmode_menu_rename_image:
@@ -147,7 +160,7 @@ public class SelectionMode implements ActionMode.Callback, View.OnClickListener 
 
     /**
      * Return the {@link android.widget.ListAdapter} that defines the contents of
-     * the popup. It uses the number of selected items in gridview to define what to show.
+     * the popup. It uses the number of selection collection in gridview to define what to show.
      *
      * @return
      */
@@ -172,7 +185,7 @@ public class SelectionMode implements ActionMode.Callback, View.OnClickListener 
     }
 
     /**
-     * This function updates the number of selected items in the TextView in the selection
+     * This function updates the number of selection collection in the TextView in the selection
      * actionbar.
      */
     public void updateNumSelectedText() {
