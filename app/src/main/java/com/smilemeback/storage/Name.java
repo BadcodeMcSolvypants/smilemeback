@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
  * Category and Image Name class.
  */
 public class Name {
-    public static final String ILLEGAL_CHARACTERS = "|\\?*<\":>+[]/'";
+    public static final String ILLEGAL_CHARACTERS = "|\\?*<\":>+[]/'_.";
     public static final Pattern VALID_REGEX = Pattern.compile("[^" + Pattern.quote(ILLEGAL_CHARACTERS) + "]+");
     protected final String name;
 
@@ -35,10 +35,10 @@ public class Name {
      * throws {@link java.lang.IllegalArgumentException} .
      * @param name The name as a {@link java.lang.String} .
      */
-    public Name(String name) throws IllegalArgumentException {
+    public Name(String name) throws NameException {
         Matcher m = VALID_REGEX.matcher(name);
         if (!m.matches()) {
-            throw new IllegalArgumentException("Invalid characters in name <" + name + ">");
+            throw new NameException("Invalid characters in name <" + name + ">");
         }
         this.name = name;
     }

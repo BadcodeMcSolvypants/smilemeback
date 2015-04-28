@@ -19,7 +19,7 @@ package com.smilemeback.storage.datamover;
 import android.content.Context;
 
 import com.smilemeback.storage.Category;
-import com.smilemeback.storage.Storage;
+import com.smilemeback.storage.OldStorage;
 
 import java.io.File;
 import java.util.List;
@@ -36,7 +36,7 @@ public class CategoryDataMover extends DataMover<Category> {
         if (categoriesMoved) {
             throw new IllegalStateException("Cannot move categories twice!");
         }
-        File categoryFolder = Storage.getCategoriesFolder(context);
+        File categoryFolder = OldStorage.getCategoriesFolder(context);
         categoriesMoved = true;
     }
 }

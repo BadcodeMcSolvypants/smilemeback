@@ -25,7 +25,7 @@ import com.smilemeback.activities.CategoriesActivity;
 import com.smilemeback.activities.IconsActivity;
 import com.smilemeback.selection.SelectionManager;
 import com.smilemeback.storage.Category;
-import com.smilemeback.storage.Storage;
+import com.smilemeback.storage.OldStorage;
 import com.smilemeback.storage.StorageException;
 import com.smilemeback.views.IconView;
 
@@ -50,7 +50,7 @@ public class CategoryGridAdapter extends BaseGridAdapter {
      */
     public void initialize()  {
         try {
-            Storage storage = new Storage(activity);
+            OldStorage storage = new OldStorage(activity);
             categories = storage.getCategories();
             selectionManager.setNumTotal(categories.size());
             selectionManager.deselectAll();

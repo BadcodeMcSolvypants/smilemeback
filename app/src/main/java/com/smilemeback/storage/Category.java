@@ -16,57 +16,59 @@
  */
 package com.smilemeback.storage;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
 import java.io.File;
+import java.io.IOException;
+import java.util.logging.Logger;
 
 /**
  * Category contains an category thumbnail image
  * and a list of pictures, their labels and audio recordings.
  */
 public class Category implements Comparable<Category> {
+    private static Logger logger = Logger.getLogger(Category.class.getCanonicalName());
+    public static final String THUMBNAIL = "_thumbnail.jpg";
 
-    /**
-     * The index of the category.
-     * All categories must have unique indices that define their display order.
-     */
-    private int index;
-
-    /**
-     * The name of the category.
-     */
-    private Name name;
-
-    /**
-     * The actual folder file of the category.
-     */
-    private File folder;
-
-    /**
-     * The thumbnail file of the category.
-     * It must reside inside the category with name "_thumbnail.jpg".
-     */
-    private File thumbnail;
-
+    protected final int position;
+    protected final Name name;
+    protected final File folder;
+    protected final File thumbnail;
+    protected final File storageFolder;
 
     /**
      * Initialize a new category.
      *
-     * The constructor automatically retrieves the {@link #index}, {@link #name} and {@link #thumbnail}
+     * The constructor automatically retrieves the {@link #position}, {@link #name} and {@link #thumbnail}
      * of the category.
      *
-     * @param categoryFile The folder file of the category.
+     * @param folder The folder file of the category.
      * @throws StorageException
      */
-    public Category(File categoryFile) throws StorageException {
-        this.folder = categoryFile;
-        this.index = Storage.getIndex(categoryFile);
-        this.name = Storage.getName(categoryFile);
-        this.thumbnail = new File(this.folder, Storage.CATEGORY_THUMBNAIL);
-        if (!thumbnail.exists()) {
-            throw new StorageException("Category" + name + " thumbnail <" + thumbnail.getAbsolutePath() + "> does not exist!");
+    public Category(File folder) throws StorageException {
+        try {
+            this.folder = folder;
+            this.position = StorageNameUtils.parsePosition(folder.getName()).get();
+            this.name = StorageNameUtils.parseName(folder.getName());
+            this.storageFolder = folder.getParentFile();
+            this.thumbnail = new File(this.folder, THUMBNAIL);
+        } catch (NameException e) {
+            throw new StorageException(e.getMessage(), e);
+        }
+        makeAssertions();
+    }
+
+    private void makeAssertions() throws StorageException {
+        if (!thumbnail.isFile()) {
+            throw new StorageException("Category" + name + " thumbnail <" + thumbnail.getAbsolutePath() + "> not a file or does not exist!");
+        }
+        if (!storageFolder.isDirectory()) {
+            throw new StorageException("Parent folder of category not directory!");
         }
     }
 
-    public int getIndex() { return this.index; }
+    public int getPosition() { return this.position; }
 
     public Name getName() { return this.name; }
 
@@ -83,23 +85,47 @@ public class Category implements Comparable<Category> {
 
     @Override
     public int compareTo(Category another) {
-        return getIndex() - another.getIndex();
+        return getPosition() - another.getPosition();
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Category)) return false;
-
-        Category category = (Category) o;
-
-        if (index != category.index) return false;
-
-        return true;
+        return EqualsBuilder.reflectionEquals(this, o);
     }
 
     @Override
     public int hashCode() {
-        return index;
+        return position;
+    }
+
+    /**
+     * Rename the category.
+     *
+     * @param newName The new {@link com.smilemeback.storage.Name}.
+     * @return Instance of the renamed category.
+     * @throws StorageException
+     */
+    public Category rename(Name newName) throws StorageException {
+        logger.info("Renaming category <" + name + "> to <" + newName + ">");
+        if (name.equals(newName)) {
+            return this;    // same name, do nothing!
+        }
+        File newFolder = new File(
+                storageFolder,
+                StorageNameUtils.constructCategoryFileName(position, newName));
+        try {
+            FileUtils.moveDirectory(folder, newFolder);
+            return new Category(newFolder);
+        } catch (IOException e) {
+            throw new StorageException(e.getMessage(), e);
+        }
+    }
+
+    public void delete() throws StorageException {
+        try {
+            FileUtils.deleteDirectory(folder);
+        } catch (IOException e) {
+            throw new StorageException(e.getMessage(), e);
+        }
     }
 }

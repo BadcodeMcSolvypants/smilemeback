@@ -24,31 +24,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 @RunWith(value = BlockJUnit4ClassRunner.class)
-public class NameTest {
+public class ImageTest {
 
     @Test
-    public void testCorrectInitialization() throws NameException {
-        new Name("Smiling");
-        new Name("Running very fast!");
-    }
+    public void testComparison() {
 
-    @Test(expected = NameException.class)
-    public void testZeroLengthName() throws NameException {
-        new Name("");
-    }
-
-    @Test(expected = NameException.class)
-    public void testInvalidCharacters() throws NameException {
-        new Name("Good / bad ._");
-    }
-
-    @Test
-    public void testNameEquals() throws NameException {
-        Name a = new Name("Smiling");
-        Name b = new Name("Smiling");
-        Name c = new Name("Running");
-
-        assertThat(a, is(equalTo(b)));
-        assertThat(a, is(not(equalTo(c))));
     }
 }

@@ -32,7 +32,7 @@ import com.smilemeback.misc.Constants;
 import com.smilemeback.misc.Dialogs;
 import com.smilemeback.storage.Category;
 import com.smilemeback.storage.Image;
-import com.smilemeback.storage.Storage;
+import com.smilemeback.storage.OldStorage;
 import com.smilemeback.storage.StorageException;
 import android.support.v4.app.NavUtils;
 
@@ -81,7 +81,7 @@ public class IconsActivity extends GalleryActivity implements ListAdapterListene
 
     protected List<Category> loadCategories() {
         List<Category> categories = null;
-        Storage storage = new Storage(this);
+        OldStorage storage = new OldStorage(this);
         try {
             categories = storage.getCategories();
         } catch (StorageException e) {
@@ -158,14 +158,14 @@ public class IconsActivity extends GalleryActivity implements ListAdapterListene
         Collections.sort(sortedIdxs);
         List<Image> selectedImages = new ArrayList<>();
         logger.info("Number of selection images " + selectionManager.getNumSelected());
-        logger.info("Switch index is " + position);
+        logger.info("Switch position is " + position);
         for (int selectedIdx : sortedIdxs) {
             selectedImages.add((Image)gridAdapter.getItem(selectedIdx));
-            logger.info("Selected index is " + selectedIdx);
+            logger.info("Selected position is " + selectedIdx);
         }
         Image switchImage = (Image)gridAdapter.getItem(position);
 
-        Storage storage = new Storage(IconsActivity.this);
+        OldStorage storage = new OldStorage(IconsActivity.this);
         try {
             storage.switchImages(selectedImages, switchImage);
         } catch (StorageException e) {
@@ -177,7 +177,7 @@ public class IconsActivity extends GalleryActivity implements ListAdapterListene
 
     @Override
     public void moveSelectedIconsToCategory(int categoryIndex) {
-        Storage storage = new Storage(IconsActivity.this);
+        OldStorage storage = new OldStorage(IconsActivity.this);
         List<Image> selectedImages = new ArrayList<>();
         for (int idx : selectionManager.getSelectedPositions()) {
             selectedImages.add((Image)gridAdapter.getItem(idx));
@@ -203,7 +203,7 @@ public class IconsActivity extends GalleryActivity implements ListAdapterListene
             @Override
             public void inputDone(String text) {
                 logger.info("Renaming current icon to " + text);
-                Storage storage = new Storage(IconsActivity.this);
+                OldStorage storage = new OldStorage(IconsActivity.this);
                 try {
                     storage.renameImage(image, text);
                 } catch (StorageException e) {
@@ -230,7 +230,7 @@ public class IconsActivity extends GalleryActivity implements ListAdapterListene
             public void onClick(DialogInterface dialog, int which) {
                 logger.info("Deleting selection images");
                 try {
-                    Storage storage = new Storage(IconsActivity.this);
+                    OldStorage storage = new OldStorage(IconsActivity.this);
                     List<Image> selectedImages = new ArrayList<>();
                     for (int idx : selectionManager.getSelectedPositions()) {
                         selectedImages.add((Image)gridAdapter.getItem(idx));
@@ -257,7 +257,7 @@ public class IconsActivity extends GalleryActivity implements ListAdapterListene
             String name = data.getStringExtra(Constants.ADDED_IMAGE_NAME);
             String imagePath = data.getStringExtra(Constants.ADDED_IMAGE_PATH);
             String audioPath = data.getStringExtra(Constants.ADDED_IMAGE_AUDIO_PATH);
-            Storage storage = new Storage(this);
+            OldStorage storage = new OldStorage(this);
             try {
                 storage.addCategoryImage(gridAdapter.getCurrentCategory(), name, new File(imagePath), new File(audioPath));
                 reloadGrid();

@@ -24,7 +24,7 @@ import com.smilemeback.activities.IconsActivity;
 import com.smilemeback.selection.SelectionManager;
 import com.smilemeback.storage.Category;
 import com.smilemeback.storage.Image;
-import com.smilemeback.storage.Storage;
+import com.smilemeback.storage.OldStorage;
 import com.smilemeback.storage.StorageException;
 import com.smilemeback.views.IconView;
 
@@ -57,7 +57,7 @@ public class IconGridAdapter extends BaseGridAdapter {
     @Override
     public void initialize()  {
         try {
-            Storage storage = new Storage(activity);
+            OldStorage storage = new OldStorage(activity);
             images = storage.getCategoryImages(currentCategory);
             selectionManager.deselectAll();
             selectionManager.setNumTotal(images.size());

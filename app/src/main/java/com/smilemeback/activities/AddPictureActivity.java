@@ -35,7 +35,7 @@ import android.widget.ImageView;
 import com.smilemeback.misc.AddPictureActivityState;
 import com.smilemeback.misc.Constants;
 import com.smilemeback.R;
-import com.smilemeback.storage.Storage;
+import com.smilemeback.storage.OldStorage;
 import com.squareup.picasso.Picasso;
 
 import org.apache.commons.io.FileUtils;
@@ -113,7 +113,7 @@ public class AddPictureActivity extends Activity {
         });
 
         if (imageAdded) {
-            Storage storage = new Storage(this);
+            OldStorage storage = new OldStorage(this);
             loadImageFromFile(storage.getTemporaryImageFile());
         }
 
@@ -185,7 +185,7 @@ public class AddPictureActivity extends Activity {
             }
         });
 
-        final Storage storage = new Storage(this);
+        final OldStorage storage = new OldStorage(this);
 
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -269,7 +269,7 @@ public class AddPictureActivity extends Activity {
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            Storage storage = new Storage(this);
+            OldStorage storage = new OldStorage(this);
             File imageFile = storage.getTemporaryImageFile();
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imageFile));
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
@@ -290,7 +290,7 @@ public class AddPictureActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Storage storage = new Storage(this);
+        OldStorage storage = new OldStorage(this);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             logger.info("Adding image from camera");
             loadImageFromFile(storage.getTemporaryImageFile());

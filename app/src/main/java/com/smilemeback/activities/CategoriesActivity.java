@@ -26,7 +26,7 @@ import com.smilemeback.R;
 import com.smilemeback.adapters.CategoryGridAdapter;
 import com.smilemeback.misc.Dialogs;
 import com.smilemeback.storage.Category;
-import com.smilemeback.storage.Storage;
+import com.smilemeback.storage.OldStorage;
 import com.smilemeback.storage.StorageException;
 
 import java.util.ArrayList;
@@ -92,7 +92,7 @@ public class CategoriesActivity extends GalleryActivity {
             @Override
             public void inputDone(String text) {
                 logger.info("Renaming current category to " + text);
-                Storage storage = new Storage(CategoriesActivity.this);
+                OldStorage storage = new OldStorage(CategoriesActivity.this);
                 try {
                     storage.renameCategory(category, text);
                 } catch (StorageException e) {
@@ -119,7 +119,7 @@ public class CategoriesActivity extends GalleryActivity {
             public void onClick(DialogInterface dialog, int which) {
                 logger.info("Deleting selection categories");
                 try {
-                    Storage storage = new Storage(CategoriesActivity.this);
+                    OldStorage storage = new OldStorage(CategoriesActivity.this);
                     List<Category> selectedCategories = new ArrayList<>();
                     for (int idx : selectionManager.getSelectedPositions()) {
                         selectedCategories.add((Category)gridAdapter.getItem(idx));
