@@ -122,12 +122,12 @@ public class Storage {
             FileUtils.copyInputStreamToFile(thumbnailStream, thumbNailFile);
             return new Category(category);
         } catch (IOException e) {
-            throw new StorageException(e);
+            throw new StorageException(e.getMessage(), e);
         } finally {
             try {
                 thumbnailStream.close();
             } catch (IOException e) {
-                throw new StorageException(e);
+                throw new StorageException(e.getMessage(), e);
             }
         }
     }
@@ -162,7 +162,7 @@ public class Storage {
                 }
             }
         } catch (IOException | StorageException e) {
-            throw new StorageException(e);
+            throw new StorageException(e.getMessage(), e);
         }
         // Sort the categories according to their name indices.
         Collections.sort(categories);
@@ -192,7 +192,7 @@ public class Storage {
         try {
             FileUtils.deleteDirectory(getCategoriesFolder(context));
         } catch (IOException e) {
-            throw new StorageException(e);
+            throw new StorageException(e.getMessage(), e);
         }
     }
 
@@ -217,7 +217,7 @@ public class Storage {
                 catIdx += 1;
             }
         } catch (IOException | StorageException e) {
-            throw new StorageException(e);
+            throw new StorageException(e.getMessage(), e);
         }
     }
 
@@ -280,7 +280,7 @@ public class Storage {
             logger.info("Copying audio from " + audioPath + " to " + audioFile);
             FileUtils.copyFile(audioPath, audioFile);
         } catch (IOException e) {
-            throw new StorageException(e);
+            throw new StorageException(e.getMessage(), e);
         }
     }
 
@@ -294,7 +294,7 @@ public class Storage {
                 FileUtils.forceDelete(image.getAudio());
             }
         } catch(IOException e) {
-            throw new StorageException(e);
+            throw new StorageException(e.getMessage(), e);
         } finally {
             reorganizeCategory(category);
         }
@@ -306,7 +306,7 @@ public class Storage {
                 FileUtils.deleteDirectory(category.getFolder());
             }
         } catch (IOException e) {
-            throw new StorageException(e);
+            throw new StorageException(e.getMessage(), e);
         } finally {
             reorganizeCategories();
         }
@@ -350,7 +350,7 @@ public class Storage {
                 nextPos += 1;
             }
         } catch (IOException e) {
-            throw new StorageException(e);
+            throw new StorageException(e.getMessage(), e);
         }
     }
 
@@ -385,7 +385,7 @@ public class Storage {
             }
             reorganizeCategory(srcCategory);
         } catch (IOException e) {
-            throw new StorageException(e);
+            throw new StorageException(e.getMessage(), e);
         } finally {
             reorganizeCategory(srcCategory);
         }
@@ -442,7 +442,7 @@ public class Storage {
                 }
             }
         } catch (IOException e) {
-            throw new StorageException(e);
+            throw new StorageException(e.getMessage(), e);
         }
     }
 
@@ -466,7 +466,7 @@ public class Storage {
             FileUtils.moveFile(image.getAudio(), newAudio);
             FileUtils.moveFile(image.getImage(), newImage);
         } catch (IOException e) {
-            throw new StorageException(e);
+            throw new StorageException(e.getMessage(), e);
         }
     }
 
@@ -486,7 +486,7 @@ public class Storage {
         try {
             FileUtils.moveDirectory(category.getFolder(), newCategory);
         } catch (IOException e) {
-            throw new StorageException(e);
+            throw new StorageException(e.getMessage(), e);
         }
     }
 
@@ -532,7 +532,7 @@ public class Storage {
                 FileUtils.moveFile(tempAudios.get(idx), destAudio);
             }
         } catch (IOException e) {
-            throw new StorageException(e);
+            throw new StorageException(e.getMessage(), e);
         } finally {
             reorganizeCategory(category);
         }
@@ -569,7 +569,7 @@ public class Storage {
             int underscore_idx = fnm.indexOf("_");
             return Integer.parseInt(fnm.substring(0, underscore_idx));
         } catch (IndexOutOfBoundsException | NumberFormatException e) {
-            throw new StorageException(e);
+            throw new StorageException(e.getMessage(), e);
         }
     }
 

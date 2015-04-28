@@ -18,13 +18,28 @@ package com.smilemeback.storage;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Category and Image Name class.
  */
 public class Name {
+    public static final String ILLEGAL_CHARACTERS = "|\\?*<\":>+[]/'";
+    public static final Pattern VALID_REGEX = Pattern.compile("[^" + Pattern.quote(ILLEGAL_CHARACTERS) + "]+");
     protected final String name;
 
-    public Name(String name) {
+    /**
+     * Create a new {@link com.smilemeback.storage.Name} instance.
+     * In case of an illegal name containing any of the characters {@literal ILLEGAL_CHARACTERS},
+     * throws {@link java.lang.IllegalArgumentException} .
+     * @param name The name as a {@link java.lang.String} .
+     */
+    public Name(String name) throws IllegalArgumentException {
+        Matcher m = VALID_REGEX.matcher(name);
+        if (!m.matches()) {
+            throw new IllegalArgumentException("Invalid characters in name <" + name + ">");
+        }
         this.name = name;
     }
 

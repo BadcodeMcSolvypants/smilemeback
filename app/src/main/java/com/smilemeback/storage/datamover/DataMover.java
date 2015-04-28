@@ -24,13 +24,23 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
- * Class that deals with moving elements in {@link List}s of comparable elements.
+ * Class dealing with move operations of various comparable elements.
+ *
+ * A single move operation consists of:
+ * 1. the collection of items
+ * 2. the selection in collection of items that are going to be moved and reordered.
+ * 3. The target item, where the selection is dropped.
+ *
+ * If all the selected items are after the target item, then the selected items are moved
+ * before the target. Otherwise, selected items are moved after the target.
+ *
+ * @param <T> The datatype that must extend {@link java.lang.Comparable} interface.
  */
-public class DataMover {
+public class DataMover<T extends Comparable> {
 
-    protected final List<Comparable> collection;
-    protected final List<Comparable> selection;
-    protected final Comparable target;
+    protected final List<T> collection;
+    protected final List<T> selection;
+    protected final T target;
 
     /**
      * Initialize {@literal IconSorter}.
@@ -41,7 +51,7 @@ public class DataMover {
      * @throws IllegalArgumentException In case any element of {@literal selection} is not in {@literal collection}
      *         or when {@literal target} is inside {@literal selection} or outside {@literal collection}.
      */
-    public DataMover(final List<Comparable> collection, final List<Comparable> selection, final Comparable target) throws IllegalArgumentException {
+    public DataMover(final List<? extends T> collection, final List<? extends T> selection, final T target) throws IllegalArgumentException {
         this.collection = new ArrayList<>(collection);
         this.selection = new ArrayList<>(selection);
         this.target = target;
@@ -84,8 +94,8 @@ public class DataMover {
     /**
      * @return The reordered copy of the resulting collection.
      */
-    public List<Comparable> getResultCollection() {
-        List<Comparable> resultCollection = new ArrayList<>(collection);
+    public List<T> getResultCollection() {
+        List<T> resultCollection = new ArrayList<>(collection);
         resultCollection.removeAll(selection);
         int targetIndex = resultCollection.indexOf(target);
         if (isTargetBeforeSelection()) {
@@ -102,7 +112,7 @@ public class DataMover {
      */
     public Map<Integer, Integer> getSourceTargetMapping() {
         Map<Integer, Integer> mapping = new TreeMap<>();
-        List<Comparable> result = getResultCollection();
+        List<T> result = getResultCollection();
         for (int idx=0 ; idx<result.size() ; ++idx) {
             Comparable obj = result.get(idx);
             int srcIdx = collection.indexOf(obj);

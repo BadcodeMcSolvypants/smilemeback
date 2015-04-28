@@ -21,7 +21,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -31,31 +30,22 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
-@RunWith(value=BlockJUnit4ClassRunner.class)
+@RunWith(value = BlockJUnit4ClassRunner.class)
 public class DataMoverTest {
 
-    public static Comparable integer(int i) {
-        return i;
-    }
-
-    public static List<Comparable> collection() {
+    public static List<Integer> collection() {
         return list(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
     }
 
-    public static List<Comparable> list(Object... elements) {
-        List<Comparable> result = new ArrayList<>();
-        for (Object o : Arrays.asList(elements)) {
-            int i = (Integer)o;
-            result.add(integer(i));
-        }
-        return result;
+    public static List<Integer> list(Integer... elements) {
+        return Arrays.asList(elements);
     }
 
-    public static Map<Integer, Integer> map(List<Comparable> original, List<Comparable> result) {
+    public static Map<Integer, Integer> map(List<Integer> original, List<Integer> result) {
         assertThat(original.size(), is(equalTo(result.size())));
         Map<Integer, Integer> map = new TreeMap<>();
         for (int idx=0 ; idx<original.size() ; ++idx) {
-            int o = (Integer)original.get(idx);
+            int o = original.get(idx);
             int dest = result.indexOf(o);
             if (idx != dest) {
                 map.put(idx, dest);
@@ -66,66 +56,66 @@ public class DataMoverTest {
 
     @Test
     public void testSuccessfulInitialization() {
-        new DataMover(
+        new DataMover<>(
                 collection(),
                 list(0, 1),
-                integer(2));
+                2);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testFailedInitializationAsSelectedItemNotInCollection() {
-        new DataMover(
+        new DataMover<>(
                 collection(),
                 list(1, 2, 20),
-                integer(9));
+                9);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testFailedInitializationAsTargetNotInCollection() {
-        new DataMover(
+        new DataMover<>(
                 collection(),
                 list(1, 2),
-                integer(-1));
+                -1);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testFailedInitializationAsTargetAlsoSelected() {
-        new DataMover(
+        new DataMover<>(
                 collection(),
                 list(1, 2),
-                integer(2));
+                2);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testFailedInitializationAsSeveralItemsNotUnique() {
-        new DataMover(
+        new DataMover<>(
                 list(0, 1, 1),
-                list(integer(0)),
-                integer(1));
+                list(0),
+                1);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testFailedInitializationAsSelectedItemsNotUnique() {
-        new DataMover(
+        new DataMover<>(
                 list(0, 1, 2),
                 list(0, 0),
-                integer(1));
+                1);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testFailedInitializationAsCollectionNotSorted() {
-        new DataMover(
+        new DataMover<>(
                 list(1, 0),
-                list(integer(0)),
-                integer(1));
+                list(0),
+                1);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testFailedInitializationAsSelectionNotSorted() {
-        new DataMover(
+        new DataMover<>(
                 collection(),
                 list(5, 6, 4),
-                integer(1));
+                1);
     }
 
     /**
@@ -135,16 +125,18 @@ public class DataMoverTest {
      */
     @Test
     public void testSingleSelectedMovedAfterTargetIfTargetConsequent() {
-        List<Comparable> original = collection();
-        DataMover dm = new DataMover(
+        List<Integer> original = collection();
+        DataMover dm = new DataMover<>(
                 collection(),           // all items
                 list(4),                // selection
-                integer(5)              // drop target
+                5                       // drop target
         );
-        List<Comparable> result = list(0,1,2,3,5,4,6,7,8,9);
+        List<Integer> result = list(0,1,2,3,5,4,6,7,8,9);
         // assert
-        assertThat(dm.getResultCollection(), is(equalTo(result)));
-        assertThat(dm.getSourceTargetMapping(), is(equalTo(map(original, result))));
+        List<Integer> actualCollection = dm.getResultCollection();
+        Map<Integer, Integer> actualMapping = dm.getSourceTargetMapping();
+        assertThat(actualCollection, is(equalTo(result)));
+        assertThat(actualMapping, is(equalTo(map(original, result))));
     }
 
     /**
@@ -154,16 +146,18 @@ public class DataMoverTest {
      */
     @Test
     public void testSingleSelectedMovedAfterTargetIfTargetNotConsequent() {
-        List<Comparable> original = collection();
-        DataMover dm = new DataMover(
+        List<Integer> original = collection();
+        DataMover dm = new DataMover<>(
                 collection(),
-                list(integer(4)),
-                integer(6)
+                list(4),
+                6
         );
-        List<Comparable> result = list(0,1,2,3,5,6,4,7,8,9);
+        List<Integer> result = list(0,1,2,3,5,6,4,7,8,9);
         // assert
-        assertThat(dm.getResultCollection(), is(equalTo(result)));
-        assertThat(dm.getSourceTargetMapping(), is(equalTo(map(original, result))));
+        List<Integer> actualCollection = dm.getResultCollection();
+        Map<Integer, Integer> actualMapping = dm.getSourceTargetMapping();
+        assertThat(actualCollection, is(equalTo(result)));
+        assertThat(actualMapping, is(equalTo(map(original, result))));
     }
 
     /**
@@ -173,16 +167,18 @@ public class DataMoverTest {
      */
     @Test
     public void testSingleSelectedMovedBeforeTargetIfTargetNotConsequent() {
-        List<Comparable> original = collection();
-        DataMover dm = new DataMover(
+        List<Integer> original = collection();
+        DataMover dm = new DataMover<>(
                 collection(),
-                list(integer(6)),
-                integer(4)
+                list(6),
+                4
         );
-        List<Comparable> result = list(0,1,2,3,6,4,5,7,8,9);
+        List<Integer> result = list(0,1,2,3,6,4,5,7,8,9);
         // assert
-        assertThat(dm.getResultCollection(), is(equalTo(result)));
-        assertThat(dm.getSourceTargetMapping(), is(equalTo(map(original, result))));
+        List<Integer> actualCollection = dm.getResultCollection();
+        Map<Integer, Integer> actualMapping = dm.getSourceTargetMapping();
+        assertThat(actualCollection, is(equalTo(result)));
+        assertThat(actualMapping, is(equalTo(map(original, result))));
     }
 
     /**
@@ -192,16 +188,18 @@ public class DataMoverTest {
      */
     @Test
     public void testSingleSelectedMovedBeforeTargetIfTargetConsequent() {
-        List<Comparable> original = collection();
-        DataMover dm = new DataMover(
+        List<Integer> original = collection();
+        DataMover dm = new DataMover<>(
                 collection(),
-                list(integer(5)),
-                integer(4)
+                list(5),
+                4
         );
-        List<Comparable> result = list(0,1,2,3,5,4,6,7,8,9);
+        List<Integer> result = list(0,1,2,3,5,4,6,7,8,9);
         // assert
-        assertThat(dm.getResultCollection(), is(equalTo(result)));
-        assertThat(dm.getSourceTargetMapping(), is(equalTo(map(original, result))));
+        List<Integer> actualCollection = dm.getResultCollection();
+        Map<Integer, Integer> actualMapping = dm.getSourceTargetMapping();
+        assertThat(actualCollection, is(equalTo(result)));
+        assertThat(actualMapping, is(equalTo(map(original, result))));
     }
 
     /**
@@ -210,16 +208,18 @@ public class DataMoverTest {
      */
     @Test
     public void testMultipleConsequentMovedAfterTargetIfTargetNotConsequent() {
-        List<Comparable> original = collection();
-        DataMover dm = new DataMover(
+        List<Integer> original = collection();
+        DataMover dm = new DataMover<>(
                 collection(),
                 list(1,2),
-                integer(5)
+                5
         );
-        List<Comparable> result = list(0,3,4,5,1,2,6,7,8,9);
+        List<Integer> result = list(0,3,4,5,1,2,6,7,8,9);
         // assert
-        assertThat(dm.getResultCollection(), is(equalTo(result)));
-        assertThat(dm.getSourceTargetMapping(), is(equalTo(map(original, result))));
+        List<Integer> actualCollection = dm.getResultCollection();
+        Map<Integer, Integer> actualMapping = dm.getSourceTargetMapping();
+        assertThat(actualCollection, is(equalTo(result)));
+        assertThat(actualMapping, is(equalTo(map(original, result))));
     }
 
     /**
@@ -228,16 +228,18 @@ public class DataMoverTest {
      */
     @Test
     public void testMultipleConsequentMovedAfterTargetIfTargetConsequent() {
-        List<Comparable> original = collection();
-        DataMover dm = new DataMover(
+        List<Integer> original = collection();
+        DataMover dm = new DataMover<>(
                 collection(),
                 list(1,2),
-                integer(3)
+                3
         );
-        List<Comparable> result = list(0,3,1,2,4,5,6,7,8,9);
+        List<Integer> result = list(0,3,1,2,4,5,6,7,8,9);
         // assert
-        assertThat(dm.getResultCollection(), is(equalTo(result)));
-        assertThat(dm.getSourceTargetMapping(), is(equalTo(map(original, result))));
+        List<Integer> actualCollection = dm.getResultCollection();
+        Map<Integer, Integer> actualMapping = dm.getSourceTargetMapping();
+        assertThat(actualCollection, is(equalTo(result)));
+        assertThat(actualMapping, is(equalTo(map(original, result))));
     }
 
     /**
@@ -246,16 +248,18 @@ public class DataMoverTest {
      */
     @Test
     public void testMultipleConsequentMovedBeforeTargetIfTargetConsequent() {
-        List<Comparable> original = collection();
-        DataMover dm = new DataMover(
+        List<Integer> original = collection();
+        DataMover dm = new DataMover<>(
                 collection(),
                 list(2,3),
-                integer(1)
+                1
         );
-        List<Comparable> result = list(0,2,3,1,4,5,6,7,8,9);
+        List<Integer> result = list(0,2,3,1,4,5,6,7,8,9);
         // assert
-        assertThat(dm.getResultCollection(), is(equalTo(result)));
-        assertThat(dm.getSourceTargetMapping(), is(equalTo(map(original, result))));
+        List<Integer> actualCollection = dm.getResultCollection();
+        Map<Integer, Integer> actualMapping = dm.getSourceTargetMapping();
+        assertThat(actualCollection, is(equalTo(result)));
+        assertThat(actualMapping, is(equalTo(map(original, result))));
     }
 
     /**
@@ -264,16 +268,18 @@ public class DataMoverTest {
      */
     @Test
     public void testMultipleConsequentMovedBeforeTargetIfTargetNotConsequent() {
-        List<Comparable> original = collection();
-        DataMover dm = new DataMover(
+        List<Integer> original = collection();
+        DataMover dm = new DataMover<>(
                 collection(),
                 list(5,6),
-                integer(0)
+                0
         );
-        List<Comparable> result = list(5,6,0,1,2,3,4,7,8,9);
+        List<Integer> result = list(5,6,0,1,2,3,4,7,8,9);
         // assert
-        assertThat(dm.getResultCollection(), is(equalTo(result)));
-        assertThat(dm.getSourceTargetMapping(), is(equalTo(map(original, result))));
+        List<Integer> actualCollection = dm.getResultCollection();
+        Map<Integer, Integer> actualMapping = dm.getSourceTargetMapping();
+        assertThat(actualCollection, is(equalTo(result)));
+        assertThat(actualMapping, is(equalTo(map(original, result))));
     }
 
     /**
@@ -282,16 +288,18 @@ public class DataMoverTest {
      */
     @Test
     public void testMultipleScatteredMovedAfterTargetIfTargetConsequent() {
-        List<Comparable> original = collection();
-        DataMover dm = new DataMover(
+        List<Integer> original = collection();
+        DataMover dm = new DataMover<>(
                 collection(),
                 list(1,3,5),
-                integer(6)
+                6
         );
-        List<Comparable> result = list(0,2,4,6,1,3,5,7,8,9);
+        List<Integer> result = list(0,2,4,6,1,3,5,7,8,9);
         // assert
-        assertThat(dm.getResultCollection(), is(equalTo(result)));
-        assertThat(dm.getSourceTargetMapping(), is(equalTo(map(original, result))));
+        List<Integer> actualCollection = dm.getResultCollection();
+        Map<Integer, Integer> actualMapping = dm.getSourceTargetMapping();
+        assertThat(actualCollection, is(equalTo(result)));
+        assertThat(actualMapping, is(equalTo(map(original, result))));
     }
 
     /**
@@ -300,16 +308,18 @@ public class DataMoverTest {
      */
     @Test
     public void testMultipleScatteredMovedAfterTargetIfTargetNotConsequent() {
-        List<Comparable> original = collection();
-        DataMover dm = new DataMover(
+        List<Integer> original = collection();
+        DataMover dm = new DataMover<>(
                 collection(),
                 list(1,3,5),
-                integer(7)
+                7
         );
-        List<Comparable> result = list(0,2,4,6,7,1,3,5,8,9);
+        List<Integer> result = list(0,2,4,6,7,1,3,5,8,9);
         // assert
-        assertThat(dm.getResultCollection(), is(equalTo(result)));
-        assertThat(dm.getSourceTargetMapping(), is(equalTo(map(original, result))));
+        List<Integer> actualCollection = dm.getResultCollection();
+        Map<Integer, Integer> actualMapping = dm.getSourceTargetMapping();
+        assertThat(actualCollection, is(equalTo(result)));
+        assertThat(actualMapping, is(equalTo(map(original, result))));
     }
 
     /**
@@ -318,16 +328,18 @@ public class DataMoverTest {
      */
     @Test
     public void testMultipleScatteredMovedBeforeTargetIfTargetConsequent() {
-        List<Comparable> original = collection();
-        DataMover dm = new DataMover(
+        List<Integer> original = collection();
+        DataMover dm = new DataMover<>(
                 collection(),
                 list(7,9),
-                integer(6)
+                6
         );
-        List<Comparable> result = list(0,1,2,3,4,5,7,9,6,8);
+        List<Integer> result = list(0,1,2,3,4,5,7,9,6,8);
         // assert
-        assertThat(dm.getResultCollection(), is(equalTo(result)));
-        assertThat(dm.getSourceTargetMapping(), is(equalTo(map(original, result))));
+        List<Integer> actualCollection = dm.getResultCollection();
+        Map<Integer, Integer> actualMapping = dm.getSourceTargetMapping();
+        assertThat(actualCollection, is(equalTo(result)));
+        assertThat(actualMapping, is(equalTo(map(original, result))));
     }
 
     /**
@@ -336,16 +348,18 @@ public class DataMoverTest {
      */
     @Test
     public void testMultipleScatteredMovedBeforeTargetIfTargetNotConsequent() {
-        List<Comparable> original = collection();
-        DataMover dm = new DataMover(
+        List<Integer> original = collection();
+        DataMover dm = new DataMover<>(
                 collection(),
                 list(7,9),
-                integer(1)
+                1
         );
-        List<Comparable> result = list(0,7,9,1,2,3,4,5,6,8);
+        List<Integer> result = list(0,7,9,1,2,3,4,5,6,8);
         // assert
-        assertThat(dm.getResultCollection(), is(equalTo(result)));
-        assertThat(dm.getSourceTargetMapping(), is(equalTo(map(original, result))));
+        List<Integer> actualCollection = dm.getResultCollection();
+        Map<Integer, Integer> actualMapping = dm.getSourceTargetMapping();
+        assertThat(actualCollection, is(equalTo(result)));
+        assertThat(actualMapping, is(equalTo(map(original, result))));
     }
 
     /**
@@ -354,15 +368,17 @@ public class DataMoverTest {
      */
     @Test
     public void testMultipleScatteredMovedAfterTargetThatIsInsideDirtyRange() {
-        List<Comparable> original = collection();
-        DataMover dm = new DataMover(
+        List<Integer> original = collection();
+        DataMover dm = new DataMover<>(
                 collection(),
                 list(1,3,5,7,9),
-                integer(4)
+                4
         );
-        List<Comparable> result = list(0,2,4,1,3,5,7,9,6,8);
+        List<Integer> result = list(0,2,4,1,3,5,7,9,6,8);
         // assert
-        assertThat(dm.getResultCollection(), is(equalTo(result)));
-        assertThat(dm.getSourceTargetMapping(), is(equalTo(map(original, result))));
+        List<Integer> actualCollection = dm.getResultCollection();
+        Map<Integer, Integer> actualMapping = dm.getSourceTargetMapping();
+        assertThat(actualCollection, is(equalTo(result)));
+        assertThat(actualMapping, is(equalTo(map(original, result))));
     }
 }
