@@ -94,6 +94,10 @@ public class CategoriesActivity extends GalleryActivity {
         }
         Category target = (Category)gridAdapter.getItem(position);
 
+        if (selectedCategories.contains(target)) {
+            return;
+        }
+
         try {
             new Storage(this).getCategories().rearrange(selectedCategories, target);
         } catch (StorageException e) {

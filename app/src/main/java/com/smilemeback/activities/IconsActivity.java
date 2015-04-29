@@ -164,6 +164,10 @@ public class IconsActivity extends GalleryActivity implements ListAdapterListene
         }
         Image target = (Image)gridAdapter.getItem(position);
 
+        if (selectedImages.contains(target)) {
+            return;
+        }
+
         try {
             gridAdapter.getCurrentCategory().getImages().rearrange(selectedImages, target);
         } catch (StorageException e) {
