@@ -16,8 +16,6 @@
  */
 package com.smilemeback.storage;
 
-import com.smilemeback.storage.datamover.FakeContextTestCase;
-
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 

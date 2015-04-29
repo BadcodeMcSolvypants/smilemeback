@@ -16,8 +16,6 @@
  */
 package com.smilemeback.storage;
 
-import com.smilemeback.storage.datamover.FakeContextTestCase;
-
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
@@ -31,26 +29,6 @@ import static org.hamcrest.Matchers.is;
 
 public class CategoryTest extends FakeContextTestCase {
 
-    protected void makeCategory(int pos, Name name, boolean makeThumb) throws IOException, StorageException {
-        File folder = storage.getCategoriesFolder();
-        File category = new File(folder, StorageNameUtils.constructCategoryFileName(pos, name));
-        FileUtils.forceMkdir(category);
-        if (makeThumb) {
-            File thumbnail = new File(category, Category.THUMBNAIL);
-            FileUtils.copyInputStreamToFile(inputStream(), thumbnail);
-        }
-    }
-
-    protected Category initialize(int pos, Name name) throws StorageException {
-        Category category = new Category(
-                new File(
-                        storage.getCategoriesFolder(),
-                        StorageNameUtils.constructCategoryFileName(pos, name)
-                )
-        );
-        return category;
-    }
-
     @Test
     public void testInitialization() throws IOException, StorageException, NameException {
         Name name = new Name("A");
@@ -58,7 +36,7 @@ public class CategoryTest extends FakeContextTestCase {
         makeCategory(position, name, true);
 
         // given
-        Category category = initialize(position, name);
+        Category category = initCategory(position, name);
 
         // then
         assertThat(category.getName(), is(equalTo(name)));
@@ -72,7 +50,7 @@ public class CategoryTest extends FakeContextTestCase {
         makeCategory(position, name, false);
 
         // given
-        initialize(position, name);
+        initCategory(position, name);
 
     }
 
@@ -83,7 +61,7 @@ public class CategoryTest extends FakeContextTestCase {
         makeCategory(position, name, false);
 
         // given
-        Category category = initialize(position, name);
+        Category category = initCategory(position, name);
         File folder = new File(category.getFolder().getParent(), "_wrong");
         FileUtils.moveDirectory(category.getFolder(), folder);
 
@@ -100,7 +78,7 @@ public class CategoryTest extends FakeContextTestCase {
         makeCategory(position, name, false);
 
         // given
-        Category category = initialize(position, name);
+        Category category = initCategory(position, name);
         File folder = new File(category.getFolder().getParent(), "0_");
         FileUtils.moveDirectory(category.getFolder(), folder);
 
@@ -117,7 +95,7 @@ public class CategoryTest extends FakeContextTestCase {
         makeCategory(position, name, true);
 
         // given
-        Category category = initialize(position, name);
+        Category category = initCategory(position, name);
 
         // when
         Name newName = new Name("Ugly dog photos");
@@ -135,7 +113,7 @@ public class CategoryTest extends FakeContextTestCase {
         makeCategory(position, name, true);
 
         // given
-        Category category = initialize(position, name);
+        Category category = initCategory(position, name);
 
         // when
         category.delete();

@@ -17,6 +17,8 @@
 package com.smilemeback.storage;
 
 
+import android.util.Log;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
@@ -28,7 +30,7 @@ import java.util.logging.Logger;
  * Image class that represents a single icon in a category.
  */
 public class Image implements Comparable<Image> {
-    private static Logger logger = Logger.getLogger(Image.class.getCanonicalName());
+    private static final String TAG = Image.class.getCanonicalName();
 
     public static final String IMAGE_SUFFIX = ".jpg";
     public static final String AUDIO_SUFFIX = ".3gpp";
@@ -42,41 +44,49 @@ public class Image implements Comparable<Image> {
     /**
      * Construct a new {@link com.smilemeback.storage.Image} instance.
      * @param category The {@link com.smilemeback.storage.Category} the image is in.
-     * @param imageName The {@link com.smilemeback.storage.Name} of the image.
      * @param image The {@link java.io.File} of the image.
      * @param audio The {@link java.io.File} of the audio.
-     * @param position The position of the image in the category.
      *
      * @throws com.smilemeback.storage.StorageException In case there were problems with finding image data.
      */
-    public Image(final Category category, final Name imageName, final File image, final File audio, final int position) throws StorageException {
-        this.category = category;
-        this.name = imageName;
-        this.image = image;
-        this.audio = audio;
-        this.position = position;
+    public Image(final Category category, final File image, final File audio) throws StorageException {
+        try {
+            this.category = category;
+            this.name = StorageNameUtils.parseName(image.getName());
+            this.image = image;
+            this.audio = audio;
+            this.position = StorageNameUtils.parsePosition(image.getName()).get();
 
-        makeAssertions();
+            makeAssertions();
+        } catch (NameException | IllegalStateException e) {
+            throw new StorageException(e.getMessage(), e);
+        }
     }
 
-    private void makeAssertions() throws StorageException {
-        if (category == null || name == null || image == null || audio == null) {
+    private void makeAssertions() throws StorageException, NameException {
+        if (category == null || name == null || audio == null) {
             throw new IllegalArgumentException("One of the arguments was null");
         }
         if (!category.getFolder().isDirectory()) {
             throw new StorageException("Category is not a directory!");
         }
         if (!image.isFile()) {
-            throw new StorageException("Image is not a file!");
+            throw new StorageException("Image <" + image + " is not a file!");
         }
-        if (!StorageNameUtils.parseSuffix(image.getName()).equals(IMAGE_SUFFIX)) {
-            throw new StorageException("Illegal suffix for <" + image.getName() + ">");
+        if (!StorageNameUtils.parseSuffix(image.getName()).get().equals(IMAGE_SUFFIX)) {
+            throw new StorageException("Illegal suffix for <" + image.getName() + "> ");
         }
         if (!audio.isFile()) {
-            throw new StorageException("Audio is not a file!");
+            throw new StorageException("Audio <" + audio + " is not a file!");
         }
-        if (!StorageNameUtils.parseSuffix(audio.getName()).equals(AUDIO_SUFFIX)) {
+        if (!StorageNameUtils.parseSuffix(audio.getName()).get().equals(AUDIO_SUFFIX)) {
             throw new StorageException("Illegal suffix for <" + audio.getName() + ">");
+        }
+        if (StorageNameUtils.parsePosition(image.getName()).get() != StorageNameUtils.parsePosition(audio.getName()).get()) {
+            throw new StorageException("Position different for image <" + image + "> and audio <" + audio + ">");
+        }
+        if (!StorageNameUtils.parseName(image.getName()).equals(StorageNameUtils.parseName(audio.getName()))) {
+            throw new StorageException("Position different for image <" + image + "> and audio <" + audio + ">");
         }
     }
 
@@ -124,7 +134,7 @@ public class Image implements Comparable<Image> {
      * @throws StorageException
      */
     public Image rename(Name newName) throws StorageException {
-        logger.info("Renaming image <" + name + "> to <" + newName + ">");
+        Log.i(TAG, "Renaming image <" + name + "> to <" + newName + ">");
         if (name.equals(newName)) {
             return this; // same name, do nothing
         }
@@ -141,10 +151,8 @@ public class Image implements Comparable<Image> {
 
             return new Image(
                     category,
-                    newName,
                     newImage,
-                    newAudio,
-                    position);
+                    newAudio);
 
         } catch (IOException e) {
             throw new StorageException(e.getMessage(), e);

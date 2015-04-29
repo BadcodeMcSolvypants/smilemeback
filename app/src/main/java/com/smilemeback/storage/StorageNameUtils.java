@@ -34,8 +34,8 @@ public class StorageNameUtils {
      * @return The string representing the filename.
      */
     public static String constructImageFileName(final int position, final Name name, final String suffix) {
-        if (!suffix.equals(Image.IMAGE_SUFFIX) || !suffix.equals(Image.AUDIO_SUFFIX)) {
-            throw new IllegalArgumentException("Suffix must be either " + Image.IMAGE_SUFFIX + " or " + Image.AUDIO_SUFFIX);
+        if (!suffix.equals(Image.IMAGE_SUFFIX) && !suffix.equals(Image.AUDIO_SUFFIX)) {
+            throw new IllegalArgumentException("Suffix must be either " + Image.IMAGE_SUFFIX + " or " + Image.AUDIO_SUFFIX + " not " + suffix);
         }
         return String.format("%d_%s%s", position, name.toString(), suffix);
     }

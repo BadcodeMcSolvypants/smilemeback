@@ -72,7 +72,7 @@ public class Images implements Iterable<Image> {
                     String err = "Names for image and audio differ for position <" + idx + ">: <" + imageName + "> <" + audioName + ">";
                     throw new StorageException(err);
                 }
-                images.add(new Image(category, new Name(imageName), imageFile, audioFile, idx));
+                images.add(new Image(category, imageFile, audioFile));
             }
             Collections.sort(images);
 
@@ -142,7 +142,7 @@ public class Images implements Iterable<Image> {
         } catch (IOException e) {
             throw new StorageException(e.getMessage(), e);
         } finally {
-            Image image = new Image(category, name, imageFile, audioFile, position);
+            Image image = new Image(category, imageFile, audioFile);
             images.add(image);
             return image;
         }

@@ -247,7 +247,7 @@ public class OldStorage {
                     String err = "Names for image and audio differ for position <" + idx + ">: <" + imageName + "> <" + audioName + ">";
                     throw new StorageException(err);
                 }
-                images.add(new Image(category, new Name(imageName), imageFile, audioFile, idx));
+                images.add(new Image(category, imageFile, audioFile));
             } catch (NameException e) {
                 throw new StorageException(e.getMessage(), e);
             }
