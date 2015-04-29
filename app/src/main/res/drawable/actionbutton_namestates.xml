@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- TODO: vahetasin siin addnew_name praegu addnew_cameraga, sest ei leia name drawableid -->
     <item
         android:state_pressed="true"
-        android:drawable="@drawable/addnew_camera_pressed"
+        android:drawable="@drawable/addnew_name_pressed"
         />
-    <item android:drawable="@drawable/addnew_camera"
+    <item android:drawable="@drawable/addnew_name"
         />
 </selector>
