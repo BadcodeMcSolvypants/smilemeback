@@ -72,6 +72,7 @@ public class Categories implements Iterable<Category> {
     }
 
     private void parseCategories() throws StorageException {
+        categories.clear();
         // Parse all directories as categories.
         for (File folder : parent.listFiles()) {
             if (folder.isDirectory()) {
@@ -155,48 +156,39 @@ public class Categories implements Iterable<Category> {
     }
 
     public void organize() throws StorageException {
-        // TODO: make the code in this method more readable
-        Map<Integer, File> categories = new HashMap<>();
-        Map<Integer, Name> names = new HashMap<>();
+        Log.i(TAG, "Organizing folder <" + parent + ">");
         try {
             FileUtils.forceMkdir(parent);
-            for (File category : parent.listFiles()) {
-                if (category.isDirectory()) {
+            List<Category> categories = new ArrayList<>();
+            for (File file : parent.listFiles()) {
+                if (file.isFile()) {
+                    Log.d(TAG, "Deleting file <" + file + ">");
+                    FileUtils.deleteQuietly(file);
+                } else if (file.isDirectory()) {
                     try {
-                        Name name = StorageNameUtils.parseName(category.getName());
-                        Optional<Integer> pos = StorageNameUtils.parsePosition(category.getName());
-                        if (pos.isPresent()) {
-                            categories.put(pos.get(), category);
-                            names.put(pos.get(), name);
-                        } else {
-                            Log.e(TAG, "Deleting category <" + category + "> as no valid position!");
-                        }
-                    } catch (NameException e) {
-                        Log.e(TAG, "Deleting category with invalid name: <" + category.getName() + ">");
-                        FileUtils.deleteDirectory(category);
+                        categories.add(new Category(file));
+                    } catch (StorageException e) {
+                        Log.d(TAG, "Could not initialize <" + file + ">, now trying to delete it!");
+                        Log.d(TAG, e.getMessage());
+                        FileUtils.deleteDirectory(file);
                     }
-                } else {
-                    Log.w(TAG, "Deleting non-directory <" + category + ">");
-                    FileUtils.forceDelete(category);
                 }
             }
-            List<Integer> indices = new ArrayList<>(categories.keySet());
-            Collections.sort(indices);
+
+            Collections.sort(categories);
             int nextPos = 0;
-            for (int idx : indices) {
-                File srcFile = categories.get(idx);
-                Name name = names.get(idx);
-                File destFile = new File(parent, nextPos + "_" + name);
-                if (srcFile.compareTo(destFile) != 0) {
-                    Log.d(TAG, "Moving category <" + srcFile + "> to <" + destFile + ">");
-                    FileUtils.moveDirectory(srcFile, destFile);
-                }
+            for (Category category : categories) {
+                File newFolder = new File(
+                        parent,
+                        StorageNameUtils.constructCategoryFileName(nextPos, category.getName()));
+                Log.d(TAG, "Moving <" + category.getFolder() + "> to <" + newFolder + ">");
+                FileUtils.moveDirectory(category.getFolder(), newFolder);
                 nextPos += 1;
             }
+
         } catch (IOException e) {
             throw new StorageException(e.getMessage(), e);
         } finally {
-            categories.clear();
             parseCategories();
         }
     }

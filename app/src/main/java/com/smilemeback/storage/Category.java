@@ -16,19 +16,20 @@
  */
 package com.smilemeback.storage;
 
+import android.util.Log;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Logger;
 
 /**
  * Category contains an category thumbnail image
  * and a list of pictures, their labels and audio recordings.
  */
 public class Category implements Comparable<Category> {
-    private static Logger logger = Logger.getLogger(Category.class.getCanonicalName());
+    private static final String TAG = Category.class.getCanonicalName();
     public static final String THUMBNAIL = "_thumbnail.jpg";
 
     protected final int position;
@@ -53,7 +54,7 @@ public class Category implements Comparable<Category> {
             this.name = StorageNameUtils.parseName(folder.getName());
             this.storageFolder = folder.getParentFile();
             this.thumbnail = new File(this.folder, THUMBNAIL);
-        } catch (NameException e) {
+        } catch (NameException | IllegalStateException e) {
             throw new StorageException(e.getMessage(), e);
         }
         makeAssertions();
@@ -106,7 +107,7 @@ public class Category implements Comparable<Category> {
      * @throws StorageException
      */
     public Category rename(Name newName) throws StorageException {
-        logger.info("Renaming category <" + name + "> to <" + newName + ">");
+        Log.i(TAG, "Renaming category <" + name + "> to <" + newName + ">");
         if (name.equals(newName)) {
             return this;    // same name, do nothing!
         }
@@ -121,6 +122,10 @@ public class Category implements Comparable<Category> {
         }
     }
 
+    /**
+     * Delete the category.
+     * @throws StorageException
+     */
     public void delete() throws StorageException {
         try {
             FileUtils.deleteDirectory(folder);

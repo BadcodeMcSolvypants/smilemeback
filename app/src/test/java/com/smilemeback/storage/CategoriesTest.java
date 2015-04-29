@@ -81,8 +81,8 @@ public class CategoriesTest extends FakeContextTestCase {
 
         // then
         assertThat(categories.size(), is(2));
-        assertThat(categories.get(0), is(equalTo(B)));
-        assertThat(categories.get(0), is(equalTo(D)));
+        assertThat(categories.get(0).getName(), is(equalTo(new Name("B"))));
+        assertThat(categories.get(1).getName(), is(equalTo(new Name("D"))));
     }
 
     @Test
@@ -91,19 +91,22 @@ public class CategoriesTest extends FakeContextTestCase {
         Category A = categories.add(new Name("A"), inputStream());
         Category B = categories.add(new Name("B"), inputStream());
         Category C = categories.add(new Name("C"), inputStream());
+        Category D = categories.add(new Name("D"), inputStream());
 
         // given
-        FileUtils.moveDirectory(A.getFolder(), new File(categories.getParent(), "-1_A"));
-        FileUtils.moveDirectory(B.getFolder(), new File(categories.getParent(), "156_B"));
-        FileUtils.moveDirectory(C.getFolder(), new File(categories.getParent(), "2345234735452345_C"));
+        FileUtils.moveDirectory(A.getFolder(), new File(categories.getParent(), "-134_A"));
+        FileUtils.moveDirectory(B.getFolder(), new File(categories.getParent(), "-5_B"));
+        FileUtils.moveDirectory(C.getFolder(), new File(categories.getParent(), "234_C"));
+        FileUtils.moveDirectory(D.getFolder(), new File(categories.getParent(), "6663_D"));
 
         // when
         categories.organize();
 
         // then
-        assertThat(categories.size(), is(equalTo(3)));
+        assertThat(categories.size(), is(equalTo(4)));
         assertThat(categories.get(0), is(equalTo(A)));
         assertThat(categories.get(1), is(equalTo(B)));
         assertThat(categories.get(2), is(equalTo(C)));
+        assertThat(categories.get(3), is(equalTo(D)));
     }
 }
