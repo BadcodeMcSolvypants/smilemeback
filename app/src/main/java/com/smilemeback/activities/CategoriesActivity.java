@@ -25,8 +25,11 @@ import android.os.Bundle;
 import com.smilemeback.R;
 import com.smilemeback.adapters.CategoryGridAdapter;
 import com.smilemeback.misc.Dialogs;
+import com.smilemeback.storage.Categories;
 import com.smilemeback.storage.Category;
-import com.smilemeback.storage.OldStorage;
+import com.smilemeback.storage.Name;
+import com.smilemeback.storage.NameException;
+import com.smilemeback.storage.Storage;
 import com.smilemeback.storage.StorageException;
 
 import java.util.ArrayList;
@@ -67,6 +70,7 @@ public class CategoriesActivity extends GalleryActivity {
 
     @Override
     protected void initializeListView() {
+        setupTestingCategories();
     }
 
     @Override
@@ -79,7 +83,7 @@ public class CategoriesActivity extends GalleryActivity {
     protected void refreshSidePane() { }
 
     @Override
-    public void moveSelectedIconsTo(int position) {
+    public void rearrangeIconsAccordingToTarget(int position) {
     }
 
     @Override
@@ -92,11 +96,12 @@ public class CategoriesActivity extends GalleryActivity {
             @Override
             public void inputDone(String text) {
                 logger.info("Renaming current category to " + text);
-                OldStorage storage = new OldStorage(CategoriesActivity.this);
                 try {
-                    storage.renameCategory(category, text);
+                    category.rename(new Name(text));
                 } catch (StorageException e) {
                     showStorageExceptionAlertAndFinish(e);
+                } catch (NameException e) {
+                    showStorageExceptionAlertAndFinish(new StorageException(e.getMessage(), e));
                 }
                 reloadGrid();
             }
@@ -119,12 +124,12 @@ public class CategoriesActivity extends GalleryActivity {
             public void onClick(DialogInterface dialog, int which) {
                 logger.info("Deleting selection categories");
                 try {
-                    OldStorage storage = new OldStorage(CategoriesActivity.this);
                     List<Category> selectedCategories = new ArrayList<>();
                     for (int idx : selectionManager.getSelectedPositions()) {
                         selectedCategories.add((Category)gridAdapter.getItem(idx));
                     }
-                    storage.deleteCategories(selectedCategories);
+                    Categories categories = new Storage(CategoriesActivity.this).getCategories();
+                    categories.delete(selectedCategories);
                 } catch (StorageException e) {
                     showStorageExceptionAlertAndFinish(e);
                 }

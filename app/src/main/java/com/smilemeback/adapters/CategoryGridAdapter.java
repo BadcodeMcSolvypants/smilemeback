@@ -18,25 +18,24 @@ package com.smilemeback.adapters;
 
 import android.content.Intent;
 
-import com.smilemeback.selectionmode.SelectionMode;
-import com.smilemeback.misc.Constants;
-import com.smilemeback.misc.GalleryActivityData;
 import com.smilemeback.activities.CategoriesActivity;
 import com.smilemeback.activities.IconsActivity;
+import com.smilemeback.misc.Constants;
+import com.smilemeback.misc.GalleryActivityData;
 import com.smilemeback.selection.SelectionManager;
+import com.smilemeback.selectionmode.SelectionMode;
+import com.smilemeback.storage.Categories;
 import com.smilemeback.storage.Category;
-import com.smilemeback.storage.OldStorage;
+import com.smilemeback.storage.Storage;
 import com.smilemeback.storage.StorageException;
 import com.smilemeback.views.IconView;
-
-import java.util.List;
 
 /**
  * Manages gallery icons in a gridView.
  */
 public class CategoryGridAdapter extends BaseGridAdapter {
 
-    private List<Category> categories;
+    private Categories categories;
 
     public CategoryGridAdapter(CategoriesActivity activity, GridAdapterListener listener, SelectionMode selectionMode, SelectionManager selectionManager, GalleryActivityData data) {
         super(activity, listener, selectionMode, selectionManager, data);
@@ -50,7 +49,7 @@ public class CategoryGridAdapter extends BaseGridAdapter {
      */
     public void initialize()  {
         try {
-            OldStorage storage = new OldStorage(activity);
+            Storage storage = new Storage(activity);
             categories = storage.getCategories();
             selectionManager.setNumTotal(categories.size());
             selectionManager.deselectAll();

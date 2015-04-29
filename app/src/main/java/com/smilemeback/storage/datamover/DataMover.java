@@ -19,6 +19,8 @@ package com.smilemeback.storage.datamover;
 import com.google.common.collect.Ordering;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -51,9 +53,11 @@ public class DataMover<T extends Comparable> {
      * @throws IllegalArgumentException In case any element of {@literal selection} is not in {@literal collection}
      *         or when {@literal target} is inside {@literal selection} or outside {@literal collection}.
      */
-    public DataMover(final List<? extends T> collection, final List<? extends T> selection, final T target) throws IllegalArgumentException {
+    public DataMover(final Collection<? extends T> collection, final Collection<? extends T> selection, final T target) throws IllegalArgumentException {
         this.collection = new ArrayList<>(collection);
         this.selection = new ArrayList<>(selection);
+        Collections.sort(this.collection);
+        Collections.sort(this.selection);
         this.target = target;
         makeAssertions();
     }
@@ -69,10 +73,10 @@ public class DataMover<T extends Comparable> {
             throw new IllegalArgumentException("Not all selection elements in collection");
         }
         if (!Ordering.natural().isStrictlyOrdered(selection)) {
-            throw new IllegalArgumentException("Selected items not unique or sorted");
+            throw new IllegalArgumentException("Selected items not unique");
         }
         if (!Ordering.natural().isStrictlyOrdered(collection)) {
-            throw new IllegalArgumentException("Collection not unique or sorted");
+            throw new IllegalArgumentException("Collection not unique");
         }
         if (!collection.contains(target)) {
             throw new IllegalArgumentException("Target not in collection!");

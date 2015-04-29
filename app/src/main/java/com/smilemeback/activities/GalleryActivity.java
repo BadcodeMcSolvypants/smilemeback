@@ -37,7 +37,8 @@ import com.smilemeback.R;
 import com.smilemeback.adapters.GridAdapterListener;
 import com.smilemeback.selection.SelectionListener;
 import com.smilemeback.selection.SelectionManager;
-import com.smilemeback.storage.OldStorage;
+import com.smilemeback.storage.Categories;
+import com.smilemeback.storage.Storage;
 import com.smilemeback.storage.StorageException;
 
 import java.util.logging.Level;
@@ -106,9 +107,8 @@ public abstract class GalleryActivity extends Activity implements GallerySelecti
      */
     protected void setupTestingCategories() {
         try {
-            OldStorage storage = new OldStorage(this);
-            storage.truncateAllCategories();
-            storage.initializeTestingCategories();
+            Categories categories = new Storage(this).getCategories();
+            categories.initializeTestingCategories(this);
         } catch (StorageException e) {
             showStorageExceptionAlertAndFinish(e);
         }

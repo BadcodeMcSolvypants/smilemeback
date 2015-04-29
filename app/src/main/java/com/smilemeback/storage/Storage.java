@@ -30,6 +30,8 @@ import java.io.IOException;
 public class Storage {
     public static final String STORAGE_FOLDER = "SmileMeBack";
     public static final String CATEGORIES_FOLDER = "categories";
+    public static final String TEMPORARY_IMAGE = "temporary_image" + Image.IMAGE_SUFFIX;
+    public static final String TEMPORARY_AUDIO = "temporary_audio" + Image.AUDIO_SUFFIX;
 
     /**
      * Application context.
@@ -83,4 +85,19 @@ public class Storage {
     public Categories getCategories() throws StorageException {
         return new Categories(getCategoriesFolder());
     }
+
+    /**
+     * @return The file pointing to the path that should be used for temporary images.
+     */
+    public File getTemporaryImageFile() throws StorageException {
+        return new File(getStorageFolder(), TEMPORARY_IMAGE);
+    }
+
+    /**
+     * @return The file pointing to the path that should be used for temporary audio recordings.
+     */
+    public File getTemporaryAudioFile() throws StorageException {
+        return new File(getStorageFolder(), TEMPORARY_AUDIO);
+    }
+
 }

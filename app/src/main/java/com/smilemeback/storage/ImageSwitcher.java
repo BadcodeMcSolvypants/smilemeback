@@ -25,7 +25,7 @@ import java.util.Set;
  * Class for helping image reordering.
  */
 public class ImageSwitcher {
-    protected OldStorage storage;
+    protected Storage storage;
     protected List<Integer> srcPositions = new ArrayList<>();
     protected List<Integer> destPositions = new ArrayList<>();
     protected Set<Integer> selectedPositions = new HashSet<>();
@@ -34,7 +34,7 @@ public class ImageSwitcher {
 
     private boolean switched = false;
 
-    public ImageSwitcher(OldStorage storage, List<Image> images, Image switchImage) {
+    public ImageSwitcher(Storage storage, List<Image> images, Image switchImage) {
         this.storage = storage;
         computeDirtyRange(images, switchImage);
         computeMovePositions(images, switchImage);

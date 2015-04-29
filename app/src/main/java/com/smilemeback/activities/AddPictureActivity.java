@@ -35,7 +35,8 @@ import android.widget.ImageView;
 import com.smilemeback.misc.AddPictureActivityState;
 import com.smilemeback.misc.Constants;
 import com.smilemeback.R;
-import com.smilemeback.storage.OldStorage;
+import com.smilemeback.storage.Storage;
+import com.smilemeback.storage.StorageException;
 import com.squareup.picasso.Picasso;
 
 import org.apache.commons.io.FileUtils;
@@ -113,8 +114,12 @@ public class AddPictureActivity extends Activity {
         });
 
         if (imageAdded) {
-            OldStorage storage = new OldStorage(this);
-            loadImageFromFile(storage.getTemporaryImageFile());
+            try {
+                Storage storage = new Storage(this);
+                loadImageFromFile(storage.getTemporaryImageFile());
+            } catch (StorageException e) {
+                showExceptionAlertAndFinish(e);
+            }
         }
 
         updatePrevNextButtons();
@@ -185,17 +190,22 @@ public class AddPictureActivity extends Activity {
             }
         });
 
-        final OldStorage storage = new OldStorage(this);
+        final Storage storage = new Storage(this);
 
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent result = new Intent();
-                result.putExtra(Constants.ADDED_IMAGE_NAME, imageName);
-                result.putExtra(Constants.ADDED_IMAGE_PATH, storage.getTemporaryImageFile().getAbsolutePath());
-                result.putExtra(Constants.ADDED_IMAGE_AUDIO_PATH, storage.getTemporaryAudioFile().getAbsolutePath());
-                setResult(RESULT_OK, result);
-                finish();
+                try {
+                    Intent result = new Intent();
+                    result.putExtra(Constants.ADDED_IMAGE_NAME, imageName);
+                    result.putExtra(Constants.ADDED_IMAGE_PATH, storage.getTemporaryImageFile().getAbsolutePath());
+                    result.putExtra(Constants.ADDED_IMAGE_AUDIO_PATH, storage.getTemporaryAudioFile().getAbsolutePath());
+                    setResult(RESULT_OK, result);
+                } catch (StorageException e) {
+                    showExceptionAlertAndFinish(e);
+                } finally {
+                    finish();
+                }
             }
         });
 
@@ -269,10 +279,14 @@ public class AddPictureActivity extends Activity {
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            OldStorage storage = new OldStorage(this);
-            File imageFile = storage.getTemporaryImageFile();
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imageFile));
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            try {
+                Storage storage = new Storage(this);
+                File imageFile = storage.getTemporaryImageFile();
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imageFile));
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            } catch (StorageException e) {
+                showExceptionAlertAndFinish(e);
+            }
         }
     }
 
@@ -290,29 +304,25 @@ public class AddPictureActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        OldStorage storage = new OldStorage(this);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            logger.info("Adding image from camera");
-            loadImageFromFile(storage.getTemporaryImageFile());
-            imageAdded = true;
-        } else if (requestCode == PICK_PHOTO_GALLERY && data != null && data.getData() != null) {
-            logger.info("Adding image from gallery");
-            Uri uri = data.getData();
-            Cursor cursor = getContentResolver().query(uri, new String[] { android.provider.MediaStore.Images.ImageColumns.DATA }, null, null, null);
-            cursor.moveToFirst();
-            final String imagePath = cursor.getString(0);
-            try {
+        try {
+            Storage storage = new Storage(this);
+            if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+                logger.info("Adding image from camera");
+                loadImageFromFile(storage.getTemporaryImageFile());
+                imageAdded = true;
+            } else if (requestCode == PICK_PHOTO_GALLERY && data != null && data.getData() != null) {
+                logger.info("Adding image from gallery");
+                Uri uri = data.getData();
+                Cursor cursor = getContentResolver().query(uri, new String[]{android.provider.MediaStore.Images.ImageColumns.DATA}, null, null, null);
+                cursor.moveToFirst();
+                final String imagePath = cursor.getString(0);
                 FileUtils.copyFile(new File(imagePath), storage.getTemporaryImageFile());
                 loadImageFromFile(storage.getTemporaryImageFile());
                 imageAdded = true;
-            } catch (IOException e) {
-                showExceptionAlertAndFinish(e);
-            }
-        } else if (requestCode == RECORD_SOUND && resultCode == RESULT_OK) {
-            logger.info("Adding audio recording");
-            Uri recorderAudioUri = data.getData();
-            File tempAudioPath = storage.getTemporaryAudioFile();
-            try {
+            } else if (requestCode == RECORD_SOUND && resultCode == RESULT_OK) {
+                logger.info("Adding audio recording");
+                Uri recorderAudioUri = data.getData();
+                File tempAudioPath = storage.getTemporaryAudioFile();
                 FileUtils.copyFile(new File(getRealPathFromURI(recorderAudioUri)), tempAudioPath);
                 // todo: make a good media player
                 MediaPlayer player = new MediaPlayer();
@@ -320,12 +330,12 @@ public class AddPictureActivity extends Activity {
                 player.prepare();
                 player.start();
                 audioRecorded = true;
-            } catch (IOException e) {
-                showExceptionAlertAndFinish(e);
             }
-
+        } catch (StorageException | IOException e) {
+            showExceptionAlertAndFinish(e);
+        } finally {
+            updatePrevNextButtons();
         }
-        updatePrevNextButtons();
     }
     protected void showExceptionAlertAndFinish(Exception e) {
         logger.log(Level.SEVERE, e.getMessage());

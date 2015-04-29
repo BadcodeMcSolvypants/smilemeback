@@ -24,7 +24,8 @@ import com.smilemeback.activities.IconsActivity;
 import com.smilemeback.selection.SelectionManager;
 import com.smilemeback.storage.Category;
 import com.smilemeback.storage.Image;
-import com.smilemeback.storage.OldStorage;
+import com.smilemeback.storage.Images;
+import com.smilemeback.storage.Storage;
 import com.smilemeback.storage.StorageException;
 import com.smilemeback.views.IconView;
 
@@ -37,7 +38,7 @@ import java.util.List;
  */
 public class IconGridAdapter extends BaseGridAdapter {
 
-    private List<Image> images;
+    private Images images;
     private Category currentCategory;
     private MediaPlayer player = new MediaPlayer();
 
@@ -57,8 +58,7 @@ public class IconGridAdapter extends BaseGridAdapter {
     @Override
     public void initialize()  {
         try {
-            OldStorage storage = new OldStorage(activity);
-            images = storage.getCategoryImages(currentCategory);
+            images = currentCategory.getImages();
             selectionManager.deselectAll();
             selectionManager.setNumTotal(images.size());
             data.gridView.setAdapter(this);

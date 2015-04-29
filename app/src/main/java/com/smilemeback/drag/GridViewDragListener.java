@@ -60,7 +60,7 @@ public class GridViewDragListener implements View.OnDragListener {
                 return true;
             case DragEvent.ACTION_DROP:
                 selectionManager.dehighlight();
-                listener.moveSelectedIconsTo(iconView.getPosition());
+                listener.rearrangeIconsAccordingToTarget(iconView.getPosition());
                 return true;
             case DragEvent.ACTION_DRAG_ENDED:
                 selectionMode.setStatusText("");

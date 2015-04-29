@@ -102,22 +102,6 @@ public class DataMoverTest {
                 1);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testFailedInitializationAsCollectionNotSorted() {
-        new DataMover<>(
-                list(1, 0),
-                list(0),
-                1);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testFailedInitializationAsSelectionNotSorted() {
-        new DataMover<>(
-                collection(),
-                list(5, 6, 4),
-                1);
-    }
-
     /**
      * Test that a single icon that is before that target icon,
      * gets moved after the target icon.

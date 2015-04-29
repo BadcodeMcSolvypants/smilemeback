@@ -29,5 +29,5 @@ public interface GridDragResultListener {
      * on a grid element identified by {@literal position}.
      * @param position
      */
-    void moveSelectedIconsTo(int position);
+    void rearrangeIconsAccordingToTarget(int position);
 }

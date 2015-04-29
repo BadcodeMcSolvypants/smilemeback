@@ -79,6 +79,10 @@ public class Category implements Comparable<Category> {
         return thumbnail;
     }
 
+    public Images getImages() throws StorageException {
+        return new Images(this);
+    }
+
     @Override
     public String toString() {
         return getFolder().getAbsolutePath();

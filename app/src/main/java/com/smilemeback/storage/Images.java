@@ -16,9 +16,11 @@
  */
 package com.smilemeback.storage;
 
+import android.os.storage.StorageManager;
 import android.util.Log;
 
 import com.google.common.base.Optional;
+import com.smilemeback.storage.datamover.DataMover;
 
 import org.apache.commons.io.FileUtils;
 
@@ -227,6 +229,81 @@ public class Images implements Iterable<Image> {
             throw new StorageException(e.getMessage(), e);
         } finally {
             parseImages();
+        }
+    }
+
+    /**
+     * Move selection of images to destination category.
+     * @param destination The destination category.
+     * @param selection The collection of images to be moved.
+     * @throws StorageException In case collection contains images not in this category.
+     */
+    public void moveTo(final Category destination, Collection<Image> selection) throws StorageException {
+        // check that selection contains valid elements
+        if (!images.containsAll(selection)) {
+            throw new StorageException("Selection contains images not in source category");
+        }
+        try {
+            Images dest = destination.getImages();
+            for (Image image : selection) {
+                dest.add(image.getName(), image.getImage(), image.getAudio());
+                image.delete();
+            }
+        } catch (StorageException e) {
+            throw e;
+        } finally {
+            organize();
+        }
+    }
+
+    /**
+     * Rearrange the images.
+     * The selected images are moved before the target, if all of them are after the target.
+     * Otherwise, all selected images are moved after the target.
+     * @param selection The collection of selected images that are going to be moved.
+     * @param target The target image, which acts as a pivot of the move operation.
+     * @throws StorageException
+     */
+    public void rearrange(Collection<Image> selection, Image target) throws StorageException {
+        DataMover<Image> dm = new DataMover<>(images, selection, target);
+        // move files to temporary paths (by doing this, we avoid possible name collisions)
+        Map<Integer, File> imageFiles = new HashMap<>(images.size());
+        Map<Integer, File> audioFiles = new HashMap<>(images.size());
+        Map<Integer, Integer> map = dm.getSourceTargetMapping();
+        try {
+            for (int key : map.keySet()) {
+                Image image = images.get(key);
+                File imageFile = new File(category.getFolder(), String.format("temp%d" + Image.IMAGE_SUFFIX, key));
+                File audioFile = new File(category.getFolder(), String.format("temp%d" + Image.AUDIO_SUFFIX, key));
+                FileUtils.moveFile(image.getImage(), imageFile);
+                FileUtils.moveFile(image.getAudio(), audioFile);
+                imageFiles.put(key, imageFile);
+                audioFiles.put(key, audioFile);
+            }
+            // move temporary paths to final location
+            for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+                int key = entry.getKey();
+                int value = entry.getValue();
+
+                File tempImage = imageFiles.get(key);
+                File tempAudio = audioFiles.get(key);
+
+                File imageFile = new File(
+                        category.getFolder(),
+                        StorageNameUtils.constructImageFileName(value, images.get(key).getName(), Image.IMAGE_SUFFIX)
+                );
+                File audioFile = new File(
+                        category.getFolder(),
+                        StorageNameUtils.constructImageFileName(value, images.get(key).getName(), Image.AUDIO_SUFFIX)
+                );
+
+                FileUtils.moveFile(tempImage, imageFile);
+                FileUtils.moveFile(tempAudio, audioFile);
+            }
+        } catch (IOException e) {
+            throw new StorageException(e.getMessage(), e);
+        } finally {
+            organize();
         }
     }
 }

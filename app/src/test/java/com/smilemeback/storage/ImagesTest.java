@@ -22,6 +22,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -32,6 +33,11 @@ public class ImagesTest extends FakeContextTestCase {
     private Category category() throws IOException, StorageException, NameException {
         int categoryPosition = 525;
         Name categoryName = new Name("CATEGORY A");
+        makeCategory(categoryPosition, categoryName, true);
+        return initCategory(categoryPosition, categoryName);
+    }
+
+    private Category category(int categoryPosition, Name categoryName) throws IOException, StorageException, NameException {
         makeCategory(categoryPosition, categoryName, true);
         return initCategory(categoryPosition, categoryName);
     }
@@ -141,5 +147,65 @@ public class ImagesTest extends FakeContextTestCase {
         assertThat(images.get(0).getName(), is(equalTo(nameA)));
         assertThat(images.get(1).getName(), is(equalTo(nameB)));
         assertThat(images.get(2).getName(), is(equalTo(nameC)));
+    }
+
+    @Test
+    public void testMoveToOtherCategory() throws IOException, StorageException, NameException {
+        // given
+        Category category = category(0, new Name("A"));
+        Images images = new Images(category);
+        Name nameA = new Name("I1");
+        Name nameB = new Name("I2");
+        Name nameC = new Name("I3");
+        Name nameD = new Name("I4");
+        images.add(nameA, tempFileWithContents(), tempFileWithContents());
+        images.add(nameB, tempFileWithContents(), tempFileWithContents());
+        images.add(nameC, tempFileWithContents(), tempFileWithContents());
+        images.add(nameD, tempFileWithContents(), tempFileWithContents());
+
+        Image A = images.get(0);
+        Image D = images.get(3);
+
+        Category destination = category(1, new Name("B"));
+
+        // when
+        images.moveTo(destination, Arrays.asList(A, D));
+        Images destImages = destination.getImages();
+
+        // then
+        assertThat(images.size(), is(2));
+        assertThat(images.get(0).getName(), is(equalTo(nameB)));
+        assertThat(images.get(1).getName(), is(equalTo(nameC)));
+
+        assertThat(destImages.size(), is(2));
+        assertThat(destImages.get(0).getName(), is(equalTo(nameA)));
+        assertThat(destImages.get(1).getName(), is(equalTo(nameD)));
+    }
+
+    @Test
+    public void testRearrangeImages() throws IOException, StorageException, NameException {
+        Category category = category(0, new Name("A"));
+        Images images = new Images(category);
+        Name nameA = new Name("I1");
+        Name nameB = new Name("I2");
+        Name nameC = new Name("I3");
+        Name nameD = new Name("I4");
+        images.add(nameA, tempFileWithContents(), tempFileWithContents());
+        images.add(nameB, tempFileWithContents(), tempFileWithContents());
+        images.add(nameC, tempFileWithContents(), tempFileWithContents());
+        images.add(nameD, tempFileWithContents(), tempFileWithContents());
+
+        // given
+        List<Image> selection = Arrays.asList(images.get(0), images.get(3));
+        Image target = images.get(1);
+
+        // when
+        images.rearrange(selection, target);
+
+        // then
+        assertThat(images.get(0).getName(), is(equalTo(nameB)));
+        assertThat(images.get(1).getName(), is(equalTo(nameA)));
+        assertThat(images.get(2).getName(), is(equalTo(nameD)));
+        assertThat(images.get(3).getName(), is(equalTo(nameC)));
     }
 }

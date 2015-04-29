@@ -16,6 +16,8 @@
  */
 package com.smilemeback.storage;
 
+import android.content.Context;
+import android.content.res.AssetManager;
 import android.util.Log;
 
 import com.google.common.base.Optional;
@@ -190,6 +192,32 @@ public class Categories implements Iterable<Category> {
             throw new StorageException(e.getMessage(), e);
         } finally {
             parseCategories();
+        }
+    }
+
+    /**
+     * Initialize testing categories. Note that this code has to run on Android device.
+     * @param context The application context.
+     * @throws StorageException
+     */
+    public void initializeTestingCategories(Context context) throws StorageException {
+        try {
+            truncate();
+            File categoriesFolder = parent;
+            AssetManager asm = context.getAssets();
+            int catIdx = 0;
+            for (String dnm : asm.list("categories")) {
+                File categoryFolder = new File(categoriesFolder, catIdx + "_" + dnm);
+                categoriesFolder.mkdirs();
+                for (String fnm : asm.list("categories/" + dnm)) {
+                    File dest = new File(categoryFolder, fnm);
+                    FileUtils.copyInputStreamToFile(asm.open("categories/" + dnm + "/" + fnm), dest);
+                    Log.d(TAG, "Copying demo asset <" + dnm + "/" + fnm + "> to <" + dest.getAbsolutePath() + ">");
+                }
+                catIdx += 1;
+            }
+        } catch (IOException | StorageException e) {
+            throw new StorageException(e.getMessage(), e);
         }
     }
 }
