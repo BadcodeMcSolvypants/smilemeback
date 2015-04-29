@@ -1,5 +1,5 @@
-/**
- * This file is part of SmileMeBack.
+/*
+ This file is part of SmileMeBack.
 
  SmileMeBack is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -30,8 +30,12 @@ import com.smilemeback.drag.ListDragResultListener;
 import com.smilemeback.drag.ListViewDragListener;
 import com.smilemeback.misc.Constants;
 import com.smilemeback.misc.Dialogs;
+import com.smilemeback.storage.Categories;
 import com.smilemeback.storage.Category;
 import com.smilemeback.storage.Image;
+import com.smilemeback.storage.Images;
+import com.smilemeback.storage.Name;
+import com.smilemeback.storage.NameException;
 import com.smilemeback.storage.Storage;
 import com.smilemeback.storage.StorageException;
 import android.support.v4.app.NavUtils;
@@ -55,7 +59,7 @@ public class IconsActivity extends GalleryActivity implements ListAdapterListene
         int startCategoryIndex = intent.getIntExtra(Constants.CATEGORY_INDEX, 0);
 
         // load categories
-        List<Category> categories = loadCategories();
+        Categories categories = loadCategories();
         Category currentCategory = categories.get(startCategoryIndex);
 
         gridAdapter = new IconGridAdapter(this, this, selectionMode, selectionManager, data);
@@ -79,19 +83,17 @@ public class IconsActivity extends GalleryActivity implements ListAdapterListene
         getActionBar().setTitle(title);
     }
 
-    protected List<Category> loadCategories() {
-        List<Category> categories = null;
-        Storage storage = new Storage(this);
+    protected Categories loadCategories() {
         try {
-            categories = storage.getCategories();
+            return new Storage(this).getCategories();
         } catch (StorageException e) {
             showStorageExceptionAlertAndFinish(e);
         }
-        return categories;
+        return null;
     }
 
     /**
-     * Deselect all items, reload and initialize grid.
+     * Deselect all collection, reload and initialize grid.
      */
     protected void reloadGrid() {
         selectionManager.deselectAll();
@@ -153,21 +155,21 @@ public class IconsActivity extends GalleryActivity implements ListAdapterListene
     }
 
     @Override
-    public void moveSelectedIconsTo(int position) {
+    public void rearrangeIconsAccordingToTarget(int position) {
         List<Integer> sortedIdxs = new ArrayList<>(selectionManager.getSelectedPositions());
         Collections.sort(sortedIdxs);
         List<Image> selectedImages = new ArrayList<>();
-        logger.info("Number of selected images " + selectionManager.getNumSelected());
-        logger.info("Switch index is " + position);
         for (int selectedIdx : sortedIdxs) {
             selectedImages.add((Image)gridAdapter.getItem(selectedIdx));
-            logger.info("Selected index is " + selectedIdx);
         }
-        Image switchImage = (Image)gridAdapter.getItem(position);
+        Image target = (Image)gridAdapter.getItem(position);
 
-        Storage storage = new Storage(IconsActivity.this);
+        if (selectedImages.contains(target)) {
+            return;
+        }
+
         try {
-            storage.switchImages(selectedImages, switchImage);
+            gridAdapter.getCurrentCategory().getImages().rearrange(selectedImages, target);
         } catch (StorageException e) {
             showStorageExceptionAlertAndFinish(e);
         } finally {
@@ -177,15 +179,14 @@ public class IconsActivity extends GalleryActivity implements ListAdapterListene
 
     @Override
     public void moveSelectedIconsToCategory(int categoryIndex) {
-        Storage storage = new Storage(IconsActivity.this);
         List<Image> selectedImages = new ArrayList<>();
         for (int idx : selectionManager.getSelectedPositions()) {
             selectedImages.add((Image)gridAdapter.getItem(idx));
         }
         try {
-            List<Category> categories = loadCategories();
+            Categories categories = loadCategories();
             Category destination = categories.get(categoryIndex);
-            storage.moveImages(gridAdapter.getCurrentCategory(), selectedImages, destination);
+            gridAdapter.getCurrentCategory().getImages().moveTo(destination, selectedImages);
             gridAdapter.setCurrentCategory(destination);
             listAdapter.setSelectedItemPosition(categoryIndex);
         } catch (StorageException e) {
@@ -203,11 +204,12 @@ public class IconsActivity extends GalleryActivity implements ListAdapterListene
             @Override
             public void inputDone(String text) {
                 logger.info("Renaming current icon to " + text);
-                Storage storage = new Storage(IconsActivity.this);
                 try {
-                    storage.renameImage(image, text);
+                    image.rename(new Name(text));
                 } catch (StorageException e) {
                     showStorageExceptionAlertAndFinish(e);
+                } catch (NameException e) {
+                    showStorageExceptionAlertAndFinish(new StorageException(e.getMessage(), e));
                 }
                 reloadGrid();
             }
@@ -228,14 +230,14 @@ public class IconsActivity extends GalleryActivity implements ListAdapterListene
         DialogInterface.OnClickListener callback = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                logger.info("Deleting selected images");
+                logger.info("Deleting selection images");
                 try {
-                    Storage storage = new Storage(IconsActivity.this);
                     List<Image> selectedImages = new ArrayList<>();
                     for (int idx : selectionManager.getSelectedPositions()) {
                         selectedImages.add((Image)gridAdapter.getItem(idx));
                     }
-                    storage.deleteImages(gridAdapter.getCurrentCategory(), selectedImages);
+                    Images images = new Images(gridAdapter.getCurrentCategory());
+                    images.delete(selectedImages);
                 } catch (StorageException e) {
                     showStorageExceptionAlertAndFinish(e);
                 }
@@ -257,12 +259,14 @@ public class IconsActivity extends GalleryActivity implements ListAdapterListene
             String name = data.getStringExtra(Constants.ADDED_IMAGE_NAME);
             String imagePath = data.getStringExtra(Constants.ADDED_IMAGE_PATH);
             String audioPath = data.getStringExtra(Constants.ADDED_IMAGE_AUDIO_PATH);
-            Storage storage = new Storage(this);
             try {
-                storage.addCategoryImage(gridAdapter.getCurrentCategory(), name, new File(imagePath), new File(audioPath));
+                Images images = new Images(gridAdapter.getCurrentCategory());
+                images.add(new Name(name), new File(imagePath), new File(audioPath));
                 reloadGrid();
             } catch (StorageException e) {
                 showStorageExceptionAlertAndFinish(e);
+            } catch (NameException e) {
+                showStorageExceptionAlertAndFinish(new StorageException(e.getMessage(), e));
             }
         }
     }

@@ -1,5 +1,5 @@
-/**
- * This file is part of SmileMeBack.
+/*
+ This file is part of SmileMeBack.
 
  SmileMeBack is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ import com.smilemeback.selection.SelectionManager;
 import com.smilemeback.views.IconView;
 
 /**
- * Handle drag events when user drags selected icons over unselected icons.
+ * Handle drag events when user drags selection icons over unselected icons.
  */
 public class GridViewDragListener implements View.OnDragListener {
 
@@ -60,7 +60,7 @@ public class GridViewDragListener implements View.OnDragListener {
                 return true;
             case DragEvent.ACTION_DROP:
                 selectionManager.dehighlight();
-                listener.moveSelectedIconsTo(iconView.getPosition());
+                listener.rearrangeIconsAccordingToTarget(iconView.getPosition());
                 return true;
             case DragEvent.ACTION_DRAG_ENDED:
                 selectionMode.setStatusText("");

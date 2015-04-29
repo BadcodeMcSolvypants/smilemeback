@@ -1,5 +1,5 @@
-/**
- * This file is part of SmileMeBack.
+/*
+ This file is part of SmileMeBack.
 
  SmileMeBack is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ import android.widget.ListView;
 
 import com.smilemeback.R;
 import com.smilemeback.activities.IconsActivity;
+import com.smilemeback.storage.Categories;
 import com.smilemeback.storage.Category;
 import com.smilemeback.storage.Storage;
 import com.smilemeback.storage.StorageException;
@@ -40,7 +41,7 @@ public class CategoryListAdapter extends BaseAdapter {
     protected IconsActivity activity;
     protected int selectedPosition = 0;
     protected int hoverPosition = -1;
-    protected List<Category> categories = new ArrayList<>();
+    protected Categories categories;
     protected Category currentCategory;
     protected ListAdapterListener listener;
     protected ListView listView;

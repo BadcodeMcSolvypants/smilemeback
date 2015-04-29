@@ -1,5 +1,5 @@
-/**
- * This file is part of SmileMeBack.
+/*
+ This file is part of SmileMeBack.
 
  SmileMeBack is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -24,15 +24,17 @@ import android.os.Bundle;
 
 import com.smilemeback.R;
 import com.smilemeback.adapters.CategoryGridAdapter;
-import com.smilemeback.misc.Constants;
 import com.smilemeback.misc.Dialogs;
+import com.smilemeback.storage.Categories;
 import com.smilemeback.storage.Category;
 import com.smilemeback.storage.Image;
+import com.smilemeback.storage.Name;
+import com.smilemeback.storage.NameException;
 import com.smilemeback.storage.Storage;
 import com.smilemeback.storage.StorageException;
 
-import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -70,6 +72,7 @@ public class CategoriesActivity extends GalleryActivity {
 
     @Override
     protected void initializeListView() {
+        setupTestingCategories();
     }
 
     @Override
@@ -82,7 +85,26 @@ public class CategoriesActivity extends GalleryActivity {
     protected void refreshSidePane() { }
 
     @Override
-    public void moveSelectedIconsTo(int position) {
+    public void rearrangeIconsAccordingToTarget(int position) {
+        List<Integer> sortedIdxs = new ArrayList<>(selectionManager.getSelectedPositions());
+        Collections.sort(sortedIdxs);
+        List<Category> selectedCategories = new ArrayList<>();
+        for (int selectedIdx : sortedIdxs) {
+            selectedCategories.add((Category) gridAdapter.getItem(selectedIdx));
+        }
+        Category target = (Category)gridAdapter.getItem(position);
+
+        if (selectedCategories.contains(target)) {
+            return;
+        }
+
+        try {
+            new Storage(this).getCategories().rearrange(selectedCategories, target);
+        } catch (StorageException e) {
+            showStorageExceptionAlertAndFinish(e);
+        } finally {
+            reloadGrid();
+        }
     }
 
     @Override
@@ -95,11 +117,12 @@ public class CategoriesActivity extends GalleryActivity {
             @Override
             public void inputDone(String text) {
                 logger.info("Renaming current category to " + text);
-                Storage storage = new Storage(CategoriesActivity.this);
                 try {
-                    storage.renameCategory(category, text);
+                    category.rename(new Name(text));
                 } catch (StorageException e) {
                     showStorageExceptionAlertAndFinish(e);
+                } catch (NameException e) {
+                    showStorageExceptionAlertAndFinish(new StorageException(e.getMessage(), e));
                 }
                 reloadGrid();
             }
@@ -120,14 +143,14 @@ public class CategoriesActivity extends GalleryActivity {
         DialogInterface.OnClickListener callback = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                logger.info("Deleting selected categories");
+                logger.info("Deleting selection categories");
                 try {
-                    Storage storage = new Storage(CategoriesActivity.this);
                     List<Category> selectedCategories = new ArrayList<>();
                     for (int idx : selectionManager.getSelectedPositions()) {
                         selectedCategories.add((Category)gridAdapter.getItem(idx));
                     }
-                    storage.deleteCategories(selectedCategories);
+                    Categories categories = new Storage(CategoriesActivity.this).getCategories();
+                    categories.delete(selectedCategories);
                 } catch (StorageException e) {
                     showStorageExceptionAlertAndFinish(e);
                 }
@@ -140,7 +163,7 @@ public class CategoriesActivity extends GalleryActivity {
     @Override
     public void addNewIcon() {
         Intent intent = new Intent(this, AddPictureActivity.class);
-        startActivityForResult(intent, OldGalleryActivity.ADD_PICUTURE_INTENT);
+        startActivityForResult(intent, GalleryActivity.ADD_PICUTURE_INTENT);
     }
 
     @Override

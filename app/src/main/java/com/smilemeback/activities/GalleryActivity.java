@@ -1,5 +1,5 @@
-/**
- * This file is part of SmileMeBack.
+/*
+ This file is part of SmileMeBack.
 
  SmileMeBack is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -37,6 +37,7 @@ import com.smilemeback.R;
 import com.smilemeback.adapters.GridAdapterListener;
 import com.smilemeback.selection.SelectionListener;
 import com.smilemeback.selection.SelectionManager;
+import com.smilemeback.storage.Categories;
 import com.smilemeback.storage.Storage;
 import com.smilemeback.storage.StorageException;
 
@@ -106,9 +107,8 @@ public abstract class GalleryActivity extends Activity implements GallerySelecti
      */
     protected void setupTestingCategories() {
         try {
-            Storage storage = new Storage(this);
-            storage.truncateAllCategories();
-            storage.initializeTestingCategories();
+            Categories categories = new Storage(this).getCategories();
+            categories.initializeTestingCategories(this);
         } catch (StorageException e) {
             showStorageExceptionAlertAndFinish(e);
         }

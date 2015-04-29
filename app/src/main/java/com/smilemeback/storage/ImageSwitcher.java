@@ -1,5 +1,5 @@
-/**
- * This file is part of SmileMeBack.
+/*
+ This file is part of SmileMeBack.
 
  SmileMeBack is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -63,13 +63,13 @@ public class ImageSwitcher {
     }
 
     protected void computeMovePositions(final List<Image> images, final Image switchImage) {
-        // get the first selected image
+        // get the first selection image
         Image selectedImage = images.get(0);
         if (selectedImage.getPosition() < switchImage.getPosition()) {
-            // if selected images are left of switch image, then move selected images
+            // if selection images are left of switch image, then move selection images
             // after the switch image.
             int destIndex = lowIdx;
-            // copy everything that is not selected, but is before the switch index
+            // copy everything that is not selection, but is before the switch position
             for (int idx=0 ; idx<switchImage.getPosition() ; ++idx) {
                 if (!selectedPositions.contains(idx)) {
                     srcPositions.add(idx);
@@ -77,11 +77,11 @@ public class ImageSwitcher {
                     destIndex += 1;
                 }
             }
-            // now copy switch index
+            // now copy switch position
             srcPositions.add(switchImage.getPosition());
             destPositions.add(destIndex);
             destIndex += 1;
-            // now copy selected images
+            // now copy selection images
             for (int idx=0 ; idx<=highIdx ; ++idx) {
                 if (selectedPositions.contains(idx)) {
                     srcPositions.add(idx);
@@ -89,7 +89,7 @@ public class ImageSwitcher {
                     destIndex += 1;
                 }
             }
-            // now copy all not selected images that are after switch image
+            // now copy all not selection images that are after switch image
             for (int idx=switchImage.getPosition()+1 ; idx<=highIdx ; ++idx) {
                 if (!selectedPositions.contains(idx)) {
                     srcPositions.add(idx);
@@ -99,7 +99,7 @@ public class ImageSwitcher {
             }
         } else {
             int destIndex = lowIdx;
-            // first, move selected image
+            // first, move selection image
             for (int idx=0 ; idx<=highIdx ; ++idx) {
                 if (selectedPositions.contains(idx)) {
                     srcPositions.add(idx);

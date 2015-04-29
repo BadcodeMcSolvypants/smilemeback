@@ -1,5 +1,5 @@
-/**
- * This file is part of SmileMeBack.
+/*
+ This file is part of SmileMeBack.
 
  SmileMeBack is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -16,61 +16,60 @@
  */
 package com.smilemeback.storage;
 
+import android.util.Log;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
 
 /**
  * Category contains an category thumbnail image
  * and a list of pictures, their labels and audio recordings.
  */
 public class Category implements Comparable<Category> {
+    private static final String TAG = Category.class.getCanonicalName();
+    public static final String THUMBNAIL = "_thumbnail.jpg";
 
-    /**
-     * The index of the category.
-     * All categories must have unique indices that define their display order.
-     */
-    private int index;
-
-    /**
-     * The name of the category.
-     */
-    private Name name;
-
-    /**
-     * The actual folder file of the category.
-     */
-    private File folder;
-
-    /**
-     * The thumbnail file of the category.
-     * It must reside inside the category with name "_thumbnail.jpg".
-     */
-    private File thumbnail;
-
+    protected final int position;
+    protected final Name name;
+    protected final File folder;
+    protected final File thumbnail;
+    protected final File storageFolder;
 
     /**
      * Initialize a new category.
      *
-     * The constructor automatically retrieves the {@link #index}, {@link #name} and {@link #thumbnail}
+     * The constructor automatically retrieves the {@link #position}, {@link #name} and {@link #thumbnail}
      * of the category.
      *
-     * @param categoryFile The folder file of the category.
+     * @param folder The folder file of the category.
      * @throws StorageException
      */
-    public Category(File categoryFile) throws StorageException {
-        this.folder = categoryFile;
-        this.index = Storage.getIndex(categoryFile);
-        this.name = Storage.getName(categoryFile);
-        this.thumbnail = new File(this.folder, Storage.CATEGORY_THUMBNAIL);
-        if (!thumbnail.exists()) {
-            throw new StorageException("Category" + name + " thumbnail <" + thumbnail.getAbsolutePath() + "> does not exist!");
+    public Category(File folder) throws StorageException {
+        try {
+            this.folder = folder;
+            this.position = StorageNameUtils.parsePosition(folder.getName()).get();
+            this.name = StorageNameUtils.parseName(folder.getName());
+            this.storageFolder = folder.getParentFile();
+            this.thumbnail = new File(this.folder, THUMBNAIL);
+        } catch (NameException | IllegalStateException e) {
+            throw new StorageException(e.getMessage(), e);
+        }
+        makeAssertions();
+    }
+
+    private void makeAssertions() throws StorageException {
+        if (!thumbnail.isFile()) {
+            throw new StorageException("Category" + name + " thumbnail <" + thumbnail.getAbsolutePath() + "> not a file or does not exist!");
+        }
+        if (!storageFolder.isDirectory()) {
+            throw new StorageException("Parent folder of category not directory!");
         }
     }
 
-    public int getIndex() { return this.index; }
+    public int getPosition() { return this.position; }
 
     public Name getName() { return this.name; }
 
@@ -80,6 +79,10 @@ public class Category implements Comparable<Category> {
         return thumbnail;
     }
 
+    public Images getImages() throws StorageException {
+        return new Images(this);
+    }
+
     @Override
     public String toString() {
         return getFolder().getAbsolutePath();
@@ -87,6 +90,51 @@ public class Category implements Comparable<Category> {
 
     @Override
     public int compareTo(Category another) {
-        return getIndex() - another.getIndex();
+        return getPosition() - another.getPosition();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return EqualsBuilder.reflectionEquals(this, o);
+    }
+
+    @Override
+    public int hashCode() {
+        return position;
+    }
+
+    /**
+     * Rename the category.
+     *
+     * @param newName The new {@link com.smilemeback.storage.Name}.
+     * @return Instance of the renamed category.
+     * @throws StorageException
+     */
+    public Category rename(Name newName) throws StorageException {
+        Log.i(TAG, "Renaming category <" + name + "> to <" + newName + ">");
+        if (name.equals(newName)) {
+            return this;    // same name, do nothing!
+        }
+        File newFolder = new File(
+                storageFolder,
+                StorageNameUtils.constructCategoryFileName(position, newName));
+        try {
+            FileUtils.moveDirectory(folder, newFolder);
+            return new Category(newFolder);
+        } catch (IOException e) {
+            throw new StorageException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Delete the category.
+     * @throws StorageException
+     */
+    public void delete() throws StorageException {
+        try {
+            FileUtils.deleteDirectory(folder);
+        } catch (IOException e) {
+            throw new StorageException(e.getMessage(), e);
+        }
     }
 }

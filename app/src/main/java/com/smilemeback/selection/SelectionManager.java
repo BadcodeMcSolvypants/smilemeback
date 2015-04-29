@@ -1,5 +1,5 @@
-/**
- * This file is part of SmileMeBack.
+/*
+ This file is part of SmileMeBack.
 
  SmileMeBack is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -71,7 +71,7 @@ public class SelectionManager {
     }
 
     /**
-     * Reset the selected positions.
+     * Reset the selection positions.
      */
     public void deselectAll() {
         for (int pos : selectedPositions) {
@@ -82,9 +82,9 @@ public class SelectionManager {
     }
 
     /**
-     * Set the number of elements that could be selected.
+     * Set the number of elements that could be selection.
      * If later any position that is out of range 0<= pos < {@literal numTotal} is trying to get
-     * selected, an error will be thrown.
+     * selection, an error will be thrown.
      * @param numTotal
      */
     public void setNumTotal(int numTotal) {
@@ -93,7 +93,7 @@ public class SelectionManager {
         }
         for (int pos : selectedPositions) {
             if (pos >= numTotal) {
-                throw new RuntimeException("Programming error. Cannot set num elements " + numTotal + " while selected positions contain " + pos);
+                throw new RuntimeException("Programming error. Cannot set num elements " + numTotal + " while selection positions contain " + pos);
             }
         }
         boolean change = this.numTotal != numTotal;
@@ -133,8 +133,8 @@ public class SelectionManager {
     }
 
     /**
-     * Deselect a previously selected position. It will not throw an error, if the element
-     * was not previously selected.
+     * Deselect a previously selection position. It will not throw an error, if the element
+     * was not previously selection.
      *
      * @param position
      */
@@ -148,26 +148,26 @@ public class SelectionManager {
     }
 
     /**
-     * Get the set of all selected positions.
+     * Get the set of all selection positions.
      */
     public Set<Integer> getSelectedPositions() {
         return selectedPositions;
     }
 
     /**
-     * Get a single selected position.
+     * Get a single selection position.
      * Throws {@link RuntimeException} in case there are more.
      * @return
      */
     public int getSelectedPosition() {
         if (getNumSelected() != 1) {
-            throw new RuntimeException("Exactly one item has to be selected. There are " + getNumSelected() + " currently selected!");
+            throw new RuntimeException("Exactly one item has to be selection. There are " + getNumSelected() + " currently selection!");
         }
         return (int)selectedPositions.toArray()[0];
     }
 
     /**
-     * Is the position selected.
+     * Is the position selection.
      * @param position
      * @return
      */
@@ -188,7 +188,7 @@ public class SelectionManager {
     }
 
     /**
-     * Notify all listeners to highlight selected positions.
+     * Notify all listeners to highlight selection positions.
      */
     public void highlight() {
         for (SelectionListener listener : listeners) {
@@ -199,7 +199,7 @@ public class SelectionManager {
     }
 
     /**
-     * Notify all listeners to dehighlight selected positions.
+     * Notify all listeners to dehighlight selection positions.
      */
     public void dehighlight() {
         for (SelectionListener listener : listeners) {
@@ -210,7 +210,7 @@ public class SelectionManager {
     }
 
     /**
-     * Notify listeners about the position that got selected.
+     * Notify listeners about the position that got selection.
      * @param pos
      */
     protected void notifyPositionSelected(int pos) {
@@ -230,7 +230,7 @@ public class SelectionManager {
     }
 
     /**
-     * Notify listeners about total number of elements that can be selected.
+     * Notify listeners about total number of elements that can be selection.
      * @param numTotal
      */
     protected void notifyNumTotalChanged(int numTotal) {
@@ -240,7 +240,7 @@ public class SelectionManager {
     }
 
     /**
-     * Notify the listeners when number of selected elements change.
+     * Notify the listeners when number of selection elements change.
      * @param numSelected
      */
     protected void notifyNumSelectedChanged(int numSelected) {

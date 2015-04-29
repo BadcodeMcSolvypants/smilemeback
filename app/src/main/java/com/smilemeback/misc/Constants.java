@@ -1,5 +1,5 @@
-/**
- * This file is part of SmileMeBack.
+/*
+ This file is part of SmileMeBack.
 
  SmileMeBack is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -15,13 +15,6 @@
  along with SmileMeBack.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.smilemeback.misc;
-
-import android.content.Context;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.RawRes;
-import android.view.View;
-
-import java.io.InputStream;
 
 /**
  * Class containing constants used in the application.

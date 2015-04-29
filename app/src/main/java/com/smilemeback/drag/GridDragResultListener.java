@@ -1,5 +1,5 @@
-/**
- * This file is part of SmileMeBack.
+/*
+ This file is part of SmileMeBack.
 
  SmileMeBack is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -25,9 +25,9 @@ import com.smilemeback.views.IconView;
 public interface GridDragResultListener {
 
     /**
-     * Move all selected grid elements to given position as a drag result
+     * Move all selection grid elements to given position as a drag result
      * on a grid element identified by {@literal position}.
      * @param position
      */
-    void moveSelectedIconsTo(int position);
+    void rearrangeIconsAccordingToTarget(int position);
 }

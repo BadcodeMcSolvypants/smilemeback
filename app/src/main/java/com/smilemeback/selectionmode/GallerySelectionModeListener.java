@@ -1,5 +1,5 @@
-/**
- * This file is part of SmileMeBack.
+/*
+ This file is part of SmileMeBack.
 
  SmileMeBack is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -28,12 +28,12 @@ public interface GallerySelectionModeListener {
     void gallerySelectionModeFinished();
 
     /**
-     * Called when items should be selected.
+     * Called when collection should be selection.
      */
     void selectAllItems();
 
     /**
-     * Called when all items should be deselected.
+     * Called when all collection should be deselected.
      */
     void deselectAllItems();
 
