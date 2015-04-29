@@ -16,7 +16,6 @@
  */
 package com.smilemeback.storage;
 
-import android.os.storage.StorageManager;
 import android.util.Log;
 
 import com.google.common.base.Optional;

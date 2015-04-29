@@ -159,11 +159,8 @@ public class IconsActivity extends GalleryActivity implements ListAdapterListene
         List<Integer> sortedIdxs = new ArrayList<>(selectionManager.getSelectedPositions());
         Collections.sort(sortedIdxs);
         List<Image> selectedImages = new ArrayList<>();
-        logger.info("Number of selection images " + selectionManager.getNumSelected());
-        logger.info("Switch position is " + position);
         for (int selectedIdx : sortedIdxs) {
             selectedImages.add((Image)gridAdapter.getItem(selectedIdx));
-            logger.info("Selected position is " + selectedIdx);
         }
         Image target = (Image)gridAdapter.getItem(position);
 

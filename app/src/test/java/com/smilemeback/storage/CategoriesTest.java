@@ -22,6 +22,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -106,5 +107,27 @@ public class CategoriesTest extends FakeContextTestCase {
         assertThat(categories.get(1), is(equalTo(B)));
         assertThat(categories.get(2), is(equalTo(C)));
         assertThat(categories.get(3), is(equalTo(D)));
+    }
+
+    @Test
+    public void testRearrange() throws IOException, StorageException, NameException {
+        Categories categories = new Categories(storage.getCategoriesFolder());
+        Category A = categories.add(new Name("A"), inputStream());
+        Category B = categories.add(new Name("B"), inputStream());
+        Category C = categories.add(new Name("C"), inputStream());
+        Category D = categories.add(new Name("D"), inputStream());
+
+        // given
+        List<Category> selection = Arrays.asList(B, D);
+        Category target = A;
+
+        // when
+        categories.rearrange(selection, target);
+
+        // then
+        assertThat(categories.get(0).getName(), is(equalTo(B.getName())));
+        assertThat(categories.get(1).getName(), is(equalTo(D.getName())));
+        assertThat(categories.get(2).getName(), is(equalTo(A.getName())));
+        assertThat(categories.get(3).getName(), is(equalTo(C.getName())));
     }
 }

@@ -21,6 +21,7 @@ import android.content.res.AssetManager;
 import android.util.Log;
 
 import com.google.common.base.Optional;
+import com.smilemeback.storage.datamover.DataMover;
 
 import org.apache.commons.io.FileUtils;
 
@@ -102,7 +103,7 @@ public class Categories implements Iterable<Category> {
         Log.d(TAG, "Truncating all categories");
         try {
             FileUtils.deleteDirectory(parent);
-            FileUtils.forceMkdir(parent);
+            parent.mkdirs();
             categories.clear();
             parseCategories();
         } catch (IOException e) {
@@ -184,7 +185,9 @@ public class Categories implements Iterable<Category> {
                         parent,
                         StorageNameUtils.constructCategoryFileName(nextPos, category.getName()));
                 Log.d(TAG, "Moving <" + category.getFolder() + "> to <" + newFolder + ">");
-                FileUtils.moveDirectory(category.getFolder(), newFolder);
+                if (!category.getFolder().equals(newFolder)) {
+                    FileUtils.moveDirectory(category.getFolder(), newFolder);
+                }
                 nextPos += 1;
             }
 
@@ -218,6 +221,47 @@ public class Categories implements Iterable<Category> {
             }
         } catch (IOException | StorageException e) {
             throw new StorageException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Rearrange the categories.
+     * The selected categories are moved before the target, if all of them are after the target.
+     * Otherwise, all selected categories are moved after the target.
+     * @param selection The collection of selected categories that are going to be moved.
+     * @param target The target category, which acts as a pivot of the move operation.
+     * @throws StorageException
+     */
+    public void rearrange(Collection<Category> selection, Category target) throws StorageException {
+        DataMover<Category> dm = new DataMover<>(categories, selection, target);
+        // move files to temporary paths (by doing this, we avoid possible name collisions)
+        Map<Integer, File> tempFolders = new HashMap<>(categories.size());
+        Map<Integer, Integer> map = dm.getSourceTargetMapping();
+        try {
+            for (int key : map.keySet()) {
+                Category category = categories.get(key);
+                File tempFolder = new File(
+                        category.getFolder().getParent(),
+                        String.format("temp%d", key));
+                FileUtils.moveDirectory(category.getFolder(), tempFolder);
+                tempFolders.put(key, tempFolder);
+            }
+            // rename temporary folders
+            for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+                int key = entry.getKey();
+                int value = entry.getValue();
+
+                File tempFolder = tempFolders.get(key);
+                File destination = new File(
+                        tempFolder.getParent(),
+                        StorageNameUtils.constructCategoryFileName(value, categories.get(key).getName())
+                );
+                FileUtils.moveDirectory(tempFolder, destination);
+            }
+        } catch (IOException e) {
+            throw new StorageException(e.getMessage(), e);
+        } finally {
+            organize();
         }
     }
 }

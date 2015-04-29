@@ -27,12 +27,14 @@ import com.smilemeback.adapters.CategoryGridAdapter;
 import com.smilemeback.misc.Dialogs;
 import com.smilemeback.storage.Categories;
 import com.smilemeback.storage.Category;
+import com.smilemeback.storage.Image;
 import com.smilemeback.storage.Name;
 import com.smilemeback.storage.NameException;
 import com.smilemeback.storage.Storage;
 import com.smilemeback.storage.StorageException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -84,6 +86,21 @@ public class CategoriesActivity extends GalleryActivity {
 
     @Override
     public void rearrangeIconsAccordingToTarget(int position) {
+        List<Integer> sortedIdxs = new ArrayList<>(selectionManager.getSelectedPositions());
+        Collections.sort(sortedIdxs);
+        List<Category> selectedCategories = new ArrayList<>();
+        for (int selectedIdx : sortedIdxs) {
+            selectedCategories.add((Category) gridAdapter.getItem(selectedIdx));
+        }
+        Category target = (Category)gridAdapter.getItem(position);
+
+        try {
+            new Storage(this).getCategories().rearrange(selectedCategories, target);
+        } catch (StorageException e) {
+            showStorageExceptionAlertAndFinish(e);
+        } finally {
+            reloadGrid();
+        }
     }
 
     @Override
