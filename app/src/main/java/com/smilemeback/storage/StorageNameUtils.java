@@ -80,6 +80,9 @@ public class StorageNameUtils {
     public static Optional<Integer> parsePosition(String fileName) {
         int underscore_idx = fileName.indexOf("_");
         try {
+            if (underscore_idx == -1) {
+                return Optional.fromNullable(null);
+            }
             return Optional.fromNullable(Integer.parseInt(fileName.substring(0, underscore_idx)));
         } catch (NumberFormatException e) {
             return Optional.fromNullable(null);

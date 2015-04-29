@@ -18,6 +18,8 @@ package com.smilemeback.storage;
 
 import android.util.Log;
 
+import com.google.common.base.Optional;
+
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -44,6 +46,12 @@ public class Images implements Iterable<Image> {
 
     public Images(final Category category) throws StorageException {
         this.category = category;
+
+        if (!category.getFolder().isDirectory()) {
+            throw new IllegalArgumentException("Category <" + category.getName() + "> not a directory!");
+        }
+
+        parseImages();
     }
 
     @Override
@@ -55,14 +63,18 @@ public class Images implements Iterable<Image> {
         return images.size();
     }
 
+    public Image get(int position) {
+        return images.get(position);
+    }
+
     private void parseImages() throws StorageException {
+        images.clear();
         // map icon indices to image and audio files
         Map<Integer, File> imageFiles = scanCategoryImages(category);
         Map<Integer, File> audioFiles = scanCategoryAudio(category);
 
         // zip them together and initialize icons
         try {
-            List<Image> images = new ArrayList<>();
             for (int idx : imageFiles.keySet()) {
                 File imageFile = imageFiles.get(idx);
                 File audioFile = audioFiles.get(idx);
@@ -108,8 +120,10 @@ public class Images implements Iterable<Image> {
             if (!fnm.equals(Category.THUMBNAIL)) {
                 if (fnm.endsWith(suffix)) {
                     Log.d(TAG, "Scanning file <" + f.getAbsolutePath() + ">");
-                    int position = StorageNameUtils.parsePosition(fnm).get();
-                    files.put(position, f);
+                    Optional<Integer> position = StorageNameUtils.parsePosition(fnm);
+                    if (position.isPresent()) {
+                        files.put(position.get(), f);
+                    }
                 }
             }
         }
@@ -178,7 +192,7 @@ public class Images implements Iterable<Image> {
         try {
             Log.d(TAG, "Removing gaps between icons");
             for (int current : commonIdxs) {
-                if (current > lastUnused) {
+                if (current != lastUnused) {
                     // rename the indices
                     Name name = StorageNameUtils.parseName(images.get(current).getName());
                     File imagePath = new File(
@@ -188,8 +202,6 @@ public class Images implements Iterable<Image> {
                             category.getFolder(),
                             StorageNameUtils.constructImageFileName(lastUnused, name, Image.AUDIO_SUFFIX));
                     // move files
-                    FileUtils.deleteQuietly(imagePath);
-                    FileUtils.deleteQuietly(audioPath);
                     Log.d(TAG, "Moving <" + images.get(current) + "> to <" + imagePath + ">");
                     FileUtils.moveFile(images.get(current), imagePath);
                     Log.d(TAG, "Moving <" + sounds.get(current) + "> to <" + audioPath + ">");
@@ -214,7 +226,6 @@ public class Images implements Iterable<Image> {
         } catch (IOException | NameException e) {
             throw new StorageException(e.getMessage(), e);
         } finally {
-            images.clear();
             parseImages();
         }
     }

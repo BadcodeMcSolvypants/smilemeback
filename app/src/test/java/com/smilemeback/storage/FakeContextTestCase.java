@@ -25,7 +25,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Testcase that provides fake {@link android.content.Context} .
+ * Testcase that provides fake {@link android.content.Context}
+ * and helper methods for initializing categories and images.
  */
 public class FakeContextTestCase {
 
@@ -44,6 +45,12 @@ public class FakeContextTestCase {
             sb.append('a');
         }
         return new ByteArrayInputStream(sb.toString().getBytes());
+    }
+
+    protected static File tempFileWithContents() throws IOException {
+        File temp = File.createTempFile("fake", "file");
+        FileUtils.copyInputStreamToFile(inputStream(), temp);
+        return temp;
     }
 
     protected void makeCategory(int pos, Name name, boolean makeThumb) throws IOException, StorageException {

@@ -24,7 +24,6 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Logger;
 
 /**
  * Image class that represents a single icon in a category.
