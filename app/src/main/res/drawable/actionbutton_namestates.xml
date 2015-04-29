@@ -2,9 +2,8 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:state_pressed="true"
-        android:color="#99333333"
+        android:drawable="@drawable/addnew_name_pressed"
         />
-    <item android:color="#505050"
+    <item android:drawable="@drawable/addnew_name"
         />
-
 </selector>

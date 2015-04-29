@@ -18,6 +18,7 @@ package com.smilemeback.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -28,6 +29,7 @@ import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -66,8 +68,10 @@ public class AddPictureActivity extends Activity {
     protected boolean imageAdded = false;
 
     // add name
+    protected Button focusImageNameButton;
     protected EditText imageEditText;
     protected String imageName = "";
+
 
     // add sound
     protected Button recordSound;
@@ -129,11 +133,25 @@ public class AddPictureActivity extends Activity {
         state = AddPictureActivityState.ADD_NAME;
         setContentView(R.layout.create_picture_addname);
 
+
+        focusImageNameButton = (Button)findViewById(R.id.focusImageNameButton);
         imageEditText = (EditText)findViewById(R.id.imageName);
         imageEditText.setText(imageName);
+
         progressImageView = (ImageView)findViewById(R.id.progressImageView);
         prevButton = (Button)findViewById(R.id.prevButton);
         nextButton = (Button)findViewById(R.id.nextButton);
+
+
+        focusImageNameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageEditText.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+               imm.showSoftInput(imageEditText, InputMethodManager.SHOW_FORCED);
+            }
+        });
+
 
         imageEditText.addTextChangedListener(new TextWatcher() {
             @Override

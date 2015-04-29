@@ -12,7 +12,7 @@ android:layout_height="match_parent"
     android:layout_width="0dp"
     android:layout_height="match_parent"
     android:layout_weight="1"
-    android:background="#333">
+    android:background="@color/gallery_side_background">
 
     <Button
         style="@style/ActionButtonAttrs"

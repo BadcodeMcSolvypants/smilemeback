@@ -51,6 +51,7 @@
         android:numColumns="auto_fit"
         android:smoothScrollbar="false"
         android:nestedScrollingEnabled="false"
+        android:scrollbarStyle="outsideOverlay"
         tools:listitem="@layout/icon_view"
         android:layout_weight="@integer/iconview_gridview_layoutweight" />
 
