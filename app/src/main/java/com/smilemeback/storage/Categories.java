@@ -77,6 +77,7 @@ public class Categories implements Iterable<Category> {
     private void parseCategories() throws StorageException {
         categories.clear();
         // Parse all directories as categories.
+        parent.mkdirs();
         for (File folder : parent.listFiles()) {
             if (folder.isDirectory()) {
                 categories.add(new Category(folder));

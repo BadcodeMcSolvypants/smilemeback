@@ -249,7 +249,7 @@ public class IconsActivity extends GalleryActivity implements ListAdapterListene
 
     @Override
     public void addNewIcon() {
-        Intent intent = new Intent(this, AddPictureActivity.class);
+        Intent intent = new Intent(this, AddImageActivity.class);
         startActivityForResult(intent, IconsActivity.ADD_PICUTURE_INTENT);
     }
 

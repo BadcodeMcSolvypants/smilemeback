@@ -49,8 +49,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class AddPictureActivity extends Activity {
-    private static Logger logger = Logger.getLogger(AddPictureActivity.class.getCanonicalName());
+public class AddImageActivity extends Activity {
+    private static Logger logger = Logger.getLogger(AddImageActivity.class.getCanonicalName());
 
     protected static final int REQUEST_IMAGE_CAPTURE = 1;
     protected static final int PICK_PHOTO_GALLERY = 2;

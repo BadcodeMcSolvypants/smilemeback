@@ -27,7 +27,6 @@ import com.smilemeback.adapters.CategoryGridAdapter;
 import com.smilemeback.misc.Dialogs;
 import com.smilemeback.storage.Categories;
 import com.smilemeback.storage.Category;
-import com.smilemeback.storage.Image;
 import com.smilemeback.storage.Name;
 import com.smilemeback.storage.NameException;
 import com.smilemeback.storage.Storage;
@@ -162,7 +161,7 @@ public class CategoriesActivity extends GalleryActivity {
 
     @Override
     public void addNewIcon() {
-        Intent intent = new Intent(this, AddPictureActivity.class);
+        Intent intent = new Intent(this, AddImageActivity.class);
         startActivityForResult(intent, GalleryActivity.ADD_PICUTURE_INTENT);
     }
 
