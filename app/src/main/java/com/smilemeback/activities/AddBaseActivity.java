@@ -98,6 +98,13 @@ public abstract class AddBaseActivity extends Activity {
     }
 
     /**
+     * Method for updating the progressbar, that shows the state of the images.
+     */
+    public void updateProgressBar(ImageView view) {
+        
+    }
+
+    /**
      * Helper method for displaying an picture.
      * @param file The file containing the image.
      * @param view The view where the image will be loaded.
