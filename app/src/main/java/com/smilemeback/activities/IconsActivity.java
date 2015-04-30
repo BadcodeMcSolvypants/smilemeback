@@ -45,8 +45,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class IconsActivity extends GalleryActivity implements ListAdapterListener, ListDragResultListener {
-
+public class IconsActivity extends GalleryBaseActivity implements ListAdapterListener, ListDragResultListener {
+    private final static int ADD_IMAGE_ACTIVITY = 1;
     protected IconGridAdapter gridAdapter;
     protected CategoryListAdapter listAdapter;
 
@@ -250,12 +250,12 @@ public class IconsActivity extends GalleryActivity implements ListAdapterListene
     @Override
     public void addNewIcon() {
         Intent intent = new Intent(this, AddImageActivity.class);
-        startActivityForResult(intent, IconsActivity.ADD_PICUTURE_INTENT);
+        startActivityForResult(intent, ADD_IMAGE_ACTIVITY);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == ADD_PICUTURE_INTENT && resultCode == RESULT_OK) {
+        if (requestCode == ADD_IMAGE_ACTIVITY && resultCode == RESULT_OK) {
             String name = data.getStringExtra(Constants.ADDED_IMAGE_NAME);
             String imagePath = data.getStringExtra(Constants.ADDED_IMAGE_PATH);
             String audioPath = data.getStringExtra(Constants.ADDED_IMAGE_AUDIO_PATH);
@@ -263,10 +263,8 @@ public class IconsActivity extends GalleryActivity implements ListAdapterListene
                 Images images = new Images(gridAdapter.getCurrentCategory());
                 images.add(new Name(name), new File(imagePath), new File(audioPath));
                 reloadGrid();
-            } catch (StorageException e) {
-                showStorageExceptionAlertAndFinish(e);
-            } catch (NameException e) {
-                showStorageExceptionAlertAndFinish(new StorageException(e.getMessage(), e));
+            } catch (StorageException | NameException e) {
+                throw new RuntimeException(e.getMessage(), e);
             }
         }
     }

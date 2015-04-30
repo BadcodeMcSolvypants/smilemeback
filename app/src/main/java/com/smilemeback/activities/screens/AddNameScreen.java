@@ -1,0 +1,135 @@
+/*
+ This file is part of SmileMeBack.
+
+ SmileMeBack is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ SmileMeBack is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with SmileMeBack.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.smilemeback.activities.screens;
+
+
+import android.content.Context;
+import android.support.annotation.LayoutRes;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
+
+import com.smilemeback.R;
+import com.smilemeback.activities.AddBaseActivity;
+import com.smilemeback.misc.Constants;
+import com.smilemeback.storage.Name;
+
+import java.util.Map;
+
+public class AddNameScreen extends Screen {
+
+    protected Button focusImageNameButton;
+    protected EditText imageEditText;
+
+    public AddNameScreen(AddBaseActivity activity, @LayoutRes int layoutResId) {
+        super(activity, layoutResId);
+    }
+
+    public void onSetDefaultScreen(final Map<String, String> data) {
+        super.onSetDefaultScreen(data);
+        focusImageNameButton = (Button)activity.findViewById(R.id.focusImageNameButton);
+        imageEditText = (EditText)activity.findViewById(R.id.imageName);
+        imageEditText.setFilters(new InputFilter[] { filter });
+
+        imageEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                updateNavButtons();
+            }
+        });
+
+        focusImageNameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageEditText.requestFocus();
+                InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(imageEditText, InputMethodManager.SHOW_FORCED);
+            }
+        });
+
+        // set the data
+        if (data.containsKey(Constants.ADDED_IMAGE_NAME)) {
+            imageEditText.setText(data.get(Constants.ADDED_IMAGE_NAME));
+        }
+
+        updateNavButtons();
+    }
+
+    @Override
+    public boolean canGoForward() {
+        return imageEditText.getText().length() > 0;
+    }
+
+    @Override
+    public boolean canGoBack() {
+        return true;
+    }
+
+    @Override
+    public Map<String, String> collectData(Map<String, String> data) {
+        if (imageEditText.getText().length() > 0) {
+            data.put(Constants.ADDED_IMAGE_NAME, imageEditText.getText().toString());
+        }
+        return data;
+    }
+
+    InputFilter filter = new InputFilter() {
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            boolean keepOriginal = true;
+            StringBuilder sb = new StringBuilder(end - start);
+            for (int i = start; i < end; i++) {
+                char c = source.charAt(i);
+                if (isCharAllowed(c)) {
+                    sb.append(c);
+                } else {
+                    keepOriginal = false;
+                }
+            }
+            if (keepOriginal)
+                return null;
+            else {
+                if (source instanceof Spanned) {
+                    SpannableString sp = new SpannableString(sb);
+                    TextUtils.copySpansFrom((Spanned) source, start, sb.length(), null, sp, 0);
+                    return sp;
+                } else {
+                    return sb;
+                }
+            }
+        }
+
+        private boolean isCharAllowed(char c) {
+            return Name.ILLEGAL_CHARACTERS.indexOf(c) == -1;
+        }
+    };
+}

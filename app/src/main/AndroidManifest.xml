@@ -21,6 +21,10 @@
 
         <activity
             android:name=".activities.CategoriesActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <activity android:name=".activities.IconsActivity"
@@ -38,10 +42,6 @@
         <activity
             android:name=".activities.AddCategoryActivity"
             android:label="Add category">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

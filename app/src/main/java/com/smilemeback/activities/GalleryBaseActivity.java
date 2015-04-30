@@ -45,12 +45,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * {@link com.smilemeback.activities.GalleryActivity} is the main activity of the application,
+ * {@link GalleryBaseActivity} is the main activity of the application,
  * which manages interactions between all other activities of the application.
  */
-public abstract class GalleryActivity extends Activity implements GallerySelectionModeListener, SelectionListener, GridAdapterListener, GridDragResultListener {
+public abstract class GalleryBaseActivity extends Activity implements GallerySelectionModeListener, SelectionListener, GridAdapterListener, GridDragResultListener {
     protected static Logger logger = Logger.getLogger("SmileMeBack");
-    public static final int ADD_PICUTURE_INTENT = 1;
 
     protected GalleryActivityData data = new GalleryActivityData();
     protected SelectionManager selectionManager = new SelectionManager();

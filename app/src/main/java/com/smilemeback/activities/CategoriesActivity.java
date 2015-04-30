@@ -24,6 +24,7 @@ import android.os.Bundle;
 
 import com.smilemeback.R;
 import com.smilemeback.adapters.CategoryGridAdapter;
+import com.smilemeback.misc.Constants;
 import com.smilemeback.misc.Dialogs;
 import com.smilemeback.storage.Categories;
 import com.smilemeback.storage.Category;
@@ -32,6 +33,10 @@ import com.smilemeback.storage.NameException;
 import com.smilemeback.storage.Storage;
 import com.smilemeback.storage.StorageException;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -40,9 +45,10 @@ import java.util.List;
  * Top-level activity that displays available categories
  * and enables rename/delete/etc actions on them.
  */
-public class CategoriesActivity extends GalleryActivity {
+public class CategoriesActivity extends GalleryBaseActivity {
 
     protected CategoryGridAdapter gridAdapter;
+    private final static int ADD_CATEGORY_ACTIVITY = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +77,7 @@ public class CategoriesActivity extends GalleryActivity {
 
     @Override
     protected void initializeListView() {
-        setupTestingCategories();
+        //setupTestingCategories();
     }
 
     @Override
@@ -161,27 +167,21 @@ public class CategoriesActivity extends GalleryActivity {
 
     @Override
     public void addNewIcon() {
-        Intent intent = new Intent(this, AddImageActivity.class);
-        startActivityForResult(intent, GalleryActivity.ADD_PICUTURE_INTENT);
+        Intent intent = new Intent(this, AddCategoryActivity.class);
+        startActivityForResult(intent, ADD_CATEGORY_ACTIVITY);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        /*if (requestCode == ADD_PICUTURE_INTENT && resultCode == RESULT_OK) {
+        if (requestCode == ADD_CATEGORY_ACTIVITY && resultCode == RESULT_OK) {
             String name = data.getStringExtra(Constants.ADDED_IMAGE_NAME);
             String imagePath = data.getStringExtra(Constants.ADDED_IMAGE_PATH);
-            String audioPath = data.getStringExtra(Constants.ADDED_IMAGE_AUDIO_PATH);
-            Storage storage = new Storage(this);
             try {
-                storage.addCategoryImage(currentCategory, name, new File(imagePath), new File(audioPath));
-                loadImages(currentCategory);
-                gridView.setAdapter(imageAdapter);
-                deselectAllItems();
-                selectionMode.setTotal(images.size());
-                selectionMode.setNumSelected(0);
-            } catch (StorageException e) {
-                showStorageExceptionAlertAndFinish(e);
+                Categories categories = new Storage(this).getCategories();
+                categories.add(new Name(name), new BufferedInputStream(new FileInputStream(new File(imagePath))));
+            } catch (NameException | IOException | StorageException e) {
+                throw new RuntimeException(e.getMessage(), e);
             }
-        }*/
+        }
     }
 }

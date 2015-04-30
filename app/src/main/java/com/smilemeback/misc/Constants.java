@@ -30,4 +30,6 @@ public class Constants {
 
     public static final int MAX_ICONS_IN_DRAG_SHADOW = 16;
     public static final float SELECTED_ICONVIEW_ALPHA = 0.5f;
+    public static final float DISABLED_BUTTON_ALPHA = 0.4f;
+    public static final int MAX_RECORDING_DURATION = 10;
 }

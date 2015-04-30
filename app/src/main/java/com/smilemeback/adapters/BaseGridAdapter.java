@@ -32,7 +32,7 @@ import com.smilemeback.misc.Constants;
 import com.smilemeback.misc.GalleryActivityData;
 import com.smilemeback.misc.GalleryActivityState;
 import com.smilemeback.R;
-import com.smilemeback.activities.GalleryActivity;
+import com.smilemeback.activities.GalleryBaseActivity;
 import com.smilemeback.drag.GridViewDragListener;
 import com.smilemeback.selection.SelectionManager;
 import com.smilemeback.views.IconView;
@@ -42,10 +42,10 @@ import java.util.List;
 
 /**
  * Manages basic gridview operations and ties common functionality with
- * {@link com.smilemeback.activities.GalleryActivity} .
+ * {@link com.smilemeback.activities.GalleryBaseActivity} .
  */
 abstract public class BaseGridAdapter extends BaseAdapter {
-    protected GalleryActivity activity;
+    protected GalleryBaseActivity activity;
     protected GridAdapterListener listener;
     protected SelectionManager selectionManager;
     protected GalleryActivityData data;
@@ -54,7 +54,7 @@ abstract public class BaseGridAdapter extends BaseAdapter {
     /**
      * Initialize the {@link com.smilemeback.adapters.BaseGridAdapter}.
      */
-    public BaseGridAdapter(GalleryActivity activity, GridAdapterListener listener, SelectionMode selectionMode, SelectionManager selectionManager, GalleryActivityData data) {
+    public BaseGridAdapter(GalleryBaseActivity activity, GridAdapterListener listener, SelectionMode selectionMode, SelectionManager selectionManager, GalleryActivityData data) {
         this.activity = activity;
         this.listener = listener;
         this.selectionManager = selectionManager;

@@ -18,32 +18,20 @@ package com.smilemeback.activities;
 
 
 import com.smilemeback.R;
-import com.smilemeback.activities.addactivity.AddActivity;
-import com.smilemeback.activities.addactivity.AddNameScreen;
-import com.smilemeback.activities.addactivity.AddPictureScreen;
-import com.smilemeback.activities.addactivity.Screen;
+import com.smilemeback.activities.screens.AddNameScreen;
+import com.smilemeback.activities.screens.AddPictureScreen;
+import com.smilemeback.activities.screens.Screen;
 
-public class AddCategoryActivity extends AddActivity {
-
-    public AddCategoryActivity() {
-        super();
-    }
+/**
+ * Activity for adding new categories.
+ */
+public class AddCategoryActivity extends AddBaseActivity {
 
     @Override
     protected Screen[] getScreens() {
         return new Screen[] {
-                new AddPictureScreen(this, R.layout.create_picture_addpicture),
-                new AddNameScreen(this, R.layout.create_picture_addname)
+                new AddPictureScreen(this, R.layout.add_picture),
+                new AddNameScreen(this, R.layout.add_category_name)
         };
-    }
-
-    @Override
-    public void goBack() {
-
-    }
-
-    @Override
-    public void goForward() {
-
     }
 }

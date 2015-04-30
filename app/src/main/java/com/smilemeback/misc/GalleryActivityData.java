@@ -21,7 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 /**
- * Class that encapsulates the data of a {@link com.smilemeback.activities.GalleryActivity}.
+ * Class that encapsulates the data of a {@link com.smilemeback.activities.GalleryBaseActivity}.
  */
 public class GalleryActivityData {
     public ListView listView;
