@@ -25,8 +25,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.smilemeback.R;
 import com.smilemeback.activities.screens.Screen;
 import com.squareup.picasso.Picasso;
+
+import org.javatuples.Triplet;
 
 import java.io.File;
 import java.util.HashMap;
@@ -42,10 +45,13 @@ public abstract class AddBaseActivity extends Activity {
     protected int currentScreenIndex;
     protected Map<String, String> data;
 
+    private final Map<Triplet<Integer, Integer, Integer>, Integer> progressMapping;
+
     public AddBaseActivity() {
         currentScreenIndex = 0;
         data = new HashMap<>();
         this.screens = getScreens();
+        progressMapping = getProgressMapping();
     }
 
     @Override
@@ -100,8 +106,19 @@ public abstract class AddBaseActivity extends Activity {
     /**
      * Method for updating the progressbar, that shows the state of the images.
      */
-    public void updateProgressBar(ImageView view) {
-        
+    public void updateProgressBar() {
+        // determine the current progress
+        int max = screens.length;
+        int current = currentScreenIndex;
+        int completed = 0;
+        for (completed=0 ; completed < screens.length ; ++completed) {
+            if (!screens[completed].canGoForward()) {
+                break;
+            }
+        }
+        // set the appropriate image
+        ImageView view = (ImageView)findViewById(R.id.progressImageView);
+        view.setImageResource(progressMapping.get(triplet(max, completed, current)));
     }
 
     /**
@@ -138,5 +155,34 @@ public abstract class AddBaseActivity extends Activity {
         }
         setResult(RESULT_OK, result);
         super.finish();
+    }
+
+    /**
+     * Put together a (max, completed, current) mapping to progress bar resource images.
+     * @return
+     */
+    private static Map<Triplet<Integer, Integer, Integer>, Integer> getProgressMapping() {
+        Map<Triplet<Integer, Integer, Integer>, Integer> m = new HashMap<>();
+        // for adding image
+        m.put(triplet(3, 0, 0), R.drawable.progress0step1);
+        m.put(triplet(3, 1, 0), R.drawable.progress1step1);
+        m.put(triplet(3, 1, 1), R.drawable.progress1step2);
+        m.put(triplet(3, 2, 0), R.drawable.progress2step1);
+        m.put(triplet(3, 2, 1), R.drawable.progress2step2);
+        m.put(triplet(3, 2, 2), R.drawable.progress2step3);
+        m.put(triplet(3, 3, 0), R.drawable.progress3step1);
+        m.put(triplet(3, 3, 1), R.drawable.progress3step2);
+        m.put(triplet(3, 3, 2), R.drawable.progress3step3);
+        // for adding category
+        m.put(triplet(2, 0, 0), R.drawable.twostep_progress0step1);
+        m.put(triplet(2, 1, 0), R.drawable.twostep_progress1step1);
+        m.put(triplet(2, 1, 1), R.drawable.twostep_progress1step2);
+        m.put(triplet(2, 2, 0), R.drawable.twostep_progress2step1);
+        m.put(triplet(2, 2, 1), R.drawable.twostep_progress2step2);
+        return m;
+    }
+
+    private static Triplet<Integer, Integer, Integer> triplet(int a, int b, int c) {
+        return new Triplet<>(a, b, c);
     }
 }

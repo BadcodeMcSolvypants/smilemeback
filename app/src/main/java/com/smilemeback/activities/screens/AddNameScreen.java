@@ -86,7 +86,10 @@ public class AddNameScreen extends Screen {
 
     @Override
     public boolean canGoForward() {
-        return imageEditText.getText().length() > 0;
+        if (imageEditText != null) {
+            return imageEditText.getText().length() > 0;
+        }
+        return false;
     }
 
     @Override
@@ -102,6 +105,11 @@ public class AddNameScreen extends Screen {
         return data;
     }
 
+    /**
+     * {@link android.text.InputFilter} for removing illegal characters from image names.
+     * The reason is that the main storage of images is on filesystem, therefore certain
+     * reserved characters (such as /, . etc) are illegal.
+     */
     InputFilter filter = new InputFilter() {
         @Override
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {

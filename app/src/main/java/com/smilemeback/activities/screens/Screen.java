@@ -88,6 +88,7 @@ public abstract class Screen {
         prevButton.setAlpha(canGoBack() ? 1 : Constants.DISABLED_BUTTON_ALPHA);
         nextButton.setEnabled(canGoForward());
         nextButton.setAlpha(canGoForward() ? 1 : Constants.DISABLED_BUTTON_ALPHA);
+        activity.updateProgressBar();
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
