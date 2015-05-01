@@ -20,15 +20,19 @@
         android:theme="@style/AppTheme" >
 
         <activity
-            android:name=".activities.CategoriesActivity">
+            android:name=".activities.CategoriesActivity"
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".activities.IconsActivity"
-                  android:parentActivityName=".activities.CategoriesActivity">
+        <activity
+            android:name=".activities.IconsActivity"
+            android:screenOrientation="landscape"
+            android:parentActivityName=".activities.CategoriesActivity">
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.smilemeback.activities.CategoriesActivity" />
@@ -36,12 +40,14 @@
 
         <activity
             android:name=".activities.AddImageActivity"
+            android:screenOrientation="landscape"
             android:label="Add image">
 
         </activity>
 
         <activity
             android:name=".activities.AddCategoryActivity"
+            android:screenOrientation="landscape"
             android:label="Add category">
         </activity>
 
