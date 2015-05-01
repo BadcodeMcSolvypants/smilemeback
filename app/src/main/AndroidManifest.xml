@@ -37,12 +37,14 @@
         <activity
             android:name=".activities.AddImageActivity"
             android:label="Add image">
+
         </activity>
 
         <activity
             android:name=".activities.AddCategoryActivity"
             android:label="Add category">
         </activity>
+
     </application>
 
 </manifest>
