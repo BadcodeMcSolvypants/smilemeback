@@ -87,7 +87,8 @@ abstract public class BaseGridAdapter extends BaseAdapter {
         // deal with selection stuff
         view.setOverlayVisibility(View.GONE);
         view.setCheckboxVisible(data.state == GalleryActivityState.SELECT);
-        view.setSelected(selectionManager.isSelected(position));
+        //view.setSelected(selectionManager.isSelected(position));
+        view.setChecked(selectionManager.isSelected(position));
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
