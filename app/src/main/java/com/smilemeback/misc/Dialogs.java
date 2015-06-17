@@ -19,6 +19,7 @@ package com.smilemeback.misc;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.text.InputFilter;
 import android.widget.EditText;
 
 public class Dialogs {
@@ -47,6 +48,7 @@ public class Dialogs {
         dialog.setTitle(title);
         final EditText edit = new EditText(context);
         edit.setSingleLine(true);
+        edit.setFilters(new InputFilter[] { new ValidNameInputFilter() });
         edit.setText(initialText);
         dialog.setView(edit);
         dialog.setPositiveButton(posButtonTitle, new DialogInterface.OnClickListener() {

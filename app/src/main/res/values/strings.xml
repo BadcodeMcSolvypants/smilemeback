@@ -31,5 +31,7 @@
 
     <!-- AddPictureActivity -->
     <string name="addpicture_photo_from_galery">Choose image</string>
+    <string name="addaudio_nosound_recorded">No sound recorded</string>
+    <string name="addaudio_tap_to_play">Tap to play</string>
 
 </resources>

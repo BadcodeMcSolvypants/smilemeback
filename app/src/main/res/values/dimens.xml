@@ -8,31 +8,35 @@
     <dimen name="gallery_gridview_padding_sides">16dp</dimen>
     <dimen name="icondisplay_listview_padding_left">28dp</dimen>
     <dimen name="icondisplay_listview_divider_height">16dp</dimen>
+    <dimen name="iconview_top_padding">40dp</dimen>
 
     <!-- IconView size and margins, easier to store here than in separate layouts -->
-    <dimen name="iconview_top_padding">40dp</dimen>
+
     <dimen name="iconview_width">288dp</dimen>
     <dimen name="iconview_height">248dp</dimen>
+    <dimen name="iconview_image_width">256dp</dimen>
+    <dimen name="iconview_image_height">170dp</dimen>
     <dimen name="iconview_image_padding_top">16dp</dimen>
     <dimen name="iconview_image_padding_sides">8dp</dimen>
     <dimen name="iconview_image_padding_bottom">56dp</dimen>
-    <dimen name="iconview_text_padding_bottom">14dp</dimen>
+    <dimen name="iconview_text_margin_bottom">24dp</dimen>
     <dimen name="iconview_text_size">22sp</dimen>
     <dimen name="iconview_checkbox_size">40dp</dimen>
-    <dimen name="iconview_checkbox_margin">12dp</dimen>
+    <dimen name="iconview_checkbox_margin">8dp</dimen>
+
 
     <!-- Side iconView size and margins, easier to store here than in separate layouts -->
-
     <dimen name="iconview_side_width">144dp</dimen>
     <dimen name="iconview_side_height">124dp</dimen>
+    <dimen name="iconview_side_marginleft">10dp</dimen>
     <dimen name="iconview_side_image_padding">8dp</dimen>
     <dimen name="iconview_side_image_padding_bottom">32dp</dimen>
     <dimen name="iconview_side_text_padding_bottom">7dp</dimen>
     <dimen name="iconview_side_text_size">12sp</dimen>
     <dimen name="iconview_side_checkbox_size">20dp</dimen>
     <dimen name="iconview_side_checkbox_padding">4dp</dimen>
-    <dimen name="iconview_side_marginleft">12dp</dimen>
     <dimen name="iconview_side_dividerheight">12dp</dimen>
+
     <!-- Actionbar spinner (select all, deselect all) text padding -->
     <dimen name="actionbar_textview_padding_left">20dp</dimen>
     <dimen name="actionbar_textview_padding_right">15dp</dimen>

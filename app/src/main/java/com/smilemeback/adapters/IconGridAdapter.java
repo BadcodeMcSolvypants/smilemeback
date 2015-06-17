@@ -67,6 +67,13 @@ public class IconGridAdapter extends BaseGridAdapter {
         }
     }
 
+    /**
+     * Called when activity gets paused, required for releasing mediaplayer resouces.
+     */
+    public void onPause() {
+        player.release();
+    }
+
     @Override
     public int getCount() {
         return images.size();

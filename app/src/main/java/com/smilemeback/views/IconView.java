@@ -55,6 +55,15 @@ public class IconView extends RelativeLayout implements Checkable {
      */
     public IconView(Context context, AttributeSet attrs, boolean useDefaultImage) {
         super(context, attrs);
+        initialize(context, attrs, useDefaultImage);
+    }
+
+    public IconView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        initialize(context, attrs, true);
+    }
+
+    protected void initialize(Context context, AttributeSet attrs, boolean useDefaultImage) {
         inflateLayout(context);
 
         image = (ImageView) findViewById(R.id.iconview_image);

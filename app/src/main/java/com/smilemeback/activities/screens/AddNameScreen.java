@@ -18,12 +18,8 @@ package com.smilemeback.activities.screens;
 
 
 import android.content.Context;
-import android.support.annotation.LayoutRes;
 import android.text.Editable;
 import android.text.InputFilter;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -33,7 +29,7 @@ import android.widget.EditText;
 import com.smilemeback.R;
 import com.smilemeback.activities.AddBaseActivity;
 import com.smilemeback.misc.Constants;
-import com.smilemeback.storage.Name;
+import com.smilemeback.misc.ValidNameInputFilter;
 
 import java.util.Map;
 
@@ -42,7 +38,7 @@ public class AddNameScreen extends Screen {
     protected Button focusImageNameButton;
     protected EditText imageEditText;
 
-    public AddNameScreen(AddBaseActivity activity, @LayoutRes int layoutResId) {
+    public AddNameScreen(AddBaseActivity activity, int layoutResId) {
         super(activity, layoutResId);
     }
 
@@ -50,7 +46,7 @@ public class AddNameScreen extends Screen {
         super.onSetDefaultScreen(data);
         focusImageNameButton = (Button)activity.findViewById(R.id.focusImageNameButton);
         imageEditText = (EditText)activity.findViewById(R.id.imageName);
-        imageEditText.setFilters(new InputFilter[] { filter });
+        imageEditText.setFilters(new InputFilter[] { new ValidNameInputFilter() });
 
         imageEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -104,40 +100,4 @@ public class AddNameScreen extends Screen {
         }
         return data;
     }
-
-    /**
-     * {@link android.text.InputFilter} for removing illegal characters from image names.
-     * The reason is that the main storage of images is on filesystem, therefore certain
-     * reserved characters (such as /, . etc) are illegal.
-     */
-    InputFilter filter = new InputFilter() {
-        @Override
-        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-            boolean keepOriginal = true;
-            StringBuilder sb = new StringBuilder(end - start);
-            for (int i = start; i < end; i++) {
-                char c = source.charAt(i);
-                if (isCharAllowed(c)) {
-                    sb.append(c);
-                } else {
-                    keepOriginal = false;
-                }
-            }
-            if (keepOriginal)
-                return null;
-            else {
-                if (source instanceof Spanned) {
-                    SpannableString sp = new SpannableString(sb);
-                    TextUtils.copySpansFrom((Spanned) source, start, sb.length(), null, sp, 0);
-                    return sp;
-                } else {
-                    return sb;
-                }
-            }
-        }
-
-        private boolean isCharAllowed(char c) {
-            return Name.ILLEGAL_CHARACTERS.indexOf(c) == -1;
-        }
-    };
 }

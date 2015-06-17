@@ -21,8 +21,11 @@ import android.app.ActionBar;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.smilemeback.R;
 import com.smilemeback.adapters.CategoryListAdapter;
 import com.smilemeback.adapters.IconGridAdapter;
 import com.smilemeback.adapters.ListAdapterListener;
@@ -135,17 +138,6 @@ public class IconsActivity extends GalleryBaseActivity implements ListAdapterLis
     public void enterSelectionMode() {
         super.enterSelectionMode();
         animateListViewIn();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
-            case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -267,5 +259,27 @@ public class IconsActivity extends GalleryBaseActivity implements ListAdapterLis
                 throw new RuntimeException(e.getMessage(), e);
             }
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu items for use in the action bar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.icons_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+            case R.id.menu_add_image:
+                addNewIcon();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

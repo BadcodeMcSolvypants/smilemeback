@@ -19,17 +19,22 @@ package com.smilemeback.activities.screens;
 import android.content.Intent;
 import android.database.Cursor;
 import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.annotation.LayoutRes;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.smilemeback.R;
 import com.smilemeback.activities.AddBaseActivity;
 import com.smilemeback.misc.Constants;
 import com.smilemeback.storage.Storage;
 import com.smilemeback.storage.StorageException;
+import com.smilemeback.views.IconView;
 
 import org.apache.commons.io.FileUtils;
 
@@ -38,15 +43,20 @@ import java.io.IOException;
 import java.util.Map;
 
 public class AddAudioScreen extends Screen {
+    private static String TAG = AddAudioScreen.class.getCanonicalName();
 
-    protected static final int RECORD_SOUND = 1;
+    //private static final int RECORD_SOUND = 1;
 
-    protected Button recordSound;
-    protected boolean audioRecorded = false;
-
+    private Button recordSound;
+    private boolean audioRecorded = false;
+    private MediaRecorder mRecorder = null;
+    private MediaPlayer mPlayer = null;
     private File temporaryAudio;
+    private IconView iconView = null;
+    private ImageView indicator = null;
+    private TextView statusText = null;
 
-    public AddAudioScreen(AddBaseActivity activity, @LayoutRes int layoutResId) {
+    public AddAudioScreen(AddBaseActivity activity, int layoutResId) {
         super(activity, layoutResId);
     }
 
@@ -62,16 +72,52 @@ public class AddAudioScreen extends Screen {
 
         // UI
         recordSound = (Button)activity.findViewById(R.id.recordSound);
-        recordSound.setOnClickListener(new View.OnClickListener() {
+        recordSound.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                dispatchAudioRecordIntent();
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        indicator.setVisibility(View.VISIBLE);
+                        statusText.setVisibility(View.GONE);
+                        onRecord(true);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        onRecord(false);
+                        indicator.setVisibility(View.GONE);
+                        statusText.setText(R.string.addaudio_tap_to_play);
+                        statusText.setVisibility(View.VISIBLE);
+                        audioRecorded = true;
+                        updateNavButtons();
+                        break;
+                }
+                return false;
             }
         });
+        iconView = (IconView)activity.findViewById(R.id.addsound_iconview);
+        iconView.setOverlayVisibility(View.GONE);
+        iconView.setCheckboxVisible(false);
+        iconView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (audioRecorded) {
+                    onPlay(true);
+                }
+            }
+        });
+        indicator = (ImageView)activity.findViewById(R.id.mediaplayer_recording_indicator);
+        indicator.setVisibility(View.GONE);
+        statusText = (TextView)activity.findViewById(R.id.mediaplayer_status);
 
         // data
         if (data.containsKey(Constants.ADDED_IMAGE_AUDIO_PATH)) {
             audioRecorded = true;
+            statusText.setText(R.string.addaudio_tap_to_play);
+        }
+        if (data.containsKey(Constants.ADDED_IMAGE_PATH)) {
+            iconView.setImageBitmap(new File(data.get(Constants.ADDED_IMAGE_PATH)));
+        }
+        if (data.containsKey(Constants.ADDED_IMAGE_NAME)) {
+            iconView.setLabel(data.get(Constants.ADDED_IMAGE_NAME));
         }
 
         updateNavButtons();
@@ -95,37 +141,60 @@ public class AddAudioScreen extends Screen {
         return data;
     }
 
-    private void dispatchAudioRecordIntent() {
-        Intent intent = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
-        intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, Constants.MAX_RECORDING_DURATION);
-        activity.startActivityForResult(intent, RECORD_SOUND);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == RECORD_SOUND && resultCode == activity.RESULT_OK) {
-            try {
-                Uri recorderAudioUri = data.getData();
-                FileUtils.copyFile(new File(getRealPathFromURI(recorderAudioUri)), temporaryAudio);
-                // todo: make a good media player
-                MediaPlayer player = new MediaPlayer();
-                player.setDataSource(temporaryAudio.getAbsolutePath());
-                player.prepare();
-                player.start();
-                audioRecorded = true;
-            } catch (IOException e) {
-                throw new RuntimeException(e.getMessage(), e);
-            }
+    private void onRecord(boolean start) {
+        if (start) {
+            startRecording();
+        } else {
+            stopRecording();
         }
-        updateNavButtons();
     }
 
-    public String getRealPathFromURI(Uri contentUri) {
-        String[] proj = { MediaStore.Audio.Media.DATA };
-        Cursor cursor = activity.managedQuery(contentUri, proj, null, null, null);
-        int column_index = cursor
-                .getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
+    private void onPlay(boolean start) {
+        if (start) {
+            startPlaying();
+        } else {
+            stopPlaying();
+        }
+    }
+
+    private void startPlaying() {
+        mPlayer = new MediaPlayer();
+        try {
+            mPlayer.setDataSource(temporaryAudio.getAbsolutePath());
+            mPlayer.prepare();
+            mPlayer.start();
+        } catch (IOException e) {
+            Log.e(TAG, "prepare() failed");
+        }
+    }
+
+    private void stopPlaying() {
+        mPlayer.release();
+        mPlayer = null;
+    }
+
+    private void startRecording() {
+        mRecorder = new MediaRecorder();
+        mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mRecorder.setAudioChannels(Constants.AUDIO_NUM_CHANNELS);
+        mRecorder.setAudioSamplingRate(Constants.AUDIO_SAMPLING_RATE);
+        mRecorder.setAudioEncodingBitRate(Constants.AUDIO_BITRATE);
+        mRecorder.setOutputFile(temporaryAudio.getAbsolutePath());
+        mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+
+        try {
+            mRecorder.prepare();
+        } catch (IOException e) {
+            Log.e(TAG, "prepare() failed");
+        }
+
+        mRecorder.start();
+    }
+
+    private void stopRecording() {
+        mRecorder.stop();
+        mRecorder.release();
+        mRecorder = null;
     }
 }

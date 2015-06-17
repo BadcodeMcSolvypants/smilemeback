@@ -45,13 +45,32 @@ android:layout_height="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:background="#fff">
+
+        <com.smilemeback.views.IconView
+            android:id="@+id/addsound_iconview"
+            android:layout_width="@dimen/iconview_width"
+            android:layout_height="@dimen/iconview_height"
+            android:layout_centerInParent="true">
+
+        </com.smilemeback.views.IconView>
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/recording_indicator"
+            android:contentDescription="recording indicator"
+            android:paddingLeft="25dp"
+            android:id="@+id/mediaplayer_recording_indicator" />
+
         <TextView
-            android:text="mediaplayer"
-            android:layout_centerInParent="true"
+            android:text="@string/addaudio_nosound_recorded"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
             android:contentDescription="mediaplayer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
+            android:paddingBottom="50dp"
+            android:textSize="25sp"
             android:id="@+id/mediaplayer" />
 
 
