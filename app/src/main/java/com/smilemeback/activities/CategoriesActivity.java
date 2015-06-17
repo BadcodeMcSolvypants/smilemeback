@@ -200,7 +200,7 @@ public class CategoriesActivity extends GalleryBaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle presses on the action bar items
         switch (item.getItemId()) {
-            case R.id.menu_add_album:
+            case R.id.gallery_selectionmode_menu_add_album:
                 addNewIcon();
                 return true;
             default:
