@@ -35,4 +35,6 @@ public class Constants {
     public static final int AUDIO_SAMPLING_RATE = 44100;
     public static final int AUDIO_NUM_CHANNELS = 1;
     public static final int AUDIO_BITRATE = 192 * 1024;
+
+    public static final int SMOOTH_SCROLL_DURATION = 500;
 }

@@ -17,10 +17,12 @@
 package com.smilemeback.drag;
 
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 import android.widget.ListView;
 
+import com.smilemeback.misc.Constants;
 import com.smilemeback.selectionmode.SelectionMode;
 import com.smilemeback.adapters.CategoryListAdapter;
 import com.smilemeback.selection.SelectionManager;
@@ -48,7 +50,9 @@ public class ListViewDragListener implements View.OnDragListener {
     @Override
     public boolean onDrag(View v, DragEvent event) {
         final int action = event.getAction();
-        int idx = getListViewChildInCoords((int) event.getX(), (int) event.getY());
+        final int dragX = (int)event.getX();
+        final int dragY = (int)event.getY();
+        int idx = getListViewChildInCoords(dragX, dragY);
 
         switch (action) {
             case DragEvent.ACTION_DRAG_STARTED:
@@ -59,7 +63,13 @@ public class ListViewDragListener implements View.OnDragListener {
                 return true;
             case DragEvent.ACTION_DRAG_LOCATION:
                 if (idx >= 0) {
-                    listView.smoothScrollToPosition(idx);
+                    int dragArea = listView.getChildAt(0).getHeight()/2;
+                    if (dragY <= dragArea) {
+                        listView.smoothScrollBy(-dragArea, Constants.SMOOTH_SCROLL_DURATION);
+                    } else if (dragY >= listView.getHeight()-dragArea) {
+                        listView.smoothScrollBy(dragArea, Constants.SMOOTH_SCROLL_DURATION);
+                    }
+                    // update the hover position
                     if (listAdapter.getHoverPosition() != idx) {
                         listAdapter.setHoverPosition(idx);
                         listAdapter.notifyDataSetChanged();
