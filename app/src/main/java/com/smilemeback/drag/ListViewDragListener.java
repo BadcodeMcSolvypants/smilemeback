@@ -100,7 +100,7 @@ public class ListViewDragListener implements View.OnDragListener {
             Rect bounds = new Rect();
             view.getHitRect(bounds);
             if (bounds.contains(x, y)) {
-                return idx;
+                return idx + listView.getFirstVisiblePosition();
             }
         }
         return -1;
