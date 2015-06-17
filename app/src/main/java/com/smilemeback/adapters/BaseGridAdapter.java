@@ -59,7 +59,7 @@ abstract public class BaseGridAdapter extends BaseAdapter {
         this.listener = listener;
         this.selectionManager = selectionManager;
         this.data = data;
-        this.dragListener = new GridViewDragListener(selectionMode, selectionManager, activity);
+        this.dragListener = new GridViewDragListener(selectionMode, selectionManager, activity, data.gridView);
     }
 
     /**

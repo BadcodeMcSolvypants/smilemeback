@@ -17,9 +17,13 @@
 package com.smilemeback.drag;
 
 
+import android.graphics.Rect;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
+import android.widget.GridView;
 
+import com.smilemeback.misc.Constants;
 import com.smilemeback.selectionmode.SelectionMode;
 import com.smilemeback.selection.SelectionManager;
 import com.smilemeback.views.IconView;
@@ -29,20 +33,25 @@ import com.smilemeback.views.IconView;
  */
 public class GridViewDragListener implements View.OnDragListener {
 
+    protected GridView gridView;
     protected SelectionMode selectionMode;
     protected SelectionManager selectionManager;
     protected GridDragResultListener listener;
 
-    public GridViewDragListener(SelectionMode selectionMode, SelectionManager selectionManager, GridDragResultListener listener) {
+    public GridViewDragListener(SelectionMode selectionMode, SelectionManager selectionManager, GridDragResultListener listener, GridView gridView) {
         this.selectionMode = selectionMode;
         this.selectionManager = selectionManager;
         this.listener = listener;
+        this.gridView = gridView;
     }
 
     @Override
     public boolean onDrag(View view, DragEvent event) {
         final int action = event.getAction();
         IconView iconView = (IconView)view;
+        final int dragX = (int)event.getX();
+        final int dragY = (int)event.getY();
+
         switch (action) {
             case DragEvent.ACTION_DRAG_STARTED:
                 return true;
@@ -53,6 +62,16 @@ public class GridViewDragListener implements View.OnDragListener {
                 }
                 return true;
             case DragEvent.ACTION_DRAG_LOCATION:
+                int dragArea = iconView.getHeight() / 2;
+                Rect rect = new Rect();
+                iconView.getHitRect(rect);
+                int translatedDragY = rect.top + dragY;
+                //Log.d("test", translatedDragY + " " + gridView.getHeight());
+                if (translatedDragY <= dragArea) {
+                    gridView.smoothScrollBy(-dragArea, Constants.SMOOTH_SCROLL_DURATION);
+                } else if (translatedDragY >= gridView.getHeight() - dragArea) {
+                    gridView.smoothScrollBy(dragArea, Constants.SMOOTH_SCROLL_DURATION);
+                }
                 return true;
             case DragEvent.ACTION_DRAG_EXITED:
                 selectionMode.setStatusText("");

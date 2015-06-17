@@ -63,10 +63,10 @@ public class ListViewDragListener implements View.OnDragListener {
                 return true;
             case DragEvent.ACTION_DRAG_LOCATION:
                 if (idx >= 0) {
-                    int dragArea = listView.getChildAt(0).getHeight()/2;
+                    int dragArea = listView.getChildAt(0).getHeight() / 2;
                     if (dragY <= dragArea) {
                         listView.smoothScrollBy(-dragArea, Constants.SMOOTH_SCROLL_DURATION);
-                    } else if (dragY >= listView.getHeight()-dragArea) {
+                    } else if (dragY >= listView.getHeight() - dragArea) {
                         listView.smoothScrollBy(dragArea, Constants.SMOOTH_SCROLL_DURATION);
                     }
                     // update the hover position
