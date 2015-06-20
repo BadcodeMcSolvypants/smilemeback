@@ -43,18 +43,4 @@ public interface SelectionListener {
      * @param selected
      */
     void numSelectedChanged(int selected);
-
-    /**
-     * Request to highlight element at specified element.
-     * It is ensured that the position is selection.
-     * @param position
-     */
-    void highlight(int position);
-
-    /**
-     * Request to dehighlight element at specified element.
-     * It is ensured that the position is selection.
-     * @param position
-     */
-    void dehighlight(int position);
 }

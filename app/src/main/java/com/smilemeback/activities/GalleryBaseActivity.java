@@ -22,21 +22,20 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.view.View;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.smilemeback.R;
+import com.smilemeback.adapters.BaseGridAdapter;
+import com.smilemeback.adapters.GridAdapterListener;
 import com.smilemeback.drag.GridDragResultListener;
-import com.smilemeback.misc.Constants;
 import com.smilemeback.misc.GalleryActivityData;
 import com.smilemeback.misc.GalleryActivityState;
-import com.smilemeback.selectionmode.SelectionMode;
-import com.smilemeback.selectionmode.GallerySelectionModeListener;
-import com.smilemeback.R;
-import com.smilemeback.adapters.GridAdapterListener;
 import com.smilemeback.selection.SelectionListener;
 import com.smilemeback.selection.SelectionManager;
+import com.smilemeback.selectionmode.GallerySelectionModeListener;
+import com.smilemeback.selectionmode.SelectionMode;
 import com.smilemeback.storage.Categories;
 import com.smilemeback.storage.Storage;
 import com.smilemeback.storage.StorageException;
@@ -232,22 +231,6 @@ public abstract class GalleryBaseActivity extends Activity implements GallerySel
     }
 
     @Override
-    public void highlight(int position) {
-        View view = data.gridView.getChildAt(position);
-        if (view != null) {
-            view.setAlpha(Constants.SELECTED_ICONVIEW_ALPHA);
-        }
-    }
-
-    @Override
-    public void dehighlight(int position) {
-        View view = data.gridView.getChildAt(position);
-        if (view != null) {
-            view.setAlpha(1f);
-        }
-    }
-
-    @Override
     public void enterSelectionMode() {
         data.state = GalleryActivityState.SELECT;
         startActionMode(selectionMode);
@@ -255,5 +238,6 @@ public abstract class GalleryBaseActivity extends Activity implements GallerySel
         refreshSidePane();
         selectionMode.setTotal(selectionManager.getNumTotal());
         selectionMode.setNumSelected(selectionManager.getNumSelected());
+        ((BaseGridAdapter)data.gridView.getAdapter()).dehighlightIcons();
     }
 }

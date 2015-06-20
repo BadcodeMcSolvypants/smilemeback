@@ -23,6 +23,7 @@ import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -37,7 +38,6 @@ import com.smilemeback.drag.GridViewDragListener;
 import com.smilemeback.selection.SelectionManager;
 import com.smilemeback.views.IconView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,6 +51,8 @@ abstract public class BaseGridAdapter extends BaseAdapter {
     protected GalleryActivityData data;
     protected GridViewDragListener dragListener;
 
+    protected boolean isDragging = false;
+
     /**
      * Initialize the {@link com.smilemeback.adapters.BaseGridAdapter}.
      */
@@ -59,7 +61,7 @@ abstract public class BaseGridAdapter extends BaseAdapter {
         this.listener = listener;
         this.selectionManager = selectionManager;
         this.data = data;
-        this.dragListener = new GridViewDragListener(selectionMode, selectionManager, activity, data.gridView);
+        this.dragListener = new GridViewDragListener(selectionMode, this, activity, data.gridView);
     }
 
     /**
@@ -87,8 +89,11 @@ abstract public class BaseGridAdapter extends BaseAdapter {
         // deal with selection stuff
         view.setOverlayVisibility(View.GONE);
         view.setCheckboxVisible(data.state == GalleryActivityState.SELECT);
-        //view.setSelected(selectionManager.isSelected(position));
         view.setChecked(selectionManager.isSelected(position));
+        // highlight the icon when we are dragging
+        if (isDragging) {
+            view.setHighlighted(selectionManager.isSelected(position));
+        }
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,14 +119,15 @@ abstract public class BaseGridAdapter extends BaseAdapter {
                         selectionManager.deselectAll();
                         selectionManager.select(position);
                         listener.enterSelectionMode();
-                        setSelectedIconsChecked();
-                        break;
+                        checkSelectedIcons();
+                        dehighlightIcons();
+                        return true;
                     case SELECT:
                         selectionManager.select(position);
                         view.setChecked(true);
-                        selectionManager.highlight();
+                        dragStarted();
                         ClipData.Item item = new ClipData.Item(Constants.IMAGE_DRAG_TAG);
-                        ClipData dragData = new ClipData(Constants.IMAGE_DRAG_TAG, new String[] {ClipDescription.MIMETYPE_TEXT_PLAIN}, item);
+                        ClipData dragData = new ClipData(Constants.IMAGE_DRAG_TAG, new String[] { ClipDescription.MIMETYPE_TEXT_PLAIN}, item);
                         View.DragShadowBuilder shadow = new ImageDragShadowBuilder(view);
                         view.setTag(Constants.IMAGE_DRAG_TAG);
                         view.startDrag(dragData, shadow, null, 0);
@@ -135,12 +141,33 @@ abstract public class BaseGridAdapter extends BaseAdapter {
         return view;
     }
 
-    public void setSelectedIconsChecked () {
-        for (int i=0 ; i<selectionManager.getNumTotal() ; ++i) {
+    /**
+     * Update the checked states of icons in the view right now.
+     */
+    public void checkSelectedIcons() {
+        final int n = data.gridView.getChildCount();
+        for (int i=0 ; i<n ; ++i) {
             IconView view = (IconView)data.gridView.getChildAt(i);
-            if (view != null) {
-                view.setChecked(selectionManager.isSelected(i));
-            }
+            view.setChecked(selectionManager.isSelected(view.getPosition()));
+        }
+    }
+
+    /**
+     * Update the highlighted states of icons in the view right now.
+     */
+    public void highlightSelectedIcons() {
+        final int n = data.gridView.getChildCount();
+        for (int i=0 ; i<n ; ++i) {
+            IconView view = (IconView)data.gridView.getChildAt(i);
+            view.setHighlighted(selectionManager.isSelected(view.getPosition()));
+        }
+    }
+
+    public void dehighlightIcons() {
+        final int n = data.gridView.getChildCount();
+        for (int i=0 ; i<n ; ++i) {
+            IconView view = (IconView)data.gridView.getChildAt(i);
+            view.setHighlighted(false);
         }
     }
 
@@ -185,14 +212,14 @@ abstract public class BaseGridAdapter extends BaseAdapter {
      * @return
      */
     private Drawable getCombinedIconViewDrawable() {
-        List<IconView> selected = getSelectedIconViews();
+        List<String> selectedPaths = getSelectedImagePaths();
         // use the width/height the same as with the IconViewSide dimensions.
         final int singleWidth = (int)activity.getResources().getDimension(R.dimen.iconview_side_width);
         final int singleHeight = (int)(activity.getResources().getDimension(R.dimen.iconview_side_height)*0.8);
         final int offset = (int)(0.1f*singleHeight);
-        int totalWidth = singleWidth + (offset*(selected.size()-1));
-        int totalHeight = singleHeight + (offset*(selected.size()-1));
-        final int maxIcons = Math.min(selected.size(), Constants.MAX_ICONS_IN_DRAG_SHADOW);
+        int totalWidth = singleWidth + (offset*(selectedPaths.size()-1));
+        int totalHeight = singleHeight + (offset*(selectedPaths.size()-1));
+        final int maxIcons = Math.min(selectedPaths.size(), Constants.MAX_ICONS_IN_DRAG_SHADOW);
 
         // create a big combined bitmap and erase its contents
         Bitmap combined = Bitmap.createBitmap(
@@ -203,8 +230,7 @@ abstract public class BaseGridAdapter extends BaseAdapter {
 
         Canvas canvas = new Canvas(combined);
         for (int iconIndex=maxIcons-1 ; iconIndex >= 0 ; --iconIndex) {
-            IconView iconView = selected.get(iconIndex);
-            Drawable drawable = iconView.getDrawable();
+            Drawable drawable = Drawable.createFromPath(selectedPaths.get(iconIndex));
             drawable.setBounds(
                     iconIndex*offset,
                     iconIndex*offset,
@@ -218,20 +244,18 @@ abstract public class BaseGridAdapter extends BaseAdapter {
     }
 
     /**
-     * @return The {@link IconView} instances that are selection.
+     * @return The list of paths representing selected icons/categories.
      */
-    private List<IconView> getSelectedIconViews() {
-        int n = data.gridView.getChildCount();
-        List<IconView> selected = new ArrayList<>();
-        for (int idx=0 ; idx<n ; ++idx) {
-            if (selectionManager.isSelected(idx)) {
-                IconView iconView = (IconView)data.gridView.getChildAt(idx);
-                if (iconView != null) {
-                    selected.add(iconView);
-                }
-            }
-        }
-        return selected;
+    abstract List<String> getSelectedImagePaths();
+
+    public void dragStarted() {
+        isDragging = true;
+        highlightSelectedIcons();
+    }
+
+    public void dragEnded() {
+        isDragging = false;
+        dehighlightIcons();
     }
 }
 

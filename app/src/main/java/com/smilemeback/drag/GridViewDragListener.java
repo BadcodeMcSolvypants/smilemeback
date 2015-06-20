@@ -18,11 +18,11 @@ package com.smilemeback.drag;
 
 
 import android.graphics.Rect;
-import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 import android.widget.GridView;
 
+import com.smilemeback.adapters.BaseGridAdapter;
 import com.smilemeback.misc.Constants;
 import com.smilemeback.selectionmode.SelectionMode;
 import com.smilemeback.selection.SelectionManager;
@@ -37,12 +37,13 @@ public class GridViewDragListener implements View.OnDragListener {
     protected SelectionMode selectionMode;
     protected SelectionManager selectionManager;
     protected GridDragResultListener listener;
+    protected BaseGridAdapter adapter;
 
-    public GridViewDragListener(SelectionMode selectionMode, SelectionManager selectionManager, GridDragResultListener listener, GridView gridView) {
+    public GridViewDragListener(SelectionMode selectionMode, BaseGridAdapter adapter, GridDragResultListener listener, GridView gridView) {
         this.selectionMode = selectionMode;
-        this.selectionManager = selectionManager;
         this.listener = listener;
         this.gridView = gridView;
+        this.adapter = adapter;
     }
 
     @Override
@@ -78,12 +79,12 @@ public class GridViewDragListener implements View.OnDragListener {
                 iconView.setOverlayVisibility(View.GONE);
                 return true;
             case DragEvent.ACTION_DROP:
-                selectionManager.dehighlight();
                 listener.rearrangeIconsAccordingToTarget(iconView.getPosition());
                 return true;
             case DragEvent.ACTION_DRAG_ENDED:
                 selectionMode.setStatusText("");
                 iconView.setOverlayVisibility(View.GONE);
+                adapter.dragEnded();
                 return true;
         }
         return false;

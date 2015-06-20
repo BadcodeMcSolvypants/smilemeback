@@ -188,28 +188,6 @@ public class SelectionManager {
     }
 
     /**
-     * Notify all listeners to highlight selection positions.
-     */
-    public void highlight() {
-        for (SelectionListener listener : listeners) {
-            for (int selected : selectedPositions) {
-                listener.highlight(selected);
-            }
-        }
-    }
-
-    /**
-     * Notify all listeners to dehighlight selection positions.
-     */
-    public void dehighlight() {
-        for (SelectionListener listener : listeners) {
-            for (int selected : selectedPositions) {
-                listener.dehighlight(selected);
-            }
-        }
-    }
-
-    /**
      * Notify listeners about the position that got selection.
      * @param pos
      */

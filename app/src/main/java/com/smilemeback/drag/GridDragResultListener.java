@@ -17,8 +17,6 @@
 package com.smilemeback.drag;
 
 
-import com.smilemeback.views.IconView;
-
 /**
  * Interface that responds to drags that ended on grid elements.
  */
@@ -30,4 +28,5 @@ public interface GridDragResultListener {
      * @param position
      */
     void rearrangeIconsAccordingToTarget(int position);
+
 }

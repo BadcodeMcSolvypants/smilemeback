@@ -56,7 +56,6 @@ public class ListViewDragListener implements View.OnDragListener {
 
         switch (action) {
             case DragEvent.ACTION_DRAG_STARTED:
-                selectionManager.highlight();
                 return true;
             case DragEvent.ACTION_DRAG_ENTERED:
                 selectionMode.setStatusText("Drop selection images to category");
@@ -90,7 +89,6 @@ public class ListViewDragListener implements View.OnDragListener {
                 return true;
             case DragEvent.ACTION_DRAG_ENDED:
                 selectionMode.setStatusText("");
-                selectionManager.dehighlight();
                 return true;
         }
         return false;

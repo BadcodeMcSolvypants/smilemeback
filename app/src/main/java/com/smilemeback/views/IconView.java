@@ -28,6 +28,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.smilemeback.R;
+import com.smilemeback.misc.Constants;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -49,6 +50,8 @@ public class IconView extends RelativeLayout implements Checkable {
 
     protected boolean isChecked = false;
     protected int position = -1;
+
+    protected boolean isHighlighted = false;
 
     /**
      * Initialize a new IconView.
@@ -79,6 +82,7 @@ public class IconView extends RelativeLayout implements Checkable {
         setLabelVisible(showLabel);
         setCheckboxVisible(isCheckboxVisible());
         setChecked(isChecked());
+        setHighlighted(false);
     }
 
     /**
@@ -136,6 +140,19 @@ public class IconView extends RelativeLayout implements Checkable {
             }
         }
         isChecked = checked;
+    }
+
+    public boolean isHighlighted() {
+        return isHighlighted;
+    }
+
+    public void setHighlighted(boolean isHighlighted) {
+        if (isHighlighted) {
+            setAlpha(Constants.SELECTED_ICONVIEW_ALPHA);
+        } else {
+            setAlpha(1);
+        }
+        this.isHighlighted = isHighlighted;
     }
 
     /**

@@ -120,7 +120,7 @@ public class IconsActivity extends GalleryBaseActivity implements ListAdapterLis
     @Override
     protected void refreshGridView() {
         gridAdapter.notifyDataSetChanged();
-        gridAdapter.setSelectedIconsChecked();
+        gridAdapter.checkSelectedIcons();
     }
 
     @Override

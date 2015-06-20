@@ -86,7 +86,7 @@ public class CategoriesActivity extends GalleryBaseActivity {
     @Override
     protected void refreshGridView() {
         gridAdapter.notifyDataSetChanged();
-        gridAdapter.setSelectedIconsChecked();
+        gridAdapter.checkSelectedIcons();
     }
 
     @Override

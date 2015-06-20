@@ -28,7 +28,7 @@ public class Constants {
     public static final String ADDED_IMAGE_PATH = "added_image_path";
     public static final String ADDED_IMAGE_AUDIO_PATH = "added_image_audio_path";
 
-    public static final int MAX_ICONS_IN_DRAG_SHADOW = 16;
+    public static final int MAX_ICONS_IN_DRAG_SHADOW = 8;
     public static final float SELECTED_ICONVIEW_ALPHA = 0.5f;
     public static final float DISABLED_BUTTON_ALPHA = 0.4f;
 
