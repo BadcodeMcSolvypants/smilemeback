@@ -19,6 +19,7 @@ package com.smilemeback.adapters;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -244,9 +245,15 @@ abstract public class BaseGridAdapter extends BaseAdapter implements View.OnDrag
                 Bitmap.Config.ARGB_8888);
         combined.eraseColor(0x00000000);
 
+        // more efficient bitmap loading
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize=8;
+
         Canvas canvas = new Canvas(combined);
         for (int iconIndex=maxIcons-1 ; iconIndex >= 0 ; --iconIndex) {
-            Drawable drawable = Drawable.createFromPath(selectedPaths.get(iconIndex));
+            Drawable drawable = new BitmapDrawable(
+                    activity.getResources(),
+                    BitmapFactory.decodeFile(selectedPaths.get(iconIndex), options));
             drawable.setBounds(
                     iconIndex*offset,
                     iconIndex*offset,
