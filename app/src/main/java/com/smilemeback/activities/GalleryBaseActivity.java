@@ -29,7 +29,6 @@ import android.widget.ListView;
 import com.smilemeback.R;
 import com.smilemeback.adapters.BaseGridAdapter;
 import com.smilemeback.adapters.GridAdapterListener;
-import com.smilemeback.drag.GridDragResultListener;
 import com.smilemeback.misc.GalleryActivityData;
 import com.smilemeback.misc.GalleryActivityState;
 import com.smilemeback.selection.SelectionListener;
@@ -47,7 +46,7 @@ import java.util.logging.Logger;
  * {@link GalleryBaseActivity} is the main activity of the application,
  * which manages interactions between all other activities of the application.
  */
-public abstract class GalleryBaseActivity extends Activity implements GallerySelectionModeListener, SelectionListener, GridAdapterListener, GridDragResultListener {
+public abstract class GalleryBaseActivity extends Activity implements GallerySelectionModeListener, SelectionListener, GridAdapterListener {
     protected static Logger logger = Logger.getLogger("SmileMeBack");
 
     protected GalleryActivityData data = new GalleryActivityData();
@@ -240,4 +239,6 @@ public abstract class GalleryBaseActivity extends Activity implements GallerySel
         selectionMode.setNumSelected(selectionManager.getNumSelected());
         ((BaseGridAdapter)data.gridView.getAdapter()).dehighlightIcons();
     }
+
+    public abstract void rearrangeIconsAccordingToTarget(int position);
 }
