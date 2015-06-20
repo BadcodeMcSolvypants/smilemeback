@@ -179,6 +179,11 @@ public class CategoriesActivity extends GalleryBaseActivity {
         if (requestCode == ADD_CATEGORY_ACTIVITY && resultCode == RESULT_OK) {
             String name = data.getStringExtra(Constants.ADDED_IMAGE_NAME);
             String imagePath = data.getStringExtra(Constants.ADDED_IMAGE_PATH);
+            // user just pressed "back" from add category activity
+            if (name == null || imagePath == null) {
+                return;
+            }
+            // try to add a new category
             try {
                 Categories categories = new Storage(this).getCategories();
                 categories.add(new Name(name), new BufferedInputStream(new FileInputStream(new File(imagePath))));

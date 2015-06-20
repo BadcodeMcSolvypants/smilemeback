@@ -251,6 +251,11 @@ public class IconsActivity extends GalleryBaseActivity implements ListAdapterLis
             String name = data.getStringExtra(Constants.ADDED_IMAGE_NAME);
             String imagePath = data.getStringExtra(Constants.ADDED_IMAGE_PATH);
             String audioPath = data.getStringExtra(Constants.ADDED_IMAGE_AUDIO_PATH);
+            // user pressed "back" from add image activity
+            if (name == null || imagePath == null || audioPath == null) {
+                return;
+            }
+            // try to add a new image
             try {
                 Images images = new Images(gridAdapter.getCurrentCategory());
                 images.add(new Name(name), new File(imagePath), new File(audioPath));
