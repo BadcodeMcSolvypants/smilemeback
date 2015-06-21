@@ -25,22 +25,20 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 
-import com.smilemeback.selectionmode.SelectionMode;
+import com.smilemeback.R;
+import com.smilemeback.activities.GalleryBaseActivity;
 import com.smilemeback.misc.Constants;
 import com.smilemeback.misc.GalleryActivityData;
 import com.smilemeback.misc.GalleryActivityState;
-import com.smilemeback.R;
-import com.smilemeback.activities.GalleryBaseActivity;
 import com.smilemeback.selection.SelectionManager;
+import com.smilemeback.selectionmode.SelectionMode;
 import com.smilemeback.views.IconView;
-import com.smilemeback.views.IconViewSide;
 
 import java.util.List;
 

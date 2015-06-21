@@ -6,6 +6,7 @@
     <string name="lock">Lock</string>
     <string name="categories">Categories</string>
 
+    <!-- Actionmodes & menus -->
     <string name="add_category">Add category</string>
     <string name="add_image">Add image</string>
     <string name="rename_category">Rename category</string>
@@ -33,5 +34,12 @@
     <string name="addpicture_photo_from_galery">Choose image</string>
     <string name="addaudio_nosound_recorded">No sound recorded</string>
     <string name="addaudio_tap_to_play">Tap to play</string>
+    <string name="addaudio_hold_to_record">Hold to record</string>
+
+    <string name="help_no_categories">
+        <b>Welcome to SmileMeBack!</b>\n\n
+        It seems you do not have any image categories yet!\n\n
+        Press "add category" icon in top-right!
+    </string>
 
 </resources>
