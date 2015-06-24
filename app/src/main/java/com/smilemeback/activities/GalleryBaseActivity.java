@@ -85,20 +85,22 @@ public abstract class GalleryBaseActivity extends Activity implements GallerySel
      * @param layout The layout to display.
      */
     protected void showHelpLayoutIfNecessary(BaseGridAdapter gridAdapter, int layout) {
-        Log.d("help", "showHelpLayoutIfNecessaery");
         RelativeLayout container = (RelativeLayout)findViewById(R.id.container);
         if (gridAdapter.getCount() == 0) {
-            View helpLayout = getLayoutInflater().inflate(layout, null);
-            RelativeLayout.LayoutParams params =
-                    new RelativeLayout.LayoutParams(
-                            ViewGroup.LayoutParams.WRAP_CONTENT,
-                            ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-            container.addView(helpLayout, params);
-            container.invalidate();
+            if (findViewById(R.id.help_layout) == null) {
+                View helpLayout = getLayoutInflater().inflate(layout, null);
+                RelativeLayout.LayoutParams params =
+                        new RelativeLayout.LayoutParams(
+                                ViewGroup.LayoutParams.WRAP_CONTENT,
+                                ViewGroup.LayoutParams.WRAP_CONTENT);
+                params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+                container.addView(helpLayout, params);
+                container.invalidate();
+            }
         } else {
             View helpLayout = findViewById(R.id.help_layout);
             if (helpLayout != null) {
+                helpLayout.setVisibility(View.GONE);
                 container.removeView(helpLayout);
                 container.invalidate();
             }
