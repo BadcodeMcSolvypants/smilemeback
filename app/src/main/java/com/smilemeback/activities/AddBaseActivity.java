@@ -17,6 +17,7 @@
 package com.smilemeback.activities;
 
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -38,7 +39,7 @@ import java.util.Map;
 /**
  * Base activity for adding images and categories.
  */
-public abstract class AddBaseActivity extends Activity {
+public abstract class AddBaseActivity extends HomeEnabledActivity {
     private static String TAG = AddBaseActivity.class.getCanonicalName();
 
     protected Screen[] screens;

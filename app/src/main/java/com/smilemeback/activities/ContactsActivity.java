@@ -17,14 +17,13 @@
 package com.smilemeback.activities;
 
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.webkit.WebView;
 
 import com.smilemeback.R;
 
 
-public class ContactsActivity extends Activity {
+public class ContactsActivity extends HomeEnabledActivity {
     public static final String contactsHtmlPath = "file:///android_asset/contacts_page/contacts.html";
 
     @Override
@@ -35,5 +34,7 @@ public class ContactsActivity extends Activity {
         WebView webView = (WebView)findViewById(R.id.webView);
         webView.loadUrl(contactsHtmlPath);
     }
+
+
 }
 

@@ -16,24 +16,36 @@
  */
 package com.smilemeback.activities;
 
-
+import android.app.ActionBar;
+import android.app.Activity;
 import android.os.Bundle;
-import android.webkit.WebView;
-
-import com.smilemeback.R;
+import android.view.MenuItem;
 
 
-public class HelpActivity extends HomeEnabledActivity {
-    public static final String helpHtmlPath = "file:///android_asset/help_page/help.html";
+/**
+ * Base activity that activates ActionBar such that clicking on it finishes the activity.
+ */
+public class HomeEnabledActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setupActionBar();
+    }
 
-        setContentView(R.layout.help_page);
+    private void setupActionBar() {
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
-        WebView webView = (WebView) findViewById(R.id.webView);
-        webView.loadUrl(helpHtmlPath);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                super.onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
-

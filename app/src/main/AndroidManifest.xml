@@ -45,12 +45,20 @@
             android:screenOrientation="landscape"
             android:label="Add image">
 
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.smilemeback.activities.IconsActivity" />
+
         </activity>
 
         <activity
             android:name=".activities.AddCategoryActivity"
             android:screenOrientation="landscape"
             android:label="Add category">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.smilemeback.activities.CategoriesActivity" />
         </activity>
 
 
