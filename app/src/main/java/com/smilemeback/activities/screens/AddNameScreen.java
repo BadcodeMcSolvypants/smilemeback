@@ -29,6 +29,7 @@ import android.widget.EditText;
 import com.smilemeback.R;
 import com.smilemeback.activities.AddBaseActivity;
 import com.smilemeback.misc.Constants;
+import com.smilemeback.misc.Dialogs;
 import com.smilemeback.misc.ValidNameInputFilter;
 
 import java.util.Map;
@@ -46,7 +47,7 @@ public class AddNameScreen extends Screen {
         super.onSetDefaultScreen(data);
         focusImageNameButton = (Button)activity.findViewById(R.id.focusImageNameButton);
         imageEditText = (EditText)activity.findViewById(R.id.imageName);
-        imageEditText.setFilters(new InputFilter[] { new ValidNameInputFilter() });
+        imageEditText.setFilters(Dialogs.getNameFilters());
 
         imageEditText.addTextChangedListener(new TextWatcher() {
             @Override

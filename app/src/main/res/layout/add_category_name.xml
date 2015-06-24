@@ -24,18 +24,9 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:text="Name it"
-            android:id="@+id/focusImageNameButton"
-
-
-             />
-
-
+            android:id="@+id/focusImageNameButton"/>
 
     </LinearLayout>
-
-
-
-
 
 
     <LinearLayout
@@ -69,7 +60,7 @@
                 android:layout_width="256dp"
                 android:layout_height="72dp"
                 android:gravity="center"
-                android:inputType="text"
+                android:inputType="textNoSuggestions|textVisiblePassword"
                 android:id="@+id/imageName"
                 android:paddingBottom="10dp"
                 android:textColor="#333"
