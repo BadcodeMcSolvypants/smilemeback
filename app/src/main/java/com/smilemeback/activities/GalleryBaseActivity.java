@@ -20,11 +20,13 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
@@ -277,4 +279,19 @@ public abstract class GalleryBaseActivity extends Activity implements GallerySel
     }
 
     public abstract void rearrangeIconsAccordingToTarget(int position);
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.contacts_page:
+                startActivity(new Intent(this, ContactsActivity.class));
+                return true;
+            case R.id.help_page:
+                startActivity(new Intent(this, HelpActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 }

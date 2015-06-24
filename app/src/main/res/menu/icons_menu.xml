@@ -3,5 +3,13 @@
     <item android:id="@+id/menu_add_image"
         android:showAsAction="always"
         android:icon="@drawable/ic_action_camera"
-        android:title="Add image" />
+        android:title="@string/add_image" />
+
+    <item android:id="@+id/help_page"
+        android:showAsAction="never"
+        android:title="@string/tutorial" />
+
+    <item android:id="@+id/contacts_page"
+        android:showAsAction="never"
+        android:title="@string/contacts" />
 </menu>

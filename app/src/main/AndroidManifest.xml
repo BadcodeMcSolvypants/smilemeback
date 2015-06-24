@@ -22,10 +22,12 @@
         <activity
             android:name=".activities.CategoriesActivity"
             android:screenOrientation="landscape">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
         <activity
@@ -49,6 +51,19 @@
             android:name=".activities.AddCategoryActivity"
             android:screenOrientation="landscape"
             android:label="Add category">
+        </activity>
+
+
+        <activity
+            android:name=".activities.ContactsActivity"
+            android:screenOrientation="landscape"
+            android:label="Contacts">
+        </activity>
+
+        <activity
+            android:name=".activities.HelpActivity"
+            android:screenOrientation="landscape"
+            android:label="Tutorial">
         </activity>
 
     </application>

@@ -7,7 +7,7 @@
     <string name="categories">Categories</string>
 
     <!-- Actionmodes & menus -->
-    <string name="add_category">Add category</string>
+    <string name="add_category">Add album</string>
     <string name="add_image">Add image</string>
     <string name="rename_category">Rename category</string>
     <string name="rename_image">Rename image</string>
@@ -15,6 +15,8 @@
     <string name="delete_image">Delete image</string>
     <string name="delete_categories">Delete categories</string>
     <string name="delete_images">Delete images</string>
+    <string name="tutorial">Tutorial</string>
+    <string name="contacts">Contacts</string>
 
     <string name="gallery_is_empty">Empty categories</string>
     <string name="gallery_select_images">Select images</string>
