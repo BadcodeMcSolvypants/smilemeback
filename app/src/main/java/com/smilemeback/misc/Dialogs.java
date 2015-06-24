@@ -49,7 +49,7 @@ public class Dialogs {
         final EditText edit = new EditText(context);
         edit.setSingleLine(true);
         edit.setFilters(new InputFilter[] { new ValidNameInputFilter() });
-        edit.setText(initialText);
+        edit.append(initialText);
         dialog.setView(edit);
         dialog.setPositiveButton(posButtonTitle, new DialogInterface.OnClickListener() {
             @Override
