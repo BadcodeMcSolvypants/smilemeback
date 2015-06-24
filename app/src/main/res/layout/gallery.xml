@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:orientation="horizontal"
@@ -6,15 +6,22 @@
     android:layout_height="match_parent"
     >
 
-    <LinearLayout
-        android:id="@+id/gallery_listview_container"
-        android:layout_width="0dp"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="@integer/iconview_side_layoutweight"
-        android:focusable="false"
-        android:orientation="vertical"
-        android:background="@color/gallery_side_background"
         >
+
+        <LinearLayout
+            android:id="@+id/gallery_listview_container"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="@integer/iconview_side_layoutweight"
+            android:focusable="false"
+            android:orientation="vertical"
+            android:background="@color/gallery_side_background"
+            >
 
             <ListView
                 android:gravity="center_horizontal"
@@ -32,26 +39,30 @@
 
                 tools:listitem="@layout/icon_view_side">
             </ListView>
+        </LinearLayout>
+
+
+        <GridView
+            android:paddingTop="@dimen/iconview_top_padding"
+            android:background="@color/gallery_background"
+            android:verticalSpacing="@dimen/gallery_gridview_vertical_spacing"
+            android:stretchMode="spacingWidthUniform"
+            android:columnWidth="@dimen/iconview_width"
+            android:layout_width="0dp"
+            android:gravity="center_horizontal"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/gallery_gridview_padding_sides"
+            android:paddingRight="@dimen/gallery_gridview_padding_sides"
+            android:id="@+id/gallery_contents_grid_view"
+            android:numColumns="auto_fit"
+            android:smoothScrollbar="false"
+            android:nestedScrollingEnabled="false"
+            android:scrollbarStyle="outsideOverlay"
+            tools:listitem="@layout/icon_view"
+            android:layout_weight="@integer/iconview_gridview_layoutweight" />
+
     </LinearLayout>
 
+</RelativeLayout>
 
-    <GridView
-        android:paddingTop="@dimen/iconview_top_padding"
-        android:background="@color/gallery_background"
-        android:verticalSpacing="@dimen/gallery_gridview_vertical_spacing"
-        android:stretchMode="spacingWidthUniform"
-        android:columnWidth="@dimen/iconview_width"
-        android:layout_width="0dp"
-        android:gravity="center_horizontal"
-        android:layout_height="match_parent"
-        android:paddingLeft="@dimen/gallery_gridview_padding_sides"
-        android:paddingRight="@dimen/gallery_gridview_padding_sides"
-        android:id="@+id/gallery_contents_grid_view"
-        android:numColumns="auto_fit"
-        android:smoothScrollbar="false"
-        android:nestedScrollingEnabled="false"
-        android:scrollbarStyle="outsideOverlay"
-        tools:listitem="@layout/icon_view"
-        android:layout_weight="@integer/iconview_gridview_layoutweight" />
 
-</LinearLayout>

@@ -11,7 +11,6 @@
     <dimen name="iconview_top_padding">40dp</dimen>
 
     <!-- IconView size and margins, easier to store here than in separate layouts -->
-
     <dimen name="iconview_width">288dp</dimen>
     <dimen name="iconview_height">248dp</dimen>
     <dimen name="iconview_image_width">256dp</dimen>
@@ -48,4 +47,8 @@
     <!-- AddPictureActivity imageview -->
     <dimen name="addpictureactivity_imageview_width">320dp</dimen>
     <dimen name="addpictureactivity_imageview_height">210dp</dimen>
+
+    <!-- Dimensions for elements for empty galleries -->
+    <dimen name="gallery_help_icon_margin">10sp</dimen>
+    <dimen name="gallery_help_padding">25sp</dimen>
 </resources>

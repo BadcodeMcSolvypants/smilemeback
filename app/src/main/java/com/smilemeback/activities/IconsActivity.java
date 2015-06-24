@@ -102,11 +102,13 @@ public class IconsActivity extends GalleryBaseActivity implements ListAdapterLis
         selectionManager.deselectAll();
         data.gridView.setAdapter(gridAdapter);
         gridAdapter.initialize();
+        showHelpLayoutIfNecessary(gridAdapter, R.layout.gallery_no_images);
     }
 
     @Override
     protected void initializeGridView() {
         data.gridView.setAdapter(gridAdapter);
+        showHelpLayoutIfNecessary(gridAdapter, R.layout.gallery_no_images);
     }
 
 
@@ -121,6 +123,7 @@ public class IconsActivity extends GalleryBaseActivity implements ListAdapterLis
     protected void refreshGridView() {
         gridAdapter.notifyDataSetChanged();
         gridAdapter.checkSelectedIcons();
+        showHelpLayoutIfNecessary(gridAdapter, R.layout.gallery_no_images);
     }
 
     @Override
