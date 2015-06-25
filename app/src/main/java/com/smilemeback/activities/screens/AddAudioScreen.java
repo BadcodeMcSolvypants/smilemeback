@@ -54,7 +54,7 @@ public class AddAudioScreen extends Screen {
     private File temporaryAudio;
     private IconView iconView = null;
     private ImageView indicator = null;
-    private TextView statusText = null;
+    private ImageView statusIcon = null;
 
     public AddAudioScreen(AddBaseActivity activity, int layoutResId) {
         super(activity, layoutResId);
@@ -78,14 +78,14 @@ public class AddAudioScreen extends Screen {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         indicator.setVisibility(View.VISIBLE);
-                        statusText.setVisibility(View.GONE);
+                        statusIcon.setVisibility(View.GONE);
                         onRecord(true);
                         break;
                     case MotionEvent.ACTION_UP:
                         onRecord(false);
                         indicator.setVisibility(View.GONE);
-                        statusText.setText(R.string.addaudio_tap_to_play);
-                        statusText.setVisibility(View.VISIBLE);
+                        statusIcon.setImageResource(R.drawable.record_recorded);
+                        statusIcon.setVisibility(View.VISIBLE);
                         audioRecorded = true;
                         updateNavButtons();
                         break;
@@ -106,12 +106,12 @@ public class AddAudioScreen extends Screen {
         });
         indicator = (ImageView)activity.findViewById(R.id.mediaplayer_recording_indicator);
         indicator.setVisibility(View.GONE);
-        statusText = (TextView)activity.findViewById(R.id.mediaplayer_status);
+        statusIcon = (ImageView)activity.findViewById(R.id.mediaplayer_status);
 
         // data
         if (data.containsKey(Constants.ADDED_IMAGE_AUDIO_PATH)) {
             audioRecorded = true;
-            statusText.setText(R.string.addaudio_tap_to_play);
+            statusIcon.setImageResource(R.drawable.record_recorded);
         }
         if (data.containsKey(Constants.ADDED_IMAGE_PATH)) {
             iconView.setImageBitmap(new File(data.get(Constants.ADDED_IMAGE_PATH)));
