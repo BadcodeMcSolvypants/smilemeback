@@ -2,13 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/iconview_width"
     android:layout_height="@dimen/iconview_height"
-
     android:background="@drawable/gallery_listitem_bg"
-
     >
 
     <ImageView
-
         android:id="@+id/iconview_image"
         android:src="@drawable/iconview_default"
         android:layout_width="@dimen/iconview_image_width"
@@ -33,7 +30,6 @@
         android:layout_height="wrap_content" />
 
     <ImageView
-
         android:id="@+id/iconview_chkbox_image"
         android:layout_width="@dimen/iconview_checkbox_size"
         android:layout_height="@dimen/iconview_checkbox_size"
