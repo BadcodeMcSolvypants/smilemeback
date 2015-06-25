@@ -3,7 +3,7 @@
     <item name="actionbar_background" type="color">#fec46e</item>
     <item name="actionbar_textcolor" type="color">#ffffff</item>
     <item name="statusbar_background" type="color">#f0843d</item>
-    <item name="gallery_background" type="color">#fdfbf7</item>
+    <item name="gallery_background" type="color">#fcf6ee</item>
     <item name="gallery_side_background" type="color">#505050</item>
     <item name="secondary_create_color" type="color">#ffe57f</item>
 

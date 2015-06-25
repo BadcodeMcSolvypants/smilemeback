@@ -16,8 +16,10 @@
  */
 package com.smilemeback.adapters;
 
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 
+import com.smilemeback.misc.Constants;
 import com.smilemeback.selectionmode.SelectionMode;
 import com.smilemeback.misc.GalleryActivityData;
 import com.smilemeback.activities.IconsActivity;
@@ -31,6 +33,7 @@ import com.smilemeback.views.IconView;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -67,6 +70,13 @@ public class IconGridAdapter extends BaseGridAdapter {
         }
     }
 
+    /**
+     * Called when activity gets paused, required for releasing mediaplayer resouces.
+     */
+    public void onPause() {
+        player.release();
+    }
+
     @Override
     public int getCount() {
         return images.size();
@@ -96,5 +106,17 @@ public class IconGridAdapter extends BaseGridAdapter {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    List<String> getSelectedImagePaths() {
+        List<String> selected = new ArrayList<>();
+        for (int idx=0 ; idx<images.size() ; ++idx) {
+            if (selectionManager.isSelected(idx)) {
+                Image image = images.get(idx);
+                selected.add(image.getImage().getPath());
+            }
+        }
+        return selected;
     }
 }

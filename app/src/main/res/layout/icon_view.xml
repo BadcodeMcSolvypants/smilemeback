@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="288dp"
-    android:layout_height="248dp"
-    android:layout_marginTop="40dp"
+    android:layout_width="@dimen/iconview_width"
+    android:layout_height="@dimen/iconview_height"
+
     android:background="@drawable/gallery_listitem_bg"
 
     >
@@ -11,8 +11,8 @@
 
         android:id="@+id/iconview_image"
         android:src="@drawable/iconview_default"
-        android:layout_width="256dp"
-        android:layout_height="168dp"
+        android:layout_width="@dimen/iconview_image_width"
+        android:layout_height="@dimen/iconview_image_height"
         android:layout_marginTop="@dimen/iconview_image_padding_top"
         android:layout_marginLeft="@dimen/iconview_image_padding_sides"
         android:layout_marginRight="@dimen/iconview_image_padding_sides"
@@ -27,7 +27,7 @@
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:text="ORANGE"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="@dimen/iconview_text_margin_bottom"
         android:textSize="@dimen/iconview_text_size"
         android:gravity="center_horizontal"
         android:layout_height="wrap_content" />

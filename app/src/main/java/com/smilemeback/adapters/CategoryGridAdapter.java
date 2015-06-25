@@ -17,6 +17,7 @@
 package com.smilemeback.adapters;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 
 import com.smilemeback.activities.CategoriesActivity;
 import com.smilemeback.activities.IconsActivity;
@@ -29,6 +30,9 @@ import com.smilemeback.storage.Category;
 import com.smilemeback.storage.Storage;
 import com.smilemeback.storage.StorageException;
 import com.smilemeback.views.IconView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Manages gallery icons in a gridView.
@@ -81,5 +85,17 @@ public class CategoryGridAdapter extends BaseGridAdapter {
         Intent intent = new Intent(activity, IconsActivity.class);
         intent.putExtra(Constants.CATEGORY_INDEX, position);
         activity.startActivity(intent);
+    }
+
+    @Override
+    List<String> getSelectedImagePaths() {
+        List<String> selected = new ArrayList<>();
+        for (int idx=0 ; idx<categories.size() ; ++idx) {
+            if (selectionManager.isSelected(idx)) {
+                Category category = categories.get(idx);
+                selected.add(category.getThumbnail().getPath());
+            }
+        }
+        return selected;
     }
 }

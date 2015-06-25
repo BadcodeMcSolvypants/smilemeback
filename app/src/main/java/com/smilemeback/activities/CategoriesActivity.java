@@ -21,6 +21,9 @@ import android.app.ActionBar;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.smilemeback.R;
 import com.smilemeback.adapters.CategoryGridAdapter;
@@ -83,7 +86,7 @@ public class CategoriesActivity extends GalleryBaseActivity {
     @Override
     protected void refreshGridView() {
         gridAdapter.notifyDataSetChanged();
-        gridAdapter.setSelectedIconsChecked();
+        gridAdapter.checkSelectedIcons();
     }
 
     @Override
@@ -176,12 +179,37 @@ public class CategoriesActivity extends GalleryBaseActivity {
         if (requestCode == ADD_CATEGORY_ACTIVITY && resultCode == RESULT_OK) {
             String name = data.getStringExtra(Constants.ADDED_IMAGE_NAME);
             String imagePath = data.getStringExtra(Constants.ADDED_IMAGE_PATH);
+            // user just pressed "back" from add category activity
+            if (name == null || imagePath == null) {
+                return;
+            }
+            // try to add a new category
             try {
                 Categories categories = new Storage(this).getCategories();
                 categories.add(new Name(name), new BufferedInputStream(new FileInputStream(new File(imagePath))));
             } catch (NameException | IOException | StorageException e) {
                 throw new RuntimeException(e.getMessage(), e);
             }
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu items for use in the action bar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.categories_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.gallery_selectionmode_menu_add_album:
+                addNewIcon();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }

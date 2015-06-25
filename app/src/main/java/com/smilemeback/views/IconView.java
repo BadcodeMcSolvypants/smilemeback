@@ -21,6 +21,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Checkable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,6 +29,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.smilemeback.R;
+import com.smilemeback.misc.Constants;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -50,11 +52,22 @@ public class IconView extends RelativeLayout implements Checkable {
     protected boolean isChecked = false;
     protected int position = -1;
 
+    protected boolean isHighlighted = false;
+
     /**
      * Initialize a new IconView.
      */
     public IconView(Context context, AttributeSet attrs, boolean useDefaultImage) {
         super(context, attrs);
+        initialize(context, attrs, useDefaultImage);
+    }
+
+    public IconView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        initialize(context, attrs, true);
+    }
+
+    protected void initialize(Context context, AttributeSet attrs, boolean useDefaultImage) {
         inflateLayout(context);
 
         image = (ImageView) findViewById(R.id.iconview_image);
@@ -70,6 +83,7 @@ public class IconView extends RelativeLayout implements Checkable {
         setLabelVisible(showLabel);
         setCheckboxVisible(isCheckboxVisible());
         setChecked(isChecked());
+        setHighlighted(false);
     }
 
     /**
@@ -127,6 +141,19 @@ public class IconView extends RelativeLayout implements Checkable {
             }
         }
         isChecked = checked;
+    }
+
+    public boolean isHighlighted() {
+        return isHighlighted;
+    }
+
+    public void setHighlighted(boolean isHighlighted) {
+        if (isHighlighted) {
+            setAlpha(Constants.SELECTED_ICONVIEW_ALPHA);
+        } else {
+            setAlpha(1);
+        }
+        this.isHighlighted = isHighlighted;
     }
 
     /**

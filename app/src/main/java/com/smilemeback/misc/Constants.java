@@ -28,8 +28,13 @@ public class Constants {
     public static final String ADDED_IMAGE_PATH = "added_image_path";
     public static final String ADDED_IMAGE_AUDIO_PATH = "added_image_audio_path";
 
-    public static final int MAX_ICONS_IN_DRAG_SHADOW = 16;
+    public static final int MAX_ICONS_IN_DRAG_SHADOW = 8;
     public static final float SELECTED_ICONVIEW_ALPHA = 0.5f;
     public static final float DISABLED_BUTTON_ALPHA = 0.4f;
-    public static final int MAX_RECORDING_DURATION = 10;
+
+    public static final int AUDIO_SAMPLING_RATE = 44100;
+    public static final int AUDIO_NUM_CHANNELS = 1;
+    public static final int AUDIO_BITRATE = 192 * 1024;
+
+    public static final int SMOOTH_SCROLL_DURATION = 500;
 }
