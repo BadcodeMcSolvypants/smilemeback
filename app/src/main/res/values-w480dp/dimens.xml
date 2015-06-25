@@ -47,4 +47,5 @@
     <!-- AddPictureActivity imageview -->
     <dimen name="addpictureactivity_imageview_width">256dp</dimen>
     <dimen name="addpictureactivity_imageview_height">168dp</dimen>
+    <dimen name="addpictureactivity_iconpaddingtop">10dp</dimen>
 </resources>

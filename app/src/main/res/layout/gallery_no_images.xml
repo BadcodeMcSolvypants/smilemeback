@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="25sp"
-        android:background="@color/actionbar_background"
+        android:background="@color/actionbar_backgroundopacity"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true">
 
