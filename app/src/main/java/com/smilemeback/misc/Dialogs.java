@@ -20,6 +20,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.text.InputFilter;
+import android.text.InputType;
 import android.widget.EditText;
 
 public class Dialogs {
@@ -48,8 +49,9 @@ public class Dialogs {
         dialog.setTitle(title);
         final EditText edit = new EditText(context);
         edit.setSingleLine(true);
-        edit.setFilters(new InputFilter[] { new ValidNameInputFilter() });
-        edit.setText(initialText);
+        edit.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        edit.setFilters(getNameFilters());
+        edit.append(initialText);
         dialog.setView(edit);
         dialog.setPositiveButton(posButtonTitle, new DialogInterface.OnClickListener() {
             @Override
@@ -71,5 +73,15 @@ public class Dialogs {
      */
     public interface InputCallback {
         void inputDone(String text);
+    }
+
+    /**
+     * @return Get the filterest for category/icon name fields.
+     */
+    public static InputFilter[] getNameFilters() {
+        return new InputFilter[] {
+                new ValidNameInputFilter(),
+                new InputFilter.LengthFilter(Constants.MAX_NAME_LENGTH)
+        };
     }
 }

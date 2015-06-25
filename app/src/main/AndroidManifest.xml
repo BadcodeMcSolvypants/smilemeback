@@ -22,10 +22,12 @@
         <activity
             android:name=".activities.CategoriesActivity"
             android:screenOrientation="landscape">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
         <activity
@@ -43,12 +45,33 @@
             android:screenOrientation="landscape"
             android:label="Add image">
 
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.smilemeback.activities.IconsActivity" />
+
         </activity>
 
         <activity
             android:name=".activities.AddCategoryActivity"
             android:screenOrientation="landscape"
             android:label="Add category">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.smilemeback.activities.CategoriesActivity" />
+        </activity>
+
+
+        <activity
+            android:name=".activities.ContactsActivity"
+            android:screenOrientation="landscape"
+            android:label="Contacts">
+        </activity>
+
+        <activity
+            android:name=".activities.HelpActivity"
+            android:screenOrientation="landscape"
+            android:label="Tutorial">
         </activity>
 
     </application>

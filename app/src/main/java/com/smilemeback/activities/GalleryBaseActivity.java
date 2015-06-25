@@ -20,11 +20,19 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.support.annotation.IdRes;
+import android.support.annotation.LayoutRes;
+import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.smilemeback.R;
 import com.smilemeback.adapters.BaseGridAdapter;
@@ -73,6 +81,35 @@ public abstract class GalleryBaseActivity extends Activity implements GallerySel
     }
 
     /**
+     * In case there are no categories or no images in a category, show a help layout
+     * with instructions how to add one.
+     * @param gridAdapter The adapter to check the count of items.
+     * @param layout The layout to display.
+     */
+    protected void showHelpLayoutIfNecessary(BaseGridAdapter gridAdapter, int layout) {
+        RelativeLayout container = (RelativeLayout)findViewById(R.id.container);
+        if (gridAdapter.getCount() == 0) {
+            if (findViewById(R.id.help_layout) == null) {
+                View helpLayout = getLayoutInflater().inflate(layout, null);
+                RelativeLayout.LayoutParams params =
+                        new RelativeLayout.LayoutParams(
+                                ViewGroup.LayoutParams.WRAP_CONTENT,
+                                ViewGroup.LayoutParams.WRAP_CONTENT);
+                params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+                container.addView(helpLayout, params);
+                container.invalidate();
+            }
+        } else {
+            View helpLayout = findViewById(R.id.help_layout);
+            if (helpLayout != null) {
+                helpLayout.setVisibility(View.GONE);
+                container.removeView(helpLayout);
+                container.invalidate();
+            }
+        }
+    }
+
+    /**
      * Abstract method that subclasses must override to set up action bar with settings
      * relevant for the subclass.
      */
@@ -97,6 +134,7 @@ public abstract class GalleryBaseActivity extends Activity implements GallerySel
      * Refresh sidebar list view.
      */
     abstract protected void refreshSidePane();
+
     /**
      * Method that deletes all content and sets up some categories to test the application
      * with.
@@ -241,4 +279,19 @@ public abstract class GalleryBaseActivity extends Activity implements GallerySel
     }
 
     public abstract void rearrangeIconsAccordingToTarget(int position);
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.contacts_page:
+                startActivity(new Intent(this, ContactsActivity.class));
+                return true;
+            case R.id.help_page:
+                startActivity(new Intent(this, HelpActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 }

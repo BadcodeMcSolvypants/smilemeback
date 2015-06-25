@@ -16,12 +16,8 @@
  */
 package com.smilemeback.activities.screens;
 
-import android.content.Intent;
-import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -35,8 +31,6 @@ import com.smilemeback.misc.Constants;
 import com.smilemeback.storage.Storage;
 import com.smilemeback.storage.StorageException;
 import com.smilemeback.views.IconView;
-
-import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;

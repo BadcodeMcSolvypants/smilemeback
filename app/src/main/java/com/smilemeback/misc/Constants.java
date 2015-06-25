@@ -37,4 +37,6 @@ public class Constants {
     public static final int AUDIO_BITRATE = 192 * 1024;
 
     public static final int SMOOTH_SCROLL_DURATION = 500;
+
+    public static final int MAX_NAME_LENGTH = 20;
 }

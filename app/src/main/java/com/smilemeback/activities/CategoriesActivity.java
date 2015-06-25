@@ -24,6 +24,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.smilemeback.R;
 import com.smilemeback.adapters.CategoryGridAdapter;
@@ -70,12 +73,14 @@ public class CategoriesActivity extends GalleryBaseActivity {
     protected void initializeGridView() {
         data.gridView.setAdapter(gridAdapter);
         gridAdapter.initialize();
+        showHelpLayoutIfNecessary(gridAdapter, R.layout.gallery_no_categories);
     }
 
     protected void reloadGrid() {
         selectionManager.deselectAll();
         data.gridView.setAdapter(gridAdapter);
         gridAdapter.initialize();
+        showHelpLayoutIfNecessary(gridAdapter, R.layout.gallery_no_categories);
     }
 
     @Override
@@ -87,6 +92,7 @@ public class CategoriesActivity extends GalleryBaseActivity {
     protected void refreshGridView() {
         gridAdapter.notifyDataSetChanged();
         gridAdapter.checkSelectedIcons();
+        showHelpLayoutIfNecessary(gridAdapter, R.layout.gallery_no_categories);
     }
 
     @Override
