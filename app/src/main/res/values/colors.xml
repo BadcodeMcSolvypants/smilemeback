@@ -1,6 +1,7 @@
 <resources>
 
     <item name="actionbar_background" type="color">#fec46e</item>
+    <item name="actionbar_backgroundopacity" type="color">#E6fec46e</item>
     <item name="actionbar_textcolor" type="color">#ffffff</item>
     <item name="statusbar_background" type="color">#f0843d</item>
     <item name="gallery_background" type="color">#fcf6ee</item>
