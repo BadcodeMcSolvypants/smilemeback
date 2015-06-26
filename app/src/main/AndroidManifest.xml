@@ -21,18 +21,17 @@
 
         <activity
             android:name=".activities.CategoriesActivity"
+            android:logo="@drawable/actionbar_icon"
             android:screenOrientation="landscape">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-
         </activity>
 
         <activity
             android:name=".activities.IconsActivity"
+            android:logo="@drawable/actionbar_icon"
             android:screenOrientation="landscape"
             android:parentActivityName=".activities.CategoriesActivity">
 
@@ -43,12 +42,14 @@
 
         <activity
             android:name=".activities.AddImageActivity"
+            android:logo="@drawable/actionbar_icon"
             android:screenOrientation="landscape"
             android:label="Add image">
         </activity>
 
         <activity
             android:name=".activities.AddCategoryActivity"
+            android:logo="@drawable/actionbar_icon"
             android:screenOrientation="landscape"
             android:label="Add category">
         </activity>
@@ -56,12 +57,14 @@
 
         <activity
             android:name=".activities.ContactsActivity"
+            android:logo="@drawable/actionbar_icon"
             android:screenOrientation="landscape"
             android:label="Contacts">
         </activity>
 
         <activity
             android:name=".activities.HelpActivity"
+            android:logo="@drawable/actionbar_icon"
             android:screenOrientation="landscape"
             android:label="Tutorial">
         </activity>
