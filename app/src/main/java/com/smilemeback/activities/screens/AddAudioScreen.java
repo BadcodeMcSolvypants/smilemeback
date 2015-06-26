@@ -23,11 +23,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.smilemeback.R;
 import com.smilemeback.activities.AddBaseActivity;
 import com.smilemeback.misc.Constants;
+import com.smilemeback.misc.Toasts;
 import com.smilemeback.storage.Storage;
 import com.smilemeback.storage.StorageException;
 import com.smilemeback.views.IconView;
@@ -95,6 +95,7 @@ public class AddAudioScreen extends Screen {
             public void onClick(View v) {
                 if (audioRecorded) {
                     onPlay(true);
+                    Toasts.checkAndNotifyUserIfVolumeMute(activity);
                 }
             }
         });

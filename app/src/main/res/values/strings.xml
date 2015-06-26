@@ -38,10 +38,6 @@
     <string name="addaudio_tap_to_play">Tap to play</string>
     <string name="addaudio_hold_to_record">Hold to record</string>
 
-    <string name="help_no_categories">
-        <b>Welcome to SmileMeBack!</b>\n\n
-        It seems you do not have any image categories yet!\n\n
-        Press "add category" icon in top-right!
-    </string>
+    <string name="speaker_mute">Increase volume to hear audio!</string>
 
 </resources>

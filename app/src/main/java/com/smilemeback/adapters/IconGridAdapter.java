@@ -16,18 +16,16 @@
  */
 package com.smilemeback.adapters;
 
-import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 
-import com.smilemeback.misc.Constants;
-import com.smilemeback.selectionmode.SelectionMode;
-import com.smilemeback.misc.GalleryActivityData;
 import com.smilemeback.activities.IconsActivity;
+import com.smilemeback.misc.GalleryActivityData;
+import com.smilemeback.misc.Toasts;
 import com.smilemeback.selection.SelectionManager;
+import com.smilemeback.selectionmode.SelectionMode;
 import com.smilemeback.storage.Category;
 import com.smilemeback.storage.Image;
 import com.smilemeback.storage.Images;
-import com.smilemeback.storage.Storage;
 import com.smilemeback.storage.StorageException;
 import com.smilemeback.views.IconView;
 
@@ -113,6 +111,7 @@ public class IconGridAdapter extends BaseGridAdapter {
 
                 player.start();
                 view.setSelected(true);
+                Toasts.checkAndNotifyUserIfVolumeMute(activity);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -130,4 +129,6 @@ public class IconGridAdapter extends BaseGridAdapter {
         }
         return selected;
     }
+
+
 }
