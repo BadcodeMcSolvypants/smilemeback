@@ -95,13 +95,24 @@ public class IconGridAdapter extends BaseGridAdapter {
     }
 
     @Override
-    void handleIconClick(IconView view, int position) {
+    void handleIconClick(final IconView view, int position) {
         try {
             if (!player.isPlaying()) {
                 player.reset();
                 player.setDataSource(new FileInputStream(images.get(position).getAudio()).getFD());
                 player.prepare();
+
+                player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        if (view != null) {
+                            view.setSelected(false);
+                        }
+                    }
+                });
+
                 player.start();
+                view.setSelected(true);
             }
         } catch (IOException e) {
             e.printStackTrace();
