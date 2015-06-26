@@ -11,7 +11,6 @@
 
     <ImageView
         android:id="@+id/iconview_image"
-        android:src="@drawable/iconview_default"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:paddingTop="@dimen/iconview_side_image_padding"
