@@ -82,7 +82,8 @@ public class Categories implements Iterable<Category> {
             if (folder.isDirectory()) {
                 categories.add(new Category(folder));
             } else {
-                throw new StorageException("Non-directory in categories folder <" + folder.getAbsolutePath() + ">");
+                Log.d(TAG, "\"Non-directory in categories folder <\" + folder.getAbsolutePath() + \">\". Deleting it!");
+                folder.delete();
             }
         }
         Collections.sort(categories);
