@@ -17,7 +17,6 @@
 package com.smilemeback.activities.screens;
 
 import android.content.Intent;
-import android.support.annotation.LayoutRes;
 import android.view.View;
 import android.widget.Button;
 
@@ -35,7 +34,7 @@ import java.util.Map;
 public abstract class Screen {
 
     protected final AddBaseActivity activity;
-    private final @LayoutRes int layoutResId;
+    private final int layoutResId;
     private Button prevButton;
     private Button nextButton;
 
@@ -50,7 +49,7 @@ public abstract class Screen {
      * @param activity The underlying activity.
      * @param layoutResId The layout resource.
      */
-    public Screen(final AddBaseActivity activity, @LayoutRes int layoutResId) {
+    public Screen(final AddBaseActivity activity, int layoutResId) {
         this.activity = activity;
         this.layoutResId = layoutResId;
     }

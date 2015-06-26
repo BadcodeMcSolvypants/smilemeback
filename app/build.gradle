@@ -27,8 +27,6 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.3.2'
     compile 'commons-io:commons-io:2.4'
     compile 'org.apache.commons:commons-lang3:3.0'
-    compile 'com.android.support:support-v13:21.0.3'
-    compile 'com.android.support:support-v4:22.1.1'
     compile 'com.google.guava:guava:18.0'
     compile 'org.javatuples:javatuples:1.2'
 

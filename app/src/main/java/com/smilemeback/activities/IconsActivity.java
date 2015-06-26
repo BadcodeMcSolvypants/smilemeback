@@ -41,7 +41,6 @@ import com.smilemeback.storage.Name;
 import com.smilemeback.storage.NameException;
 import com.smilemeback.storage.Storage;
 import com.smilemeback.storage.StorageException;
-import android.support.v4.app.NavUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -282,7 +281,7 @@ public class IconsActivity extends GalleryBaseActivity implements ListAdapterLis
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
+                finish();
                 return true;
             case R.id.menu_add_image:
                 addNewIcon();
