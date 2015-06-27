@@ -129,10 +129,10 @@ public abstract class AddBaseActivity extends HomeEnabledActivity {
      */
     public void loadImageFromFile(File file, ImageView view) {
         // now load the real image
+        Picasso.with(this).invalidate(file);
         Picasso.with(this)
                 .load(file)
                 .fit()
-                .skipMemoryCache()
                 .centerCrop()
                 .into(view);
     }
