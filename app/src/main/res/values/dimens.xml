@@ -25,6 +25,7 @@
 
 
     <!-- Side iconView size and margins, easier to store here than in separate layouts -->
+    <dimen name="center_iconiewside_margin">0dp</dimen>
     <dimen name="iconview_side_width">144dp</dimen>
     <dimen name="iconview_side_height">124dp</dimen>
     <dimen name="iconview_side_marginleft">10dp</dimen>
@@ -47,6 +48,8 @@
     <!-- AddPictureActivity imageview -->
     <dimen name="addpictureactivity_imageview_width">320dp</dimen>
     <dimen name="addpictureactivity_imageview_height">210dp</dimen>
+    <dimen name="addpictureactivity_iconpaddingtop_one">90dp</dimen>
+
 
     <!-- Dimensions for elements for empty galleries -->
     <dimen name="gallery_help_icon_margin">10sp</dimen>

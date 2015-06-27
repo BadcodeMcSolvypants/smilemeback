@@ -3,5 +3,5 @@
     <dimen name="addpictureactivity_iconpaddingtop">140dp</dimen>
     <dimen name="addpictureactivity_iconpaddingtop_one">260dp</dimen>
 
-    <dimen name="center_iconiewside_margin">20dp</dimen>
+    <dimen name="center_iconiewside_margin">40dp</dimen>
 </resources>

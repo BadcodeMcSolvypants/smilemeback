@@ -14,6 +14,7 @@
         >
 
         <LinearLayout
+
             android:id="@+id/gallery_listview_container"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -24,10 +25,9 @@
             >
 
             <ListView
-                android:gravity="center_horizontal"
-                android:layout_centerHorizontal="true"
-                android:paddingTop="@dimen/iconview_top_padding"
 
+                android:gravity="center_horizontal"
+                android:paddingTop="@dimen/iconview_top_padding"
                 android:id="@+id/gallery_list_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -37,7 +37,8 @@
                 android:choiceMode="singleChoice"
                 android:listSelector="@drawable/listview_selector"
 
-                tools:listitem="@layout/icon_view_side">
+                tools:listitem="@layout/icon_view_side"
+                android:layout_gravity="center_horizontal">
             </ListView>
         </LinearLayout>
 
