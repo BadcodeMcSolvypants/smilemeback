@@ -1,4 +1,4 @@
 <resources>
     <!-- AddPictureActivity imageview -->
-    <dimen name="addpictureactivity_iconpaddingtop">140dp</dimen>
+    <dimen name="addpictureactivity_iconpaddingtop">30dp</dimen>
 </resources>
