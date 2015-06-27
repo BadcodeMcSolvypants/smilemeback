@@ -26,7 +26,6 @@
 
     <!-- Side iconView size and margins, easier to store here than in separate layouts -->
 
-    <dimen name="center_iconiewside_margin">10dp</dimen>
     <dimen name="iconview_side_width">144dp</dimen>
     <dimen name="iconview_side_height">124dp</dimen>
     <dimen name="iconview_side_image_padding">8dp</dimen>

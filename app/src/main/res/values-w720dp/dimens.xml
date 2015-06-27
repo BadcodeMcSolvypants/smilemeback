@@ -2,5 +2,4 @@
     <!-- AddPictureActivity imageview -->
     <dimen name="addpictureactivity_iconpaddingtop">30dp</dimen>
 
-    <dimen name="center_iconiewside_margin">0dp</dimen>
 </resources>
