@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="@dimen/center_iconiewside_margin"
+    android:layout_marginLeft="@dimen/center_iconiewside_margin"
+    android:layout_gravity="center_horizontal"
+    >
+
+<RelativeLayout
+
     android:layout_width="@dimen/iconview_side_width"
     android:layout_height="@dimen/iconview_side_height"
     android:background="@drawable/small_gallery_listitem_bg"
     android:layout_gravity="center_horizontal"
     android:orientation="vertical"
-    android:layout_marginLeft="@dimen/iconview_side_marginleft"
+
+    android:gravity="center_horizontal"
 
     >
 
@@ -57,3 +69,4 @@
 
 
 </RelativeLayout>
+</LinearLayout>

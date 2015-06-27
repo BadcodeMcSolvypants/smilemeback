@@ -7,4 +7,6 @@
 
     <!-- AddPictureActivity imageview -->
     <dimen name="addpictureactivity_iconpaddingtop">60dp</dimen>
+    <dimen name="addpictureactivity_iconpaddingtop_one">160dp</dimen>
+
 </resources>
