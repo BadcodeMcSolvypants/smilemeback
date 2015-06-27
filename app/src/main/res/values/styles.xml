@@ -12,7 +12,7 @@
         <item name="android:textColor">@color/actionbar_textcolor</item>
     </style>
 
-    <style name="MyActionMode">
+    <style name="MyActionMode" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
         <item name="android:background">@color/actionbar_background</item>
         <item name="android:textColor">@color/actionbar_textcolor</item>
     </style>
