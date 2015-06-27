@@ -58,17 +58,13 @@ public class CategoriesActivity extends GalleryBaseActivity {
         super.onCreate(savedInstanceState);
         gridAdapter = new CategoryGridAdapter(this, this, selectionMode, selectionManager, data);
         gridAdapter.initialize();
-    }
 
-    @Override
-    public void onStart() {
-        /*Dialogs.information(
+        Dialogs.information(
                 this,
                 getString(R.string.greeting_title),
                 getString(R.string.greeting_text),
-                Constants.PREFS_SHOW_GREETING);*/
+                Constants.PREFS_SHOW_GREETING);
     }
-
 
     @Override
     protected void setupActionBar() {
