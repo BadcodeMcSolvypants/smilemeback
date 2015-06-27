@@ -119,21 +119,25 @@ abstract public class BaseGridAdapter extends BaseAdapter implements View.OnDrag
                 activity.vibrate();
                 switch (data.state) {
                     case VIEW:
-                        selectionManager.deselectAll();
-                        selectionManager.select(position);
-                        listener.enterSelectionMode();
-                        checkSelectedIcons();
-                        dehighlightIcons();
+                        boolean isLocked = activity.getSmbApplication().isLocked();
+                        if (!isLocked) {
+                            selectionManager.deselectAll();
+                            selectionManager.select(position);
+                            listener.enterSelectionMode();
+                            checkSelectedIcons();
+                            dehighlightIcons();
+                        }
                         return true;
                     case SELECT:
                         selectionManager.select(position);
                         view.setChecked(true);
                         ClipData.Item item = new ClipData.Item(Constants.IMAGE_DRAG_TAG);
-                        ClipData dragData = new ClipData(Constants.IMAGE_DRAG_TAG, new String[] { ClipDescription.MIMETYPE_TEXT_PLAIN}, item);
+                        ClipData dragData = new ClipData(Constants.IMAGE_DRAG_TAG, new String[]{ClipDescription.MIMETYPE_TEXT_PLAIN}, item);
                         View.DragShadowBuilder shadow = new ImageDragShadowBuilder(view);
                         view.setTag(Constants.IMAGE_DRAG_TAG);
                         view.startDrag(dragData, shadow, null, 0);
                         activity.vibrate();
+
                         break;
                 }
                 return true;

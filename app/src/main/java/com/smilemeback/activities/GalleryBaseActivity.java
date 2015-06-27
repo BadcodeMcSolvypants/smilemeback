@@ -281,7 +281,7 @@ public abstract class GalleryBaseActivity extends Activity implements GallerySel
 
     public abstract void rearrangeIconsAccordingToTarget(int position);
 
-    protected SmbApplication getSmbApplication() {
+    public SmbApplication getSmbApplication() {
         return (SmbApplication)getApplication();
     }
 
