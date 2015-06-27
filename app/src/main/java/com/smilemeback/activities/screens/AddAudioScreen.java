@@ -73,14 +73,16 @@ public class AddAudioScreen extends Screen {
                     case MotionEvent.ACTION_DOWN:
                         indicator.setVisibility(View.VISIBLE);
                         statusIcon.setVisibility(View.GONE);
-                        onRecord(true);
+                        startRecording();
                         break;
                     case MotionEvent.ACTION_UP:
-                        onRecord(false);
+                        boolean success = stopRecording();
+                        if (success) {
+                            statusIcon.setImageResource(R.drawable.record_recorded);
+                            audioRecorded = true;
+                        }
                         indicator.setVisibility(View.GONE);
-                        statusIcon.setImageResource(R.drawable.record_recorded);
                         statusIcon.setVisibility(View.VISIBLE);
-                        audioRecorded = true;
                         updateNavButtons();
                         break;
                 }
@@ -136,14 +138,6 @@ public class AddAudioScreen extends Screen {
         return data;
     }
 
-    private void onRecord(boolean start) {
-        if (start) {
-            startRecording();
-        } else {
-            stopRecording();
-        }
-    }
-
     private void onPlay(boolean start) {
         if (start) {
             startPlaying();
@@ -187,9 +181,19 @@ public class AddAudioScreen extends Screen {
         mRecorder.start();
     }
 
-    private void stopRecording() {
-        mRecorder.stop();
+    /**
+     * Stop the recording
+     * @return true if the recording was successful.
+     */
+    private boolean stopRecording() {
+        boolean result = true;
+        try {
+            mRecorder.stop();
+        } catch (RuntimeException e) {
+            result = false;
+        }
         mRecorder.release();
         mRecorder = null;
+        return result;
     }
 }
