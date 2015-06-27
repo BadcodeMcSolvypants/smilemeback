@@ -47,8 +47,9 @@ public class AddAudioScreen extends Screen {
     private MediaPlayer mPlayer = null;
     private File temporaryAudio;
     private IconView iconView = null;
-    private ImageView indicator = null;
-    private ImageView statusIcon = null;
+    private ImageView not_recorded = null;
+    private ImageView recording = null;
+    private ImageView recorded = null;
 
     public AddAudioScreen(AddBaseActivity activity, int layoutResId) {
         super(activity, layoutResId);
@@ -71,18 +72,24 @@ public class AddAudioScreen extends Screen {
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        indicator.setVisibility(View.VISIBLE);
-                        statusIcon.setVisibility(View.GONE);
+                        not_recorded.setVisibility(View.GONE);
+                        recorded.setVisibility(View.GONE);
+                        recording.setVisibility(View.VISIBLE);
                         startRecording();
                         break;
                     case MotionEvent.ACTION_UP:
                         boolean success = stopRecording();
                         if (success) {
-                            statusIcon.setImageResource(R.drawable.record_recorded);
                             audioRecorded = true;
                         }
-                        indicator.setVisibility(View.GONE);
-                        statusIcon.setVisibility(View.VISIBLE);
+                        recording.setVisibility(View.GONE);
+                        if (audioRecorded) {
+                            recorded.setVisibility(View.VISIBLE);
+                            not_recorded.setVisibility(View.GONE);
+                        } else {
+                            recorded.setVisibility(View.GONE);
+                            not_recorded.setVisibility(View.VISIBLE);
+                        }
                         updateNavButtons();
                         break;
                 }
@@ -101,14 +108,19 @@ public class AddAudioScreen extends Screen {
                 }
             }
         });
-        indicator = (ImageView)activity.findViewById(R.id.mediaplayer_recording_indicator);
-        indicator.setVisibility(View.GONE);
-        statusIcon = (ImageView)activity.findViewById(R.id.mediaplayer_status);
+        not_recorded = (ImageView)activity.findViewById(R.id.mediaplayer_not_recorded);
+        recording = (ImageView)activity.findViewById(R.id.mediaplayer_recording);
+        recording.setVisibility(View.GONE);
+        recorded = (ImageView)activity.findViewById(R.id.mediaplayer_recorded);
 
         // data
         if (data.containsKey(Constants.ADDED_IMAGE_AUDIO_PATH)) {
             audioRecorded = true;
-            statusIcon.setImageResource(R.drawable.record_recorded);
+            not_recorded.setVisibility(View.GONE);
+            recorded.setVisibility(View.VISIBLE);
+        } else {
+            recorded.setVisibility(View.GONE);
+            not_recorded.setVisibility(View.VISIBLE);
         }
         if (data.containsKey(Constants.ADDED_IMAGE_PATH)) {
             iconView.setImageBitmap(new File(data.get(Constants.ADDED_IMAGE_PATH)));
@@ -192,6 +204,7 @@ public class AddAudioScreen extends Screen {
         } catch (RuntimeException e) {
             result = false;
         }
+        mRecorder.reset();
         mRecorder.release();
         mRecorder = null;
         return result;

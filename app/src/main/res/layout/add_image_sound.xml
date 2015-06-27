@@ -57,6 +57,29 @@ android:layout_height="match_parent"
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:src="@drawable/record_norecord"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:paddingRight="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="10dp"
+            android:id="@+id/mediaplayer_not_recorded" />
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/record_recorded"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:paddingRight="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="10dp"
+            android:id="@+id/mediaplayer_recorded" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:src="@drawable/record_recording"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
@@ -64,19 +87,7 @@ android:layout_height="match_parent"
             android:paddingEnd="10dp"
             android:paddingTop="10dp"
             android:contentDescription="recording indicator"
-            android:id="@+id/mediaplayer_recording_indicator" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/record_norecord"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:paddingRight="10dp"
-            android:paddingEnd="10dp"
-            android:paddingTop="10dp"
-            android:id="@+id/mediaplayer_status" />
-
+            android:id="@+id/mediaplayer_recording" />
 
         <ImageView
             android:contentDescription="progressbar"
