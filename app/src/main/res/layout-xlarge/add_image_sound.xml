@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    >
+
+
+    <LinearLayout
+        style="@style/PaddingRight.Mobile"
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/gallery_side_background">
+
+        <Button
+            style="@style/ActionButtonAttrs"
+            android:drawableTop="@drawable/actionbutton_recordstates"
+            android:drawablePadding="-60dp"
+            android:paddingTop="90dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="@string/addaudio_hold_to_record"
+            android:id="@+id/recordSound" />
+
+    </LinearLayout>
+
+
+
+
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3">
+
+
+        <RelativeLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#fff">
+
+            <com.smilemeback.views.IconView
+                android:id="@+id/addsound_iconview"
+                android:layout_width="@dimen/iconview_width"
+                android:layout_height="@dimen/iconview_height"
+                android:layout_centerInParent="true">
+
+            </com.smilemeback.views.IconView>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/record_norecord_big"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:paddingRight="10dp"
+                android:paddingEnd="10dp"
+                android:paddingTop="10dp"
+                android:id="@+id/mediaplayer_not_recorded" />
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/record_recorded_big"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:paddingRight="10dp"
+                android:paddingEnd="10dp"
+                android:paddingTop="10dp"
+                android:id="@+id/mediaplayer_recorded" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/record_recording_big"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:paddingRight="10dp"
+                android:paddingEnd="10dp"
+                android:paddingTop="10dp"
+                android:contentDescription="recording indicator"
+                android:id="@+id/mediaplayer_recording" />
+
+            <ImageView
+                android:contentDescription="progressbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/progress2step3"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:paddingBottom="4dp"
+                android:id="@+id/progressImageView" />
+        </RelativeLayout>
+
+        <LinearLayout
+
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_width="fill_parent"
+            >
+
+            <Button
+                style="@style/NavButtonAttrs.Mobile"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:id="@+id/prevButton"
+                android:background="@drawable/navigateback_button"
+                android:text="back"
+                />
+
+
+            <Button
+                style="@style/NavButtonAttrs.Mobile"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:id="@+id/nextButton"
+                android:background="@drawable/savenew"
+                android:text="Save picture"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>
