@@ -19,14 +19,20 @@ package com.smilemeback.misc;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
+
+import com.smilemeback.R;
 
 public class Dialogs {
 
     /**
-     * Show a confirmation dialog.
+     * Show a confirmation dialog_information.
      */
     public static void confirmation(Context context, String title, String posButtonTitle, String negButtonTitle, DialogInterface.OnClickListener callBack) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
@@ -42,7 +48,7 @@ public class Dialogs {
     }
 
     /**
-     * Show a text input dialog.
+     * Show a text input dialog_information.
      */
     public static void input(Context context, String title, String initialText, String posButtonTitle, String negButtonTitle, final InputCallback callBack) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
@@ -66,6 +72,41 @@ public class Dialogs {
             }
         });
         dialog.show();
+    }
+
+    /**
+     * Show an information dialog_information with "do not show" possibility.
+     *
+     * @param memoryKey The key to store the "do not show" information about the dialog.
+     */
+    public static void information(final Context context, String title, String text, final String memoryKey) {
+        SharedPreferences settings = context.getSharedPreferences(Constants.PREFS_NAME, 0);
+        boolean show = settings.getBoolean(memoryKey, true);
+        if (!show) {
+            return;
+        }
+
+        AlertDialog.Builder adb = new AlertDialog.Builder(context);
+        LayoutInflater adbInflater = LayoutInflater.from(context);
+        View layout = adbInflater.inflate(R.layout.dialog_information, null);
+        final CheckBox dontShowAgain = (CheckBox) layout.findViewById(R.id.skip);
+        adb.setView(layout);
+        adb.setTitle(title);
+        adb.setMessage(text);
+
+        adb.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                boolean show = !dontShowAgain.isChecked();
+                SharedPreferences settings = context.getSharedPreferences(Constants.PREFS_NAME, 0);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putBoolean(memoryKey, show);
+                // Commit the edits!
+                editor.commit();
+                return;
+            }
+        });
+
+        adb.show();
     }
 
     /**

@@ -37,6 +37,10 @@ public class Constants {
     public static final int AUDIO_BITRATE = 192 * 1024;
 
     public static final int SMOOTH_SCROLL_DURATION = 500;
-
     public static final int MAX_NAME_LENGTH = 20;
+
+    public static final String PREFS_NAME = "SmbPreferences";
+    public static final String PREFS_SHOW_LOCK_HELP = "show_lock_help";
+    public static final String PREFS_PASSWORD = "password";
+    public static final String PREFS_DEFAULT_PASSWORD = "smile";
 }

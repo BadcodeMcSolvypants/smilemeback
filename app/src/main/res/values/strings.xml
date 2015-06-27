@@ -17,6 +17,8 @@
     <string name="delete_images">Delete images</string>
     <string name="tutorial">Tutorial</string>
     <string name="contacts">Contacts</string>
+    <string name="lock_app">Lock</string>
+    <string name="unlock_app">Unlock</string>
 
     <string name="gallery_is_empty">Empty categories</string>
     <string name="gallery_select_images">Select images</string>
@@ -39,5 +41,20 @@
     <string name="addaudio_hold_to_record">Hold to record</string>
 
     <string name="speaker_mute">Increase volume to hear audio!</string>
+
+    <!-- Lock app dialog -->
+    <string name="do_not_show">Do not show again</string>
+    <string name="lockapp_title">Application is now locked!</string>
+    <string name="lockapp_content">Locking
+        prevents the person using it from accidentally deleting or
+        modifying content. The password for unlocking the application
+        is "smile".
+    </string>
+    <string name="unlockapp_title">Type the password to unlock</string>
+    <string name="unlockapp_title_retry">Wrong password! Try again!</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="rename">Rename</string>
+    <string name="delete">Delete</string>
 
 </resources>

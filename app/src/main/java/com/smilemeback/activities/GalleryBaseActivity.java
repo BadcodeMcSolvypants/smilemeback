@@ -23,7 +23,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +35,9 @@ import android.widget.RelativeLayout;
 import com.smilemeback.R;
 import com.smilemeback.adapters.BaseGridAdapter;
 import com.smilemeback.adapters.GridAdapterListener;
+import com.smilemeback.application.SmbApplication;
+import com.smilemeback.misc.Constants;
+import com.smilemeback.misc.Dialogs;
 import com.smilemeback.misc.GalleryActivityData;
 import com.smilemeback.misc.GalleryActivityState;
 import com.smilemeback.selection.SelectionListener;
@@ -114,7 +117,7 @@ public abstract class GalleryBaseActivity extends Activity implements GallerySel
     abstract protected void setupActionBar();
 
     /**
-     * Initialize the main grid view.
+     a* Initialize the main grid view.
      */
     abstract protected void initializeGridView();
 
@@ -148,7 +151,7 @@ public abstract class GalleryBaseActivity extends Activity implements GallerySel
     }
 
     /**
-     * Show a dialog of {@link com.smilemeback.storage.StorageException}, which caused due
+     * Show a dialog_information of {@link com.smilemeback.storage.StorageException}, which caused due
      * to a problem with storage is indicates a programming error.
      *
      * @param e The exception instance.
@@ -278,6 +281,20 @@ public abstract class GalleryBaseActivity extends Activity implements GallerySel
 
     public abstract void rearrangeIconsAccordingToTarget(int position);
 
+    protected SmbApplication getSmbApplication() {
+        return (SmbApplication)getApplication();
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        final boolean locked = getSmbApplication().isLocked();
+        for (int i=0 ; i<menu.size() ; ++i) {
+            menu.getItem(i).setVisible(!locked);
+        }
+        menu.findItem(R.id.unlock_app).setVisible(locked);
+
+        return super.onPrepareOptionsMenu(menu);
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -288,8 +305,59 @@ public abstract class GalleryBaseActivity extends Activity implements GallerySel
             case R.id.help_page:
                 startActivity(new Intent(this, HelpActivity.class));
                 return true;
+            case R.id.lock_app:
+                lockApp();
+                return true;
+            case R.id.unlock_app:
+                unlockApp();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    /**
+     * Lock the application.
+     */
+    public void lockApp() {
+        getSmbApplication().setLocked(true);
+        invalidateOptionsMenu();
+        Dialogs.information(
+                this,
+                getString(R.string.lockapp_title),
+                getString(R.string.lockapp_content),
+                Constants.PREFS_SHOW_LOCK_HELP);
+    }
+
+    /**
+     * Unlock the application.
+     * @param retry true if the dialog is called recursively
+     *              after typing the wrong password.
+     */
+    public void unlockApp(final boolean retry, String lastpass) {
+        String title = getString(R.string.unlockapp_title);
+        if (retry) {
+            title = getString(R.string.unlockapp_title_retry);
+        }
+        Dialogs.input(this,
+                title,
+                lastpass,
+                getString(R.string.ok),
+                getString(R.string.cancel),
+                new Dialogs.InputCallback() {
+                    @Override
+                    public void inputDone(String text) {
+                        if (text.equalsIgnoreCase(Constants.PREFS_DEFAULT_PASSWORD)) {
+                            getSmbApplication().setLocked(false);
+                            invalidateOptionsMenu();
+                        } else {
+                            unlockApp(true, text);
+                        }
+                    }
+                });
+    }
+
+    public void unlockApp() {
+        unlockApp(false, "");
     }
 }
