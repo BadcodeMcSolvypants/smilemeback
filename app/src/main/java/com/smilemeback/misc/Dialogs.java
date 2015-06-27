@@ -20,6 +20,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.text.Html;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -92,7 +93,7 @@ public class Dialogs {
         final CheckBox dontShowAgain = (CheckBox) layout.findViewById(R.id.skip);
         adb.setView(layout);
         adb.setTitle(title);
-        adb.setMessage(text);
+        adb.setMessage(Html.fromHtml(text));
 
         adb.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {

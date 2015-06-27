@@ -52,6 +52,15 @@
     </string>
     <string name="unlockapp_title">Type the password to unlock</string>
     <string name="unlockapp_title_retry">Wrong password! Try again!</string>
+
+    <!-- greeting -->
+    <string name="greeting_title">Welcome to SmileMeBack</string>
+    <string name="greeting_text">SmileMeBack is an application
+        designed to improve the communication skills for people
+        with autism.<br/>
+        Check our website <a href="http://smilemeback.com">smilemeback.com</a> for detailed guidance how the application works.
+    </string>
+
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
     <string name="rename">Rename</string>

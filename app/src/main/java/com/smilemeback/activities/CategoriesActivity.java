@@ -24,9 +24,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
 import com.smilemeback.R;
 import com.smilemeback.adapters.CategoryGridAdapter;
@@ -62,6 +59,16 @@ public class CategoriesActivity extends GalleryBaseActivity {
         gridAdapter = new CategoryGridAdapter(this, this, selectionMode, selectionManager, data);
         gridAdapter.initialize();
     }
+
+    @Override
+    public void onStart() {
+        /*Dialogs.information(
+                this,
+                getString(R.string.greeting_title),
+                getString(R.string.greeting_text),
+                Constants.PREFS_SHOW_GREETING);*/
+    }
+
 
     @Override
     protected void setupActionBar() {

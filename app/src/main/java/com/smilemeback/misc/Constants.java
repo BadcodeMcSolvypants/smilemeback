@@ -43,4 +43,6 @@ public class Constants {
     public static final String PREFS_SHOW_LOCK_HELP = "show_lock_help";
     public static final String PREFS_PASSWORD = "password";
     public static final String PREFS_DEFAULT_PASSWORD = "smile";
+    public static final String PREFS_SHOW_GREETING = "show_greeting";
+    public static final String PREFS_SHOW_EDITMODE = "show_edit";
 }

@@ -322,11 +322,6 @@ public abstract class GalleryBaseActivity extends Activity implements GallerySel
     public void lockApp() {
         getSmbApplication().setLocked(true);
         invalidateOptionsMenu();
-        Dialogs.information(
-                this,
-                getString(R.string.lockapp_title),
-                getString(R.string.lockapp_content),
-                Constants.PREFS_SHOW_LOCK_HELP);
     }
 
     /**
