@@ -52,6 +52,10 @@ public class SelectionMode implements ActionMode.Callback, View.OnClickListener 
         this.listener = listener;
     }
 
+    public Activity getActivity() {
+        return activity;
+    }
+
     public void setNumSelected(int numSelected) {
         this.numSelected = numSelected;
         updateNumSelectedText();

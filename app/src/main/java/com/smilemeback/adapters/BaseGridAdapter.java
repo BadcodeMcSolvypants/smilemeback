@@ -311,7 +311,7 @@ abstract public class BaseGridAdapter extends BaseAdapter implements View.OnDrag
                         iconView.setOverlayVisibility(View.VISIBLE);
                     }
                     removeOverlays(childIdx);
-                    selectionMode.setStatusText("Switch");
+                    selectionMode.setStatusText(activity.getString(R.string.actionbar_reorder));
                 }
                 // handle scrolling
                 int dragArea = gridView.getHeight() / 8;

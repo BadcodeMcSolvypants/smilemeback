@@ -22,6 +22,7 @@ import android.view.DragEvent;
 import android.view.View;
 import android.widget.ListView;
 
+import com.smilemeback.R;
 import com.smilemeback.misc.Constants;
 import com.smilemeback.selectionmode.SelectionMode;
 import com.smilemeback.adapters.CategoryListAdapter;
@@ -58,7 +59,7 @@ public class ListViewDragListener implements View.OnDragListener {
             case DragEvent.ACTION_DRAG_STARTED:
                 return true;
             case DragEvent.ACTION_DRAG_ENTERED:
-                selectionMode.setStatusText("Drop selection images to category");
+                selectionMode.setStatusText(selectionMode.getActivity().getString(R.string.actionbar_moveto));
                 return true;
             case DragEvent.ACTION_DRAG_LOCATION:
                 if (idx >= 0) {

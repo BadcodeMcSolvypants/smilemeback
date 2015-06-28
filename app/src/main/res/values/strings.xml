@@ -30,6 +30,8 @@
     <string name="actionbar_num_selected">selected</string>
     <string name="actionbar_select_all">Select all</string>
     <string name="actionbar_deselect_all">Deselect all</string>
+    <string name="actionbar_reorder">Reorder images</string>
+    <string name="actionbar_moveto">Move to category</string>
 
     <!-- Values used in selection actionbar menu -->
     <string name="actionbar_delete_image">Delete</string>
