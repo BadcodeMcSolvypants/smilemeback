@@ -262,6 +262,7 @@ public class IconsActivity extends GalleryBaseActivity implements ListAdapterLis
                 Images images = new Images(gridAdapter.getCurrentCategory());
                 images.add(new Name(name), new File(imagePath), new File(audioPath));
                 reloadGrid();
+                showHowToEditPopup();
             } catch (StorageException | NameException e) {
                 throw new RuntimeException(e.getMessage(), e);
             }

@@ -63,7 +63,7 @@ public class CategoriesActivity extends GalleryBaseActivity {
                 this,
                 getString(R.string.greeting_title),
                 getString(R.string.greeting_text),
-                Constants.PREFS_SHOW_GREETING);
+                getString(R.string.prefs_show_greeting));
     }
 
     @Override
@@ -196,11 +196,14 @@ public class CategoriesActivity extends GalleryBaseActivity {
             try {
                 Categories categories = new Storage(this).getCategories();
                 categories.add(new Name(name), new BufferedInputStream(new FileInputStream(new File(imagePath))));
+                showHowToEditPopup();
             } catch (NameException | IOException | StorageException e) {
                 throw new RuntimeException(e.getMessage(), e);
             }
         }
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

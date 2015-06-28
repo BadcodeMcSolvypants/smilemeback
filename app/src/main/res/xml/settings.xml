@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditTextPreference
+        android:title="Unlocking password"
+        android:key="@string/prefs_password"
+        android:summary="Set the unlocking password." />
+
+    <CheckBoxPreference
+        android:title="Greeting popup"
+        android:key="@string/prefs_show_greeting"
+        android:summary="Display the greeting and basic information during startup" />
+
+    <CheckBoxPreference
+        android:title="Lock popup"
+        android:key="@string/prefs_show_lock_help"
+        android:summary="Information on how to lock and unlock the application" />
+
+    <CheckBoxPreference
+        android:title="Editmode popup"
+        android:key="@string/prefs_show_editmode"
+        android:summary="Instructions to rename, delete and organize icons" />
+
+</PreferenceScreen>

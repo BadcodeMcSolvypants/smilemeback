@@ -19,6 +19,7 @@
     <string name="contacts">Contacts</string>
     <string name="lock_app">Lock</string>
     <string name="unlock_app">Unlock</string>
+    <string name="settings">Settings</string>
 
     <string name="gallery_is_empty">Empty categories</string>
     <string name="gallery_select_images">Select images</string>
@@ -34,6 +35,12 @@
     <string name="actionbar_delete_image">Delete</string>
     <string name="actionbar_rename_image">Rename</string>
 
+    <!-- Settings / prefetrences -->
+    <string name="prefs_show_lock_help">prefs_show_lock_help</string>
+    <string name="prefs_show_greeting">prefs_show_greeting</string>
+    <string name="prefs_show_editmode">prefs_show_editmode</string>
+    <string name="prefs_password">password</string>
+
     <!-- AddPictureActivity -->
     <string name="addpicture_photo_from_galery">Choose image</string>
     <string name="addaudio_nosound_recorded">No sound recorded</string>
@@ -47,18 +54,25 @@
     <string name="lockapp_title">Application is now locked!</string>
     <string name="lockapp_content">Locking
         prevents the person using it from accidentally deleting or
-        modifying content. The password for unlocking the application
-        is "smile".
+        modifying content. The default password for unlocking the application
+        is \"smile\".
     </string>
     <string name="unlockapp_title">Type the password to unlock</string>
     <string name="unlockapp_title_retry">Wrong password! Try again!</string>
 
     <!-- greeting -->
     <string name="greeting_title">Welcome to SmileMeBack</string>
-    <string name="greeting_text">SmileMeBack is an application
-        designed to improve the communication skills for people
-        with autism.<br/>
-        Check our website <a href="http://smilemeback.com">smilemeback.com</a> for detailed guidance how the application works.
+    <string name="greeting_text">SmileMeBack is an application designed to improve the communication
+        skills of people with autism.
+        Check our website <a href="http://smilemeback.com">smilemeback.com</a> for
+        detailed guidance of how to use the application.
+    </string>
+
+    <!-- how to edit -->
+    <string name="edit_title">Did you know?</string>
+    <string name="edit_text">You can enter edit mode by longpressing
+        any icon. Edit mode allows you to rename and delete icons.
+        Longpressing in edit mode allows to drag icons and organize them.
     </string>
 
     <string name="ok">Ok</string>

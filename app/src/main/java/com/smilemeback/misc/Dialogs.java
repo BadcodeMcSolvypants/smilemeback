@@ -20,13 +20,16 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.smilemeback.R;
 
@@ -78,10 +81,11 @@ public class Dialogs {
     /**
      * Show an information dialog_information with "do not show" possibility.
      *
-     * @param memoryKey The key to store the "do not show" information about the dialog.
+     * @param memoryKey The key to store the "do not show" information about the dialog
+     *                  in SharedPreferences.
      */
     public static void information(final Context context, String title, String text, final String memoryKey) {
-        SharedPreferences settings = context.getSharedPreferences(Constants.PREFS_NAME, 0);
+        final SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
         boolean show = settings.getBoolean(memoryKey, true);
         if (!show) {
             return;
@@ -91,14 +95,14 @@ public class Dialogs {
         LayoutInflater adbInflater = LayoutInflater.from(context);
         View layout = adbInflater.inflate(R.layout.dialog_information, null);
         final CheckBox dontShowAgain = (CheckBox) layout.findViewById(R.id.skip);
+        final TextView textView = (TextView) layout.findViewById(R.id.message);
+        textView.setText(Html.fromHtml(text));
         adb.setView(layout);
         adb.setTitle(title);
-        adb.setMessage(Html.fromHtml(text));
 
         adb.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 boolean show = !dontShowAgain.isChecked();
-                SharedPreferences settings = context.getSharedPreferences(Constants.PREFS_NAME, 0);
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putBoolean(memoryKey, show);
                 // Commit the edits!

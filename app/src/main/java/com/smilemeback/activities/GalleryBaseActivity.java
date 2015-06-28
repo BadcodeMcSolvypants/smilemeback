@@ -21,8 +21,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -311,6 +313,9 @@ public abstract class GalleryBaseActivity extends Activity implements GallerySel
             case R.id.unlock_app:
                 unlockApp();
                 return true;
+            case R.id.settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -320,6 +325,11 @@ public abstract class GalleryBaseActivity extends Activity implements GallerySel
      * Lock the application.
      */
     public void lockApp() {
+        Dialogs.information(
+                this,
+                getString(R.string.lockapp_title),
+                getString(R.string.lockapp_content),
+                getString(R.string.prefs_show_lock_help));
         getSmbApplication().setLocked(true);
         invalidateOptionsMenu();
     }
@@ -334,6 +344,8 @@ public abstract class GalleryBaseActivity extends Activity implements GallerySel
         if (retry) {
             title = getString(R.string.unlockapp_title_retry);
         }
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        final String userpass = prefs.getString(getString(R.string.prefs_password), Constants.PREFS_DEFAULT_PASSWORD);
         Dialogs.input(this,
                 title,
                 lastpass,
@@ -342,7 +354,8 @@ public abstract class GalleryBaseActivity extends Activity implements GallerySel
                 new Dialogs.InputCallback() {
                     @Override
                     public void inputDone(String text) {
-                        if (text.equalsIgnoreCase(Constants.PREFS_DEFAULT_PASSWORD)) {
+                        if (text.equalsIgnoreCase(Constants.PREFS_DEFAULT_PASSWORD) ||
+                            text.equalsIgnoreCase(userpass)) {
                             getSmbApplication().setLocked(false);
                             invalidateOptionsMenu();
                         } else {
@@ -355,4 +368,12 @@ public abstract class GalleryBaseActivity extends Activity implements GallerySel
     public void unlockApp() {
         unlockApp(false, "");
     }
+
+    protected void showHowToEditPopup() {
+        Dialogs.information(this,
+                getString(R.string.edit_title),
+                getString(R.string.edit_text),
+                getString(R.string.prefs_show_editmode));
+    }
+
 }
