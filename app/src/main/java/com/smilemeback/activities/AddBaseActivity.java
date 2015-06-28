@@ -17,8 +17,6 @@
 package com.smilemeback.activities;
 
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,6 +26,7 @@ import android.widget.ImageView;
 
 import com.smilemeback.R;
 import com.smilemeback.activities.screens.Screen;
+import com.smilemeback.misc.Dialogs;
 import com.squareup.picasso.Picasso;
 
 import org.javatuples.Triplet;
@@ -53,6 +52,7 @@ public abstract class AddBaseActivity extends HomeEnabledActivity {
         data = new HashMap<>();
         this.screens = getScreens();
         progressMapping = getProgressMapping();
+        setResult(RESULT_CANCELED);
     }
 
     @Override
@@ -78,7 +78,7 @@ public abstract class AddBaseActivity extends HomeEnabledActivity {
     public void goForward() {
         screens[currentScreenIndex].collectData(data);
         if (currentScreenIndex == screens.length-1) { // is it the last screen?
-            finish();
+            setResultAndFinish();
         } else {
             currentScreenIndex++;
             screens[currentScreenIndex].onSetDefaultScreen(data);
@@ -148,14 +148,32 @@ public abstract class AddBaseActivity extends HomeEnabledActivity {
      * When finishing the activity, store all the collected user data
      * in the result.
      */
-    @Override
-    public void finish() {
+    public void setResultAndFinish() {
         Intent result = new Intent();
         for (Map.Entry<String, String> entry : data.entrySet()) {
             result.putExtra(entry.getKey(), entry.getValue());
         }
         setResult(RESULT_OK, result);
-        super.finish();
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        // if user has inputted data, display a confirmation dialog
+        if (data.size() > 0) {
+            Dialogs.confirmation(this,
+                    getString(R.string.addpicture_cancel_title),
+                    getString(R.string.discard),
+                    getString(R.string.cancel),
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            AddBaseActivity.super.onBackPressed();
+                        }
+                    });
+        } else {
+            super.onBackPressed();
+        }
     }
 
     /**

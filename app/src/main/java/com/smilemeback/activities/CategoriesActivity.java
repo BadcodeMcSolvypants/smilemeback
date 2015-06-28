@@ -203,8 +203,6 @@ public class CategoriesActivity extends GalleryBaseActivity {
         }
     }
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu items for use in the action bar

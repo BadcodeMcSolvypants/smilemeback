@@ -33,14 +33,20 @@ import android.widget.TextView;
 
 import com.smilemeback.R;
 
+/**
+ * Common dialogs we need in the application.
+ */
 public class Dialogs {
 
     /**
      * Show a confirmation dialog_information.
      */
-    public static void confirmation(Context context, String title, String posButtonTitle, String negButtonTitle, DialogInterface.OnClickListener callBack) {
+    public static void confirmation(Context context, String title, String text, String posButtonTitle, String negButtonTitle, DialogInterface.OnClickListener callBack) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
         dialog.setTitle(title);
+        if (text != null) {
+            dialog.setMessage(text);
+        }
         dialog.setPositiveButton(posButtonTitle, callBack);
         dialog.setNegativeButton(negButtonTitle, new DialogInterface.OnClickListener() {
             @Override
@@ -49,6 +55,10 @@ public class Dialogs {
             }
         });
         dialog.show();
+    }
+
+    public static void confirmation(Context context, String title, String posButtonTitle, String negButtonTitle, DialogInterface.OnClickListener callBack) {
+        confirmation(context, title, null, posButtonTitle, negButtonTitle, callBack);
     }
 
     /**

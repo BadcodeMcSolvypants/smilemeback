@@ -98,6 +98,8 @@ public class AddNameScreen extends Screen {
     public Map<String, String> collectData(Map<String, String> data) {
         if (imageEditText.getText().length() > 0) {
             data.put(Constants.ADDED_IMAGE_NAME, imageEditText.getText().toString());
+        } else {
+            data.remove(Constants.ADDED_IMAGE_NAME);
         }
         return data;
     }
