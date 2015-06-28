@@ -91,7 +91,7 @@ public abstract class GalleryBaseActivity extends Activity implements GallerySel
      */
     protected void showHelpLayoutIfNecessary(BaseGridAdapter gridAdapter, int layout) {
         RelativeLayout container = (RelativeLayout)findViewById(R.id.container);
-        if (gridAdapter.getCount() == 0) {
+        if (gridAdapter.getCount() == 0 && data.state == GalleryActivityState.VIEW) {
             if (findViewById(R.id.help_layout) == null) {
                 View helpLayout = getLayoutInflater().inflate(layout, null);
                 RelativeLayout.LayoutParams params =
