@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_centerInParent="true"
     android:layout_width="@dimen/iconview_width"
     android:layout_height="@dimen/iconview_height"
     android:duplicateParentState="true"
     android:background="@drawable/gallery_listitem_bg"
+    android:layout_gravity="center_horizontal"
+    android:gravity="center_horizontal"
+
     >
 
     <ImageView

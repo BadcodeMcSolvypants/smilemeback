@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     >
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -42,15 +41,27 @@
             </ListView>
         </LinearLayout>
 
+        <RelativeLayout
 
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="@integer/iconview_gridview_layoutweight"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+
+            >
         <GridView
+
+            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
             android:paddingTop="@dimen/iconview_top_padding"
             android:background="@color/gallery_background"
             android:verticalSpacing="@dimen/gallery_gridview_vertical_spacing"
-            android:stretchMode="spacingWidthUniform"
+            android:stretchMode="columnWidth"
             android:columnWidth="@dimen/iconview_width"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
             android:layout_height="match_parent"
             android:paddingLeft="@dimen/gallery_gridview_padding_sides"
             android:paddingRight="@dimen/gallery_gridview_padding_sides"
@@ -59,8 +70,8 @@
             android:smoothScrollbar="false"
             android:nestedScrollingEnabled="false"
             android:scrollbarStyle="outsideOverlay"
-            tools:listitem="@layout/icon_view"
-            android:layout_weight="@integer/iconview_gridview_layoutweight" />
+            tools:listitem="@layout/icon_view" />
+        </RelativeLayout>
 
     </LinearLayout>
 
