@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Smile me back</string>
+    <string name="app_name">SmileMeBack</string>
     <string name="unlock">Unlock</string>
     <string name="lock">Lock</string>
     <string name="categories">Categories</string>
