@@ -16,6 +16,7 @@
  */
 package com.smilemeback.activities;
 
+import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -213,6 +214,18 @@ public abstract class GalleryBaseActivity extends Activity implements GallerySel
             public void onAnimationUpdate(ValueAnimator animation) {
                 setListViewWeight((float) animation.getAnimatedValue());
             }
+        });
+        va.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                data.gridView.smoothScrollToPosition(selectionManager.getSelectedPosition());
+            }
+            @Override
+            public void onAnimationStart(Animator animation) { }
+            @Override
+            public void onAnimationCancel(Animator animation) { }
+            @Override
+            public void onAnimationRepeat(Animator animation) { }
         });
         va.start();
     }
