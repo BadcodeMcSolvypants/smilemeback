@@ -21,6 +21,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.smilemeback.R;
@@ -47,12 +48,14 @@ public class SettingsActivity extends PreferenceActivity {
         edit.putBoolean(greeting, prefs.getBoolean(greeting, true));
         edit.putBoolean(show_lock, prefs.getBoolean(show_lock, true));
         edit.putBoolean(show_edit, prefs.getBoolean(show_edit, true));
+        if (!edit.commit()) {
+            Log.d("Settings", "Could not commit default settings!");
+        }
     }
 
     private void setupActionBar() {
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-
     }
 
     @Override
