@@ -24,7 +24,6 @@ import com.smilemeback.R;
 
 
 public class HelpActivity extends HomeEnabledActivity {
-    public static final String helpHtmlPath = "file:///android_asset/help_page/help.html";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +32,11 @@ public class HelpActivity extends HomeEnabledActivity {
         setContentView(R.layout.help_page);
 
         WebView webView = (WebView) findViewById(R.id.webView);
-        webView.loadUrl(helpHtmlPath);
+        webView.loadUrl(getHelpHtmlPath());
+    }
+
+    private String getHelpHtmlPath() {
+        return "file:///android_asset/help_page/" + getString(R.string.language) + "_help.html";
     }
 }
 

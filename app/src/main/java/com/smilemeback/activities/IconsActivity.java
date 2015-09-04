@@ -191,9 +191,9 @@ public class IconsActivity extends GalleryBaseActivity implements ListAdapterLis
     @Override
     public void renameCurrentlySelectedIcon() {
         final Image image = (Image)gridAdapter.getItem(selectionManager.getSelectedPosition());
-        String title = "Rename image";
-        String posTitle = "Rename";
-        String negTitle = "Cancel";
+        String title = getString(R.string.rename_currently_selected_title);
+        String posTitle = getString(R.string.rename_currently_selected_confirm);
+        String negTitle = getString(R.string.rename_currently_selected_cancel);
         Dialogs.InputCallback callback = new Dialogs.InputCallback() {
             @Override
             public void inputDone(String text) {
@@ -213,14 +213,13 @@ public class IconsActivity extends GalleryBaseActivity implements ListAdapterLis
 
     @Override
     public void deleteCurrentlySelectedIcons() {
-        String title = "Really delete " + selectionManager.getNumSelected() + " image";
+        String title = getString(R.string.delete_currently_selected_title_singular);
         if (selectionManager.getNumSelected() > 1) {
-            title += "s?";
-        } else {
-            title += '?';
+            title = getString(R.string.delete_currently_selected_title_plural);
+            title.replace("#num", selectionManager.getNumSelected() + "");
         }
-        String posTitle = "Delete";
-        String negTitle = "Cancel";
+        String posTitle = getString(R.string.delete_currently_selected_confirmation);
+        String negTitle = getString(R.string.delete_currently_selected_cancel);
         DialogInterface.OnClickListener callback = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

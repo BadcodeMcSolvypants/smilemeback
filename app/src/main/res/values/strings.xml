@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- this one has to match the prefix of the HTML files in assets folder -->
+    <string name="language">en</string>
 
     <string name="app_name">SmileMeBack</string>
+
     <string name="unlock">Unlock</string>
     <string name="lock">Lock</string>
     <string name="categories">Categories</string>
@@ -24,7 +27,6 @@
     <string name="gallery_is_empty">Empty categories</string>
     <string name="gallery_select_images">Select images</string>
 
-
     <string name="gallery_actionbar_title">Categories</string>
     <!-- Values used in actionbar spinner -->
     <string name="actionbar_num_selected">selected</string>
@@ -37,7 +39,7 @@
     <string name="actionbar_delete_image">Delete</string>
     <string name="actionbar_rename_image">Rename</string>
 
-    <!-- Settings / prefetrences -->
+    <!-- Settings / preferences. NB! DO NOT TRANSLATE! -->
     <string name="prefs_show_lock_help">prefs_show_lock_help</string>
     <string name="prefs_show_greeting">prefs_show_greeting</string>
     <string name="prefs_show_editmode">prefs_show_editmode</string>
@@ -78,10 +80,23 @@
         Longpressing in edit mode allows to drag icons and organize them.
     </string>
 
+    <!-- Generic button texts -->
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
     <string name="discard">Discard</string>
     <string name="rename">Rename</string>
     <string name="delete">Delete</string>
+
+    <!-- Dialogs -->
+    <!-- rename currently selected icon -->
+    <string name="rename_currently_selected_title">Rename image</string>
+    <string name="rename_currently_selected_confirm">Rename</string>
+    <string name="rename_currently_selected_cancel">Cancel</string>
+
+    <!-- delete currently selected icons -->
+    <string name="delete_currently_selected_title_singular">Really delete the image?</string>
+    <string name="delete_currently_selected_title_plural">Really delete #num images?</string>
+    <string name="delete_currently_selected_confirmation">Delete</string>
+    <string name="delete_currently_selected_cancel">Cancel</string>
 
 </resources>

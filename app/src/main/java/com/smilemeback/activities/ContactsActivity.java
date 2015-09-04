@@ -24,7 +24,6 @@ import com.smilemeback.R;
 
 
 public class ContactsActivity extends HomeEnabledActivity {
-    public static final String contactsHtmlPath = "file:///android_asset/contacts_page/contacts.html";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +31,11 @@ public class ContactsActivity extends HomeEnabledActivity {
 
         setContentView(R.layout.contacts_page);
         WebView webView = (WebView)findViewById(R.id.webView);
-        webView.loadUrl(contactsHtmlPath);
+        webView.loadUrl(getContactsHtmlPath());
     }
 
-
+    private String getContactsHtmlPath() {
+        return "file:///android_asset/contacts_page/" + getString(R.string.language) + "_contacts.html";
+    }
 }
 
