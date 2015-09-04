@@ -26,8 +26,16 @@
     <string name="menuitem_add_category">Add album</string>
     <string name="categories_actionbar_title">Categories</string>
 
+    <string name="no_categories_tap_on">Tap on </string>
+    <string name="no_categories_icon_in_top_right">icon in upper-right corner</string>
+    <string name="no_categories_to_add_a_new_category">to add a new category!</string>
+
     <!-- ICONS / SINGLE GALLERY ACTIVITY -->
     <string name="menuitem_add_picture">Add image</string>
+
+    <string name="no_images_tap_on">Tap on </string>
+    <string name="no_images_icon_in_top_right">icon in upper-right corner</string>
+    <string name="no_images_to_add_a_new_category">to add a new image!</string>
 
     <!-- ADD CATEGORY/IMAGE ACTIVITY COMMON STRINGS -->
     <string name="addimage_common_backbutton_title">back</string>

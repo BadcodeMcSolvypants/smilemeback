@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/actionbar_textcolor"
-                android:text="Tap on "/>
+                android:text="@string/no_images_tap_on"/>
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/actionbar_textcolor"
-                android:text="icon in upper-right corner"/>
+                android:text="@string/no_images_icon_in_top_right"/>
 
         </LinearLayout>
 
@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/actionbar_textcolor"
-            android:text="to add images in this category!"
+            android:text="@string/no_images_to_add_a_new_category"
             android:layout_gravity="center_horizontal" />
 
     </LinearLayout>
