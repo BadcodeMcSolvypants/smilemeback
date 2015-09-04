@@ -1,13 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- this one has to match the prefix of the HTML files in assets folder -->
-    <string name="language">en</string>
-
+    <!-- APPLICATION-WIDE STRINGS -->
+    <string name="language">en</string> <!-- this has to match asset prefixes, eg en_tutorial.html -->
     <string name="app_name">SmileMeBack</string>
 
-    <string name="unlock">Unlock</string>
-    <string name="lock">Lock</string>
-    <string name="categories">Categories</string>
+    <!-- BASE GALLERY ACTIVITY -->
+    <string name="base_gallery_unlock">Unlock</string>
+    <string name="base_gallery_lock">Lock</string>
+
+    <!-- CATEGORIES ACTIVITY -->
+
+    <!-- ICONS / SINGLE GALLERY ACTIVITY -->
+
+    <!-- ADD CATEGORY/IMAGE ACTIVITY COMMON STRINGS -->
+    <string name="addimage_common_backbutton_title">back</string>
+    <string name="addimage_common_nextbutton_title">next</string>
+
+    <string name="addimage_common_new_image_with_camera">New with camera</string>
+    <string name="addimage_common_image_from_gallery">From device</string>
+    <string name="addimage_common_photo_from_gallery_dispatch_title">Choose image</string>
+
+    <string name="addimage_common_name_button_title">Name it</string>
+    <string name="addimage_common_name_caption_title">Let\'s name it!</string>
+    <string name="addimage_common_name_caption_hint">Add caption</string>
+
+    <string name="addimage_common_no_sound_recorded">No sound recorded</string>
+    <string name="addimage_common_tap_to_play">Tap to play</string>
+    <string name="addimage_common_hold_to_record">Hold to record</string>
+    <string name="addimage_common_really_discard_icon">Really discard the new icon?</string>
+
+    <string name="addimage_common_speaker_is_muted">Increase volume to hear audio!</string>
+
+    <!-- ADD CATEGORY ACTIVITY SPECIFIC STRINGS -->
+    <string name="addimage_addcategory_button_title">Add category</string>
+
+    <!-- ADD ICON ACTIVITY SPECIFIC STRINGS -->
+    <string name="addimage_addpicture_button_title">Save picture</string>
 
     <!-- Actionmodes & menus -->
     <string name="add_category">Add album</string>
@@ -28,6 +56,7 @@
     <string name="gallery_select_images">Select images</string>
 
     <string name="gallery_actionbar_title">Categories</string>
+
     <!-- Values used in actionbar spinner -->
     <string name="actionbar_num_selected">selected</string>
     <string name="actionbar_select_all">Select all</string>
@@ -44,15 +73,6 @@
     <string name="prefs_show_greeting">prefs_show_greeting</string>
     <string name="prefs_show_editmode">prefs_show_editmode</string>
     <string name="prefs_password">password</string>
-
-    <!-- AddPictureActivity -->
-    <string name="addpicture_photo_from_galery">Choose image</string>
-    <string name="addaudio_nosound_recorded">No sound recorded</string>
-    <string name="addaudio_tap_to_play">Tap to play</string>
-    <string name="addaudio_hold_to_record">Hold to record</string>
-    <string name="addpicture_cancel_title">Really discard the new icon?</string>
-
-    <string name="speaker_mute">Increase volume to hear audio!</string>
 
     <!-- Lock app dialog -->
     <string name="do_not_show">Do not show again</string>

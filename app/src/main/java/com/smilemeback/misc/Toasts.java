@@ -33,7 +33,7 @@ public class Toasts {
     public static void checkAndNotifyUserIfVolumeMute(Context context) {
         AudioManager audio = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
         if (audio.getRingerMode() != AudioManager.RINGER_MODE_NORMAL) {
-            Toast.makeText(context, context.getString(R.string.speaker_mute), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.addimage_common_speaker_is_muted), Toast.LENGTH_SHORT).show();
         }
     }
 }

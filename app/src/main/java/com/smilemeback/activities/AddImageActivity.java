@@ -31,8 +31,8 @@ public class AddImageActivity extends AddBaseActivity {
     protected Screen[] getScreens() {
         return new Screen[] {
                 new AddPictureScreen(this, R.layout.add_picture),
-                new AddNameScreen(this, R.layout.add_image_name),
-                new AddAudioScreen(this, R.layout.add_image_sound)
+                new AddNameScreen(this, R.layout.add_activity_image_name),
+                new AddAudioScreen(this, R.layout.add_activity_image_sound)
         };
     }
 }

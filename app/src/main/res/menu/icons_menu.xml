@@ -7,11 +7,11 @@
 
     <item android:id="@+id/lock_app"
         android:showAsAction="never"
-        android:title="@string/lock" />
+        android:title="@string/base_gallery_lock" />
 
     <item android:id="@+id/unlock_app"
         android:showAsAction="never"
-        android:title="@string/unlock" />
+        android:title="@string/base_gallery_unlock" />
 
     <item android:id="@+id/settings"
         android:showAsAction="never"

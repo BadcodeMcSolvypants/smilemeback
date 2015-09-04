@@ -162,7 +162,7 @@ public abstract class AddBaseActivity extends HomeEnabledActivity {
         // if user has inputted data, display a confirmation dialog
         if (data.size() > 0) {
             Dialogs.confirmation(this,
-                    getString(R.string.addpicture_cancel_title),
+                    getString(R.string.addimage_common_really_discard_icon),
                     getString(R.string.discard),
                     getString(R.string.cancel),
                     new DialogInterface.OnClickListener() {

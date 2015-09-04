@@ -31,7 +31,7 @@ public class AddCategoryActivity extends AddBaseActivity {
     protected Screen[] getScreens() {
         return new Screen[] {
                 new AddPictureScreen(this, R.layout.add_picture),
-                new AddNameScreen(this, R.layout.add_category_name)
+                new AddNameScreen(this, R.layout.add_activity_category_name)
         };
     }
 }

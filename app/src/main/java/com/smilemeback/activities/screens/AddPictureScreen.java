@@ -137,7 +137,7 @@ public class AddPictureScreen extends Screen {
         activity.startActivityForResult(
                 Intent.createChooser(
                         intent,
-                        activity.getString(R.string.addpicture_photo_from_galery)),
+                        activity.getString(R.string.addimage_common_photo_from_gallery_dispatch_title)),
                 PICK_PHOTO_GALLERY);
     }
 

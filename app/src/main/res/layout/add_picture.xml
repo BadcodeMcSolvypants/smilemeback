@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="New with camera"
+            android:text="@string/addimage_common_new_image_with_camera"
             android:id="@+id/fromCameraButton" />
 
         <Button
@@ -35,7 +35,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:id="@+id/fromDeviceButton"
-            android:text="From device"/>
+            android:text="@string/addimage_common_image_from_gallery"/>
 
 
     </LinearLayout>

@@ -2,10 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:baselineAligned="false"
-
-    >
-
+    android:baselineAligned="false">
 
     <LinearLayout
         style="@style/PaddingRight.Mobile"
@@ -23,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="Name it"
+            android:text="@string/addimage_common_name_button_title"
             android:id="@+id/focusImageNameButton"/>
 
     </LinearLayout>
@@ -35,21 +32,17 @@
         android:layout_height="match_parent"
         android:layout_weight="3">
 
-
         <RelativeLayout
-
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:background="#fff">
 
-
            <TextView
                android:layout_centerInParent="true"
-
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:text="Let's name it!"
+               android:text="@string/addimage_common_name_caption_title"
                android:textColor="#333"
                android:textAppearance="@style/TextAppearance.Big"
                android:paddingBottom="108dp"
@@ -66,7 +59,7 @@
                 android:textColor="#333"
                 android:background="@drawable/textlines"
                 android:textAppearance="@style/TextAppearance.Big"
-                android:hint="Add caption"/>
+                android:hint="@string/addimage_common_name_caption_hint"/>
 
 
             <ImageView
@@ -81,12 +74,10 @@
         </RelativeLayout>
 
         <LinearLayout
-
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_alignParentBottom="true"
-            android:layout_width="fill_parent"
-            >
+            android:layout_width="fill_parent">
 
             <Button
                 style="@style/NavButtonAttrs.Mobile"
@@ -94,9 +85,7 @@
                 android:layout_width="0dp"
                 android:id="@+id/prevButton"
                 android:background="@drawable/navigateback_button"
-                android:text="back"
-                />
-
+                android:text="@string/addimage_common_backbutton_title"/>
 
             <Button
                 style="@style/NavButtonAttrs.Mobile"
@@ -104,10 +93,7 @@
                 android:layout_width="0dp"
                 android:id="@+id/nextButton"
                 android:background="@drawable/savenew"
-                android:text="Add category"
-                />
-
+                android:text="@string/addimage_addcategory_button_title"/>
         </LinearLayout>
-
     </LinearLayout>
 </LinearLayout>
