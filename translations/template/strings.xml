@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- APPLICATION-WIDE STRINGS -->
+    <string name="language">en</string> <!-- this has to match asset prefixes, eg en_tutorial.html -->
+    <string name="app_name">SmileMeBack</string>
+
+    <!-- BASE GALLERY ACTIVITY -->
+    <string name="menuitem_unlock">Unlock</string>
+    <string name="menuitem_lock">Lock</string>
+    <string name="menuitem_settings">Settings</string>
+    <string name="menuitem_tutorial">Tutorial</string>
+    <string name="menuitem_contacts">Contacts</string>
+
+    <!-- Values used in selection actionbar menu -->
+    <string name="actionbar_delete">Delete</string>
+    <string name="actionbar_rename">Rename</string>
+
+    <!-- Values used in actionbar spinner -->
+    <string name="actionbar_num_selected">selected</string>
+    <string name="actionbar_select_all">Select all</string>
+    <string name="actionbar_deselect_all">Deselect all</string>
+    <string name="actionbar_reorder">Reorder images</string>
+    <string name="actionbar_moveto">Move to category</string>
+
+    <!-- CATEGORIES ACTIVITY -->
+    <string name="menuitem_add_category">Add album</string>
+    <string name="categories_actionbar_title">Categories</string>
+
+    <string name="no_categories_tap_on">Tap on </string>
+    <string name="no_categories_icon_in_top_right">icon in upper-right corner</string>
+    <string name="no_categories_to_add_a_new_category">to add a new category!</string>
+
+    <!-- ICONS / SINGLE GALLERY ACTIVITY -->
+    <string name="menuitem_add_picture">Add image</string>
+
+    <string name="no_images_tap_on">Tap on </string>
+    <string name="no_images_icon_in_top_right">icon in upper-right corner</string>
+    <string name="no_images_to_add_a_new_category">to add a new image!</string>
+
+    <!-- ADD CATEGORY/IMAGE ACTIVITY COMMON STRINGS -->
+    <string name="addimage_common_backbutton_title">back</string>
+    <string name="addimage_common_nextbutton_title">next</string>
+
+    <string name="addimage_common_new_image_with_camera">New with camera</string>
+    <string name="addimage_common_image_from_gallery">From device</string>
+    <string name="addimage_common_photo_from_gallery_dispatch_title">Choose image</string>
+
+    <string name="addimage_common_name_button_title">Name it</string>
+    <string name="addimage_common_name_caption_title">Let\'s name it!</string>
+    <string name="addimage_common_name_caption_hint">Add caption</string>
+
+    <string name="addimage_common_no_sound_recorded">No sound recorded</string>
+    <string name="addimage_common_tap_to_play">Tap to play</string>
+    <string name="addimage_common_hold_to_record">Hold to record</string>
+
+    <string name="addimage_common_speaker_is_muted">Increase volume to hear audio!</string>
+
+    <!-- ADD CATEGORY ACTIVITY SPECIFIC STRINGS -->
+    <string name="addimage_addcategory_button_title">Add category</string>
+    <string name="addimage_category_activity_title">Add album</string>
+
+    <!-- ADD ICON ACTIVITY SPECIFIC STRINGS -->
+    <string name="addimage_addpicture_button_title">Save picture</string>
+    <string name="addimage_picture_activity_title">Add image</string>
+
+    <!-- TITLES OF OTHER ACTIVITIES -->
+    <string name="settings_activity_title">Settings</string>
+    <string name="tutorial_activity_title">Tutorial</string>
+    <string name="contacts_activity_title">Contacts</string>
+
+
+    <!-- Setting items keys. *************** NB! DO NOT TRANSLATE! ************** -->
+    <string name="prefs_show_lock_help">prefs_show_lock_help</string>
+    <string name="prefs_show_greeting">prefs_show_greeting</string>
+    <string name="prefs_show_editmode">prefs_show_editmode</string>
+    <string name="prefs_password">password</string>
+
+
+    <!-- ************************************ D I A L O G S ***************************** -->
+    <string name="dialog_do_not_show">Do not show again</string>
+    <string name="dialog_ok_button">Okay</string>
+
+    <!-- GREETING POPUP DIALOG -->
+    <string name="dialog_greeting_title">Welcome to SmileMeBack</string>
+    <string name="dialog_greeting_text">SmileMeBack is an application designed to improve the communication
+        skills of people with autism.
+        Check our website <a href="http://smilemeback.com">smilemeback.com</a> for
+        detailed guidance of how to use the application.
+    </string>
+
+    <!-- LOCK APP DIALOG -->
+    <string name="dialog_lockapp_title">Application is now locked!</string>
+    <string name="dialog_lockapp_content">Locking
+        prevents the person using it from accidentally deleting or
+        modifying content. The default password for unlocking the application
+        is \"smile\".
+    </string>
+
+    <!-- UNLOCK APP DIALOG -->
+    <string name="dialog_unlockapp_title">Type the password to unlock</string>
+    <string name="dialog_unlockapp_title_retry">Wrong password! Try again!</string>
+    <string name="dialog_unlockapp_confirmation">Unlock</string>
+    <string name="dialog_unlockapp_cancel">Cancel</string>
+
+
+    <!-- HOW TO EDIT POPUP DIALOG -->
+    <string name="dialog_edit_title">Did you know?</string>
+    <string name="dialog_edit_text">You can enter edit mode by longpressing
+        any icon. Edit mode allows you to rename and delete icons.
+        Longpressing in edit mode allows to drag icons and organize them.
+    </string>
+
+    <!-- RENAME CURRENTLY SELECTED IMAGE -->
+    <string name="dialog_rename_currently_selected_title">Rename image</string>
+    <string name="dialog_rename_currently_selected_confirm">Rename</string>
+    <string name="dialog_rename_currently_selected_cancel">Cancel</string>
+
+    <!-- REALLY DISCARD ICON DIALOG -->
+    <string name="dialog_really_discard_icon">Really discard the new icon?</string>
+    <string name="dialog_really_discard_confirmation">Discard</string>
+    <string name="dialog_really_discard_cancel">Cancel</string>
+
+    <!-- delete currently selected icons -->
+    <string name="dialog_delete_currently_selected_title_singular">Really delete the image?</string>
+    <string name="dialog_delete_currently_selected_title_plural">Really delete #num images?</string>
+    <string name="dialog_delete_currently_selected_confirmation">Delete</string>
+    <string name="dialog_delete_currently_selected_cancel">Cancel</string>
+
+</resources>
