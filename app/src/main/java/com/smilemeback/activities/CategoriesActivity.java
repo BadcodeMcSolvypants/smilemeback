@@ -61,15 +61,15 @@ public class CategoriesActivity extends GalleryBaseActivity {
 
         Dialogs.information(
                 this,
-                getString(R.string.greeting_title),
-                getString(R.string.greeting_text),
+                getString(R.string.dialog_greeting_title),
+                getString(R.string.dialog_greeting_text),
                 getString(R.string.prefs_show_greeting));
     }
 
     @Override
     protected void setupActionBar() {
         ActionBar actionBar = getActionBar();
-        actionBar.setTitle(getString(R.string.gallery_actionbar_title));
+        actionBar.setTitle(getString(R.string.categories_actionbar_title));
     }
 
     @Override

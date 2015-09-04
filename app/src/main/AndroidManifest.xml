@@ -42,14 +42,14 @@
             android:name=".activities.AddImageActivity"
             android:logo="@drawable/actionbar_icon"
             android:screenOrientation="landscape"
-            android:label="@string/add_image">
+            android:label="@string/addimage_picture_activity_title">
         </activity>
 
         <activity
             android:name=".activities.AddCategoryActivity"
             android:logo="@drawable/actionbar_icon"
             android:screenOrientation="landscape"
-            android:label="@string/add_category">
+            android:label="@string/addimage_category_activity_title">
         </activity>
 
 
@@ -57,21 +57,21 @@
             android:name=".activities.ContactsActivity"
             android:logo="@drawable/actionbar_icon"
             android:screenOrientation="landscape"
-            android:label="@string/contacts">
+            android:label="@string/contacts_activity_title">
         </activity>
 
         <activity
-            android:name=".activities.HelpActivity"
+            android:name=".activities.TutorialActivity"
             android:logo="@drawable/actionbar_icon"
             android:screenOrientation="landscape"
-            android:label="@string/tutorial">
+            android:label="@string/tutorial_activity_title">
         </activity>
 
         <activity
             android:name=".activities.SettingsActivity"
             android:logo="@drawable/actionbar_icon"
             android:screenOrientation="landscape"
-            android:label="@string/settings">
+            android:label="@string/settings_activity_title">
         </activity>
 
     </application>

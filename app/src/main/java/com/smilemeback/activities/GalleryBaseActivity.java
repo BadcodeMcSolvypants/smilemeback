@@ -317,8 +317,8 @@ public abstract class GalleryBaseActivity extends Activity implements GallerySel
             case R.id.contacts_page:
                 startActivity(new Intent(this, ContactsActivity.class));
                 return true;
-            case R.id.help_page:
-                startActivity(new Intent(this, HelpActivity.class));
+            case R.id.tutorials_page:
+                startActivity(new Intent(this, TutorialActivity.class));
                 return true;
             case R.id.lock_app:
                 lockApp();
@@ -340,8 +340,8 @@ public abstract class GalleryBaseActivity extends Activity implements GallerySel
     public void lockApp() {
         Dialogs.information(
                 this,
-                getString(R.string.lockapp_title),
-                getString(R.string.lockapp_content),
+                getString(R.string.dialog_lockapp_title),
+                getString(R.string.dialog_lockapp_content),
                 getString(R.string.prefs_show_lock_help));
         getSmbApplication().setLocked(true);
         invalidateOptionsMenu();
@@ -353,17 +353,17 @@ public abstract class GalleryBaseActivity extends Activity implements GallerySel
      *              after typing the wrong password.
      */
     public void unlockApp(final boolean retry, String lastpass) {
-        String title = getString(R.string.unlockapp_title);
+        String title = getString(R.string.dialog_unlockapp_title);
         if (retry) {
-            title = getString(R.string.unlockapp_title_retry);
+            title = getString(R.string.dialog_unlockapp_title_retry);
         }
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         final String userpass = prefs.getString(getString(R.string.prefs_password), Constants.PREFS_DEFAULT_PASSWORD);
         Dialogs.input(this,
                 title,
                 lastpass,
-                getString(R.string.ok),
-                getString(R.string.cancel),
+                getString(R.string.dialog_unlockapp_confirmation),
+                getString(R.string.dialog_unlockapp_cancel),
                 new Dialogs.InputCallback() {
                     @Override
                     public void inputDone(String text) {
@@ -384,8 +384,8 @@ public abstract class GalleryBaseActivity extends Activity implements GallerySel
 
     protected void showHowToEditPopup() {
         Dialogs.information(this,
-                getString(R.string.edit_title),
-                getString(R.string.edit_text),
+                getString(R.string.dialog_edit_title),
+                getString(R.string.dialog_edit_text),
                 getString(R.string.prefs_show_editmode));
     }
 

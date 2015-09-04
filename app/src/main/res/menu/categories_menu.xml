@@ -3,25 +3,25 @@
     <item android:id="@+id/gallery_selectionmode_menu_add_album"
         android:showAsAction="always"
         android:icon="@drawable/ic_action_album"
-        android:title="@string/add_category" />
+        android:title="@string/menuitem_add_category" />
 
     <item android:id="@+id/lock_app"
         android:showAsAction="never"
-        android:title="@string/base_gallery_lock" />
+        android:title="@string/menuitem_lock" />
 
     <item android:id="@+id/unlock_app"
         android:showAsAction="never"
-        android:title="@string/base_gallery_unlock" />
+        android:title="@string/menuitem_unlock" />
 
     <item android:id="@+id/settings"
         android:showAsAction="never"
-        android:title="@string/settings" />
+        android:title="@string/menuitem_settings" />
 
-    <item android:id="@+id/help_page"
+    <item android:id="@+id/tutorials_page"
         android:showAsAction="never"
-        android:title="@string/tutorial" />
+        android:title="@string/menuitem_tutorial" />
 
     <item android:id="@+id/contacts_page"
         android:showAsAction="never"
-        android:title="@string/contacts" />
+        android:title="@string/menuitem_contacts" />
 </menu>

@@ -23,7 +23,7 @@ import android.webkit.WebView;
 import com.smilemeback.R;
 
 
-public class HelpActivity extends HomeEnabledActivity {
+public class TutorialActivity extends HomeEnabledActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

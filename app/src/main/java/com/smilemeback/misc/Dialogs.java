@@ -110,7 +110,7 @@ public class Dialogs {
         adb.setView(layout);
         adb.setTitle(title);
 
-        adb.setPositiveButton(context.getString(R.string.ok), new DialogInterface.OnClickListener() {
+        adb.setPositiveButton(context.getString(R.string.dialog_ok_button), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 boolean show = !dontShowAgain.isChecked();
                 SharedPreferences.Editor editor = settings.edit();
